@@ -1,0 +1,33 @@
+sequenceDiagram
+    title Sequence Diagram - Create Report (New Report with Media)
+
+    participant User
+    participant Frontend
+    participant ReportController
+    participant ReportService
+    participant FileService
+    participant MediaRepository
+    participant ReportRepository
+    participant ReportStatusRepository
+    participant NotificationService
+
+    User->>Frontend: 1) Submit report form + files
+    Frontend->>ReportController: 2) POST /api/reports (multipart)
+    ReportController->>ReportService: 3) createReport(reportDto, files, userId)
+
+    alt for each file
+        ReportService->>FileService: 4) upload(file)
+        FileService->>FileService: 5) store to object storage (S3/local)
+        FileService-->>ReportService: 6) fileUrl
+        ReportService->>MediaRepository: 7) save(mediaEntity { fileUrl, mimeType })
+        MediaRepository-->>ReportService: 8) mediaId
+    end
+
+    ReportService->>ReportRepository: 9) save(reportEntity {title, desc, userId, location})
+    ReportRepository-->>ReportService: 10) reportId
+    ReportService->>MediaRepository: 11) update(media entries) // link media -> reportId
+    ReportService->>ReportStatusRepository: 12) save(statusEntry {reportId, status: NEW, timestamp})
+    ReportService->>NotificationService: 13) notifyAdminsInRegion(reportId) [async]
+    ReportService-->>ReportController: 14) 201 Created (reportId)
+    ReportController-->>Frontend: 15) 201 Created (reportId)
+    Frontend-->>User: 16) Show confirmation "Report submitted"

@@ -1,0 +1,38 @@
+%% 1. Burger registreert en verifieert account via e-mail
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'yellow','primaryColor':'green','primaryTextColor':'blue','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Citizen
+    participant Frontend
+    participant Backend
+    participant AuthService
+    participant EmailService
+    participant Database
+
+    Note over Citizen: Registratie en e-mailverificatie
+
+    Citizen->>+Frontend: Registreert met e-mail en wachtwoord
+    Frontend->>+Backend: POST /api/auth/register
+    Backend->>+AuthService: register(userDTO)
+    AuthService->>+Database: INSERT users (enabled=true, emailVerified=false)
+    Database-->>-AuthService: User(id=9001)
+    AuthService->>+Database: INSERT verification_tokens (user_id=9001, token, expiryDate=+24h)
+    Database-->>-AuthService: Token("abc123")
+    AuthService->>+EmailService: sendVerificationEmail(email, link=/verify?token=abc123)
+    EmailService-->>-AuthService: OK
+    AuthService-->>-Backend: Registered
+    Backend-->>-Frontend: 201 Created (check email)
+
+    Note over Citizen: Burger klikt op verificatielink
+
+    Frontend->>+Backend: GET /api/auth/verify?token=abc123
+    Backend->>+AuthService: verify(token)
+    AuthService->>+Database: SELECT verification_tokens WHERE token=abc123
+    Database-->>-AuthService: token(user_id=9001, expiryDate)
+    AuthService->>+Database: UPDATE users SET emailVerified=true WHERE id=9001
+    AuthService->>+Database: DELETE FROM verification_tokens WHERE token=abc123
+    AuthService-->>-Backend: Verified
+    Backend-->>-Frontend: 200 OK (account geverifieerd)

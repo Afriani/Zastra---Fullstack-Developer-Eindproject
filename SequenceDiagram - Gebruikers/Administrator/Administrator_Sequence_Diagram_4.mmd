@@ -1,0 +1,26 @@
+%% 4. Admin wijst meerdere reports in bulk toe (bulk‑assign)
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'orange','primaryColor':'lightyellow','primaryTextColor':'black','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Admin
+    participant Frontend
+    participant Backend
+    participant ReportService
+    participant Database
+    participant NotificationService
+
+    Admin->>+Frontend: Selecteer reports [123,124,125] -> kies Officer 456 -> klik "Assign"
+    Frontend->>+Backend: POST /api/admin/reports/bulk-assign {reportIds:[123,124,125], officerId:456}
+    Backend->>+ReportService: bulkAssignReports([123,124,125], 456)
+    ReportService->>+Database: UPDATE reports SET officer_id=456 WHERE id IN (123,124,125)
+    Database-->>-ReportService: OK
+    ReportService->>+Database: INSERT INTO status_updates ... (batch entries)
+    Database-->>-ReportService: OK
+    ReportService->>+NotificationService: notifyOfficer(456, "Nieuwe toewijzing: 3 reports")
+    NotificationService-->>-ReportService: OK
+    ReportService-->>-Backend: ResultSummary
+    Backend-->>-Frontend: 200 OK
+    Frontend-->>-Admin: Bevestiging: "3 meldingen toegewezen"

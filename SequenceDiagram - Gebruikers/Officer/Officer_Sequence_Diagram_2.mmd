@@ -1,0 +1,32 @@
+%% 2. Ambtenaar neemt melding in behandeling (status -> IN_PROGRESS
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'blue','primaryColor':'blue','primaryTextColor':'green','textColor':'green','mainBkg':'#FFFFFF'
+}}}%%
+
+sequenceDiagram
+    actor Officer
+    participant Frontend
+    participant Backend
+    participant ReportService
+    participant Database
+    participant NotificationService
+
+    Note over Officer: Ambtenaar start behandeling van report #123
+
+    Officer->>+Frontend: Klikt "Start behandeling" (reportId=123)
+    Frontend->>+Backend: PATCH /api/reports/123/status {newStatus: IN_PROGRESS}
+    Backend->>+ReportService: updateStatus(123, IN_PROGRESS, officerId=456, comment)
+    ReportService->>+Database: SELECT reports WHERE id=123
+    Database-->>-ReportService: Report(oldStatus=SUBMITTED)
+    ReportService->>+Database: UPDATE reports SET status=IN_PROGRESS, officer_id=456
+    Database-->>-ReportService: OK
+    ReportService->>+Database: INSERT INTO status_updates (report_id, previousStatus, newStatus, updated_by, comment)
+    Database-->>-ReportService: OK
+    ReportService->>+Database: INSERT INTO report_status_history (report_id, status, timestamp, updatedBy)
+    Database-->>-ReportService: OK
+    ReportService->>+NotificationService: notifyCitizen(userId, "Uw melding is in behandeling")
+    NotificationService-->>-ReportService: OK
+    ReportService-->>-Backend: UpdatedReport
+    Backend-->>-Frontend: 200 OK
+    Frontend-->>-Officer: UI: status = "In behandeling"

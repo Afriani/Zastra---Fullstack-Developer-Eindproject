@@ -1,0 +1,185 @@
+%% 1. ERD (Entity Relationship Diagram) - Database perspectief
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'#39FF14',
+  'primaryColor':'#2B6CB0',
+  'primaryTextColor':'#fff',
+  'primaryBorderColor':'#2B6CB0',
+  'textColor':'#1A202C',
+  'mainBkg':'#FFFFFF'
+}}}%%
+erDiagram
+    USERS ||--o{ REPORTS : "submits (user_id)"
+    USERS ||--o{ REPORTS : "assigned (officer_id)"
+    USERS ||--o{ MESSAGES : "sends (sender_id)"
+    USERS ||--o{ MESSAGES : "receives (recipient_id)"
+    USERS ||--o{ ANNOUNCEMENTS : "creates (created_by_admin_id)"
+    USERS ||--o{ STATUS_UPDATES : "updates (updated_by)"
+    USERS ||--o{ INBOX_ITEMS : "receives (officer_id)"
+    USERS ||--o{ ANNOUNCEMENT_READ_STATUS : "reads (officer_id)"
+    USERS ||--o{ CONVERSATION_MESSAGES : "sends (sender_id)"
+    USERS }o--o{ CONVERSATIONS : "participates (conversation_participants)"
+    USERS ||--|| VERIFICATION_TOKENS : "has (user_id)"
+
+    REPORTS ||--o{ MESSAGES : "contains (report_id)"
+    REPORTS ||--o{ REPORT_IMAGES : "has (report_id)"
+    REPORTS ||--o{ REPORT_MEDIA_ENTITY : "has (report_id)"
+    REPORTS ||--o{ REPORT_STATUS_HISTORY : "tracks (report_id)"
+    REPORTS ||--o{ STATUS_UPDATES : "has (report_id)"
+    REPORTS ||--o{ INBOX_ITEMS : "generates (report_id)"
+
+    CONVERSATIONS ||--o{ CONVERSATION_MESSAGES : "contains (conversation_id)"
+
+    ANNOUNCEMENTS ||--o{ ANNOUNCEMENT_READ_STATUS : "tracked by (announcement_id)"
+
+    USERS {
+        bigint id PK
+        varchar firstName
+        varchar lastName
+        varchar email UK
+        varchar password
+        enum userRole
+        varchar phoneNumber
+        varchar gender
+        date dateOfBirth
+        varchar nationalId UK
+        timestamp createdAt
+        timestamp updatedAt
+        varchar avatarUrl
+        timestamp lastLogin
+        boolean enabled
+        boolean emailVerified
+        varchar postalCode
+        varchar streetName
+        varchar houseNumber
+        varchar city
+        varchar province
+    }
+
+    REPORTS {
+        bigint id PK
+        varchar title
+        text description
+        enum category
+        enum status
+        double latitude
+        double longitude
+        varchar postalCode
+        varchar streetName
+        varchar houseNumber
+        varchar city
+        varchar province
+        bigint user_id FK
+        bigint officer_id FK
+        timestamp createdAt
+        timestamp updatedAt
+        timestamp resolvedAt
+    }
+
+    MESSAGES {
+        bigint id PK
+        text content
+        bigint sender_id FK
+        bigint recipient_id FK
+        bigint report_id FK
+        timestamp createdAt
+        boolean read
+        boolean deletedByRecipient
+        boolean deletedByAdmin
+    }
+
+    CONVERSATIONS {
+        bigint id PK
+        varchar subject
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    CONVERSATION_MESSAGES {
+        bigint id PK
+        bigint conversation_id FK
+        bigint sender_id FK
+        text content
+        timestamp createdAt
+        boolean read
+    }
+
+    ANNOUNCEMENTS {
+        bigint id PK
+        varchar title
+        text content
+        bigint created_by_admin_id FK
+        boolean isUrgent
+        boolean isActive
+        enum visibility
+        boolean isPinned
+        timestamp startAt
+        timestamp endAt
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    ANNOUNCEMENT_READ_STATUS {
+        bigint id PK
+        bigint announcement_id FK
+        bigint officer_id FK
+        boolean read
+        timestamp createdAt
+        timestamp updatedAt
+    }
+
+    INBOX_ITEMS {
+        bigint id PK
+        bigint officer_id FK
+        bigint report_id FK
+        boolean read
+        timestamp createdAt
+        varchar message
+    }
+
+    STATUS_UPDATES {
+        bigint id PK
+        enum previousStatus
+        enum newStatus
+        text comment
+        bigint report_id FK
+        bigint updated_by FK
+        timestamp createdAt
+    }
+
+    REPORT_IMAGES {
+        bigint id PK
+        bigint report_id FK
+        varchar fileName
+        varchar filePath
+        bigint fileSize
+        varchar fileType
+        varchar imageUrl
+        int videoDuration
+        varchar videoUrl
+    }
+
+    REPORT_MEDIA_ENTITY {
+        bigint id PK
+        bigint report_id FK
+        varchar url
+        boolean video
+    }
+
+    REPORT_STATUS_HISTORY {
+        bigint id PK
+        bigint report_id FK
+        enum status
+        text notes
+        timestamp timestamp
+        varchar updatedBy
+        varchar resolvedPhotoUrl
+    }
+
+    VERIFICATION_TOKENS {
+        bigint id PK
+        bigint user_id FK
+        varchar token UK
+        timestamp expiryDate
+        timestamp createdAt
+    }

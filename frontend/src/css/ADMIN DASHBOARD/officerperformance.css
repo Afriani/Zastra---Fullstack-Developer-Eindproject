@@ -1,0 +1,110 @@
+.officer-perf {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+/* Cards */
+.card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+/* Filters row */
+.filters-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* KPI grid */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-top: 4px solid #0078d4;
+    transition: transform 0.05s ease, box-shadow 0.2s ease;
+}
+.stat-card:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+}
+.stat-title { color: #6b7280; font-size: 0.9rem; }
+.stat-value { font-size: 1.6rem; font-weight: 700; color: #111827; margin-top: 4px; }
+
+/* Charts grid */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.chart-box {
+    height: 260px;
+}
+
+/* Two-column lists for outliers */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Lists */
+.list { display: flex; flex-direction: column; gap: 8px; }
+.list-row {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+.list-row:last-child { border-bottom: none; }
+.list-title { font-weight: 600; color: #111827; }
+.list-meta { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; color: #6b7280; font-size: 0.85rem; }
+
+.badge { background: #eef2ff; color: #3730a3; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; }
+.date { margin-left: auto; }
+.empty { color: #9ca3af; font-style: italic; padding: 1rem; text-align: center; }
+
+/* Buttons/links */
+.btn {
+    background: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.btn:hover { background: #0f172a; }
+
+.btn-link {
+    color: #0078d4;
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .charts-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+}
+
+

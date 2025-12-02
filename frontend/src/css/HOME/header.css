@@ -1,0 +1,51 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Header container */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: lightskyblue;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    /*position: sticky;*/
+    top: 0;
+    z-index: 1000;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Logo Styling */
+.header-logo img {
+    height: 99px;
+    width: auto;
+    display: block;
+    border-radius: 50%;
+}
+
+.header .nav-menu {
+    display: flex;
+    align-items: center;
+}
+
+/* Navigation menu */
+header .nav-menu ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    font-size: 1.5rem;
+    color: white;
+    gap: 80px;
+    margin-right:  20px;
+    padding: 0;
+}
+
+.header .nav-menu ul li a {
+    text-decoration: none !important;
+}
+
+.header .nav-menu ul li:hover {
+    transform: scale(1.5);
+}
+
+

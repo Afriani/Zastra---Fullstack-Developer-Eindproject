@@ -1,0 +1,26 @@
+sequenceDiagram
+    title Sequence Diagram - User Registration (Auth)
+
+    participant User
+    participant Frontend
+    participant AuthController
+    participant AuthService
+    participant UserRepository
+    participant VerificationTokenRepository
+    participant EmailService
+    participant SMTP as "SMTP/External"
+
+    User->>Frontend: 1) Submit Register Form
+    Frontend->>AuthController: 2) POST /api/auth/register (RegisterDTO)
+    AuthController->>AuthService: 3) register(registerDTO)
+    AuthService->>UserRepository: 4) findByEmail(email)
+    UserRepository-->>AuthService: 5) null / not found
+    AuthService->>AuthService: 6) hashPassword(password) (BCrypt)
+    AuthService->>UserRepository: 7) save(UserEntity)
+    UserRepository-->>AuthService: 8) userId
+    AuthService->>VerificationTokenRepository: 9) createToken(userId, token, expiresAt)
+    AuthService->>EmailService: 10) sendVerification(email, token)
+    EmailService->>SMTP: 11) deliver email
+    AuthService-->>AuthController: 12) 201 Created / success
+    AuthController-->>Frontend: 13) 201 Created (message: "Check your email")
+    Frontend-->>User: 14) Show "check your email" confirmation

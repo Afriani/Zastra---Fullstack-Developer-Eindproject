@@ -1,0 +1,100 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Container and typography */
+.contact-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #1d1d1d;
+    text-align: center;
+}
+
+.contact-container h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.intro-text {
+    font-size: 18px;
+    margin-bottom: 40px;
+    color: #555;
+}
+
+/* Grid layout for contact cards */
+.contact-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+/* Individual contact card box */
+.contact-box {
+    background-color: #f6e2bb;
+    border-radius: 12px;
+    padding: 30px;
+    width: 280px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+    text-align: left;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.contact-box:hover {
+    transform: translateY(-4px);
+}
+.contact-box h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.contact-box p {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #666;
+}
+
+/* Button styling */
+.contact-button {
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    max-width: 250px;
+    margin-top: 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    align-content: center;        /* Ensures button stays centered inside box */
+}
+
+.contact-button:hover {
+    background-color: #005fa3;
+}
+
+/* Detail box that appears when button is clicked */
+.detail-box {
+    background-color: #eef6ff;
+    padding: 16px;
+    margin-top: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    color: #333;
+    font-size: 15px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.detail-box p {
+    font-weight: bold;
+}
+
+/* Subtle fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

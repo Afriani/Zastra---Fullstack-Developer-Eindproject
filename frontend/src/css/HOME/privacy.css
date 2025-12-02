@@ -1,0 +1,42 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Container layout */
+.privacy-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #1d1d1d;
+    line-height: 1.8;
+}
+
+/* Headings */
+.privacy-container h2 {
+    font-size: 35px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #222;
+    margin-top: 0;
+}
+
+.privacy-container h3 {
+    color: dimgrey;
+}
+
+/* Paragraphs */
+.privacy-container p {
+    font-size: 17px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Optional: subtle divider */
+.privacy-container hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 40px 0;
+}
+
+.privacy-container ul {
+    margin-left:  20px;
+}

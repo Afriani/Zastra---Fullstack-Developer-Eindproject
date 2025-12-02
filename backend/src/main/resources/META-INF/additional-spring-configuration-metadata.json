@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "zastra.security.jwt-secret",
+      "type": "java.lang.String",
+      "description": "Description for zastra.security.jwt-secret."
+    },
+    {
+      "name": "zastra.security.jwt-expiration-ms",
+      "type": "java.lang.String",
+      "description": "Description for zastra.security.jwt-expiration-ms."
+    }
+  ] }

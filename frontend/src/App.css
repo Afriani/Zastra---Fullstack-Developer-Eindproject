@@ -1,0 +1,108 @@
+
+
+/* src/css/ADMIN DASHBOARD/adminlayout.css */
+
+/* --- variables --- */
+:root {
+    --sidebar-width: 260px;
+    --bg-page: #f7f9fb;
+    --card-bg: #fff;
+    --border: #e5e7eb;
+    --muted: #6b7280;
+    --header-height: 72px;
+}
+
+/* --- layout --- */
+.dashboard.app-with-sidebar {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: #111827;
+}
+
+/* main content sits to the right of the sidebar */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: var(--sidebar-width); /* must match SidebarAdmin width */
+    transition: margin-left 220ms ease;
+    min-height: 100vh;
+}
+
+/* header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-height);
+    gap: 12px;
+    box-shadow: 0 1px 0 rgba(16,24,40,0.02);
+}
+
+/* header action area (bell, refresh, etc) */
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* main container where page content goes */
+.admin-main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* small utilities */
+.hidden-on-mobile {
+    display: inline-flex;
+}
+
+/* --- Responsive: make sidebar overlay on small screens --- */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: calc(var(--sidebar-width) * 0.8);
+    }
+}
+
+@media (max-width: 768px) {
+    /* assume sidebar becomes overlay; main content full width */
+    .main-content {
+        margin-left: 0;
+    }
+
+    /* If you offer a collapsed/overlay sidebar class, allow space to be toggled */
+    .dashboard.sidebar-open .main-content {
+        filter: blur(0.5px);
+    }
+
+    /* hide secondary header elements if needed */
+    .hidden-on-mobile {
+        display: none;
+    }
+}
+
+/* --- accessibility / focus rings --- */
+.refresh-btn:focus {
+    outline: 2px solid rgba(59,130,246,0.25);
+    outline-offset: 2px;
+}
+
+/* --- small visual helpers for content cards (optional) --- */
+.admin-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.03);
+}
+
+
