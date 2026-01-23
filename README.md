@@ -1,379 +1,622 @@
 # Zastra - Installation and Setup
 
-#### This provides step-by-step instructions to run the Zastra backend and frontend side-by-side in IntelliJ (or from CLI/Docker). It includes the previous backend setup instructions plus cleas steps to add the frontend module and create a compound Run/Debug configuration named "Zastra Full Stack" so you can start both together in one click.
+#### This provides step-by-step instructions to run the **Zastra** backend and frontend side-by-side in IntelliJ IDEA (or from CLI).It includes database setup, backend/frontend configuration, and instructions to create a compound Run/Debug configuration named **"Zastra Full Stack"** so you can start both with one click.
 
 ---
 
 ## Table of Contents
 
-1. About Zastra
-2. Requirements
-3. Step-by-Step Installation
-4. Test Users
-5. Testing the API with Postman
-6. API Overview
-7. Troubleshooting
-8. Quick Start Summary
+1. [About Zastra](#1-about-zastra)
+2. [Requirements](#2-requirements)
+3. [Quick Start Summary](#3-quick-start-summary)
+4. [Step-by-Step Installation](#4-step-by-step-installation)
+5. [Test Users](#5-test-users)
+6. [Testing the API with Postman](#6-testing-the-api-with-postman)
+7. [API Overview](#7-api-overview)
+8. [Troubleshooting](#8-troubleshooting)
 
 ---
 
- 1. About Zastra
----
+## 1. About Zastra
+
 **Zastra** is a full-stack application with:
 
-- Backend: Spring Boot (multi-datasource: zastra_db + media_db)
-- Frontend: JavaScript framework (frontend module in the repo)
-- SQL DDL and DML scripts are stored in backend resources:
-C:\Users\Roy\IdeaProjects\Zastra\backend\src\main\resources
+- ***Backend:*** Spring Boot (multi-datasource: `zastra_db` + `media_db`)
+- ***Frontend:*** JavaScript framework (React/Vue/Angular - frontend module in the repo)
+- **Database:** PostgreSQL with pre-seeded data
+- ***SQL scripts:*** Stored in `/db` folder (NOT in `src/main/resources`)
 ---
 
-# 2. Requirements
----
+## 2. Requirements
+
 Make sure the following software is installed:
 
-**System**
+### System
 
-| Software          | Purpose                    | Download                                           |
-|-------------------|----------------------------|----------------------------------------------------|
-| **Java 17+**      | Runs the application       | [Adoptium](https://adoptium.net)                   |
-| **Maven**         | Dependency management      | [Maven](https://maven.apache.org/install.html)     |
-| **PostgreSQL**    | Database engine            | [PostgreSQL](https://www.postgresql.org/download/) |
-| **Postman**       | API testing interface      | [Postman](https://www.postman.com/downloads/)      |
-| **Git**           | Code version control       | [Git](https://git-scm.com/)                        |
-| **IntelliJ IDEA** | Run and Debug instructions | [IntelliJ](https://blog.jetbrains.com/idea/2025/11/spring-boot-4/)                   |
-
-**Files present in repo (important)**
-backend/src/main/resources/schema-zastra.sql
-backend/src/main/resources/data-zastra.sql
-backend/src/main/resources/schema-media.sql
-backend/src/main/resources/data-media.sql
+| Software          | Purpose                    | Download                                                                               |
+|-------------------|----------------------------|----------------------------------------------------------------------------------------|
+| **Java 17+**      | Runs the application       | [Oracle](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) |
+| **Maven**         | Dependency management      | [Maven](https://maven.apache.org/install.html)                                         |
+| **PostgreSQL**    | Database engine            | [PostgreSQL](https://www.postgresql.org/download/)                                     |
+| **Postman**       | API testing interface      | [Postman](https://www.postman.com/downloads/)                                          |
+| **Git**           | Code version control       | [Git](https://git-scm.com/)                                                            |
+| **IntelliJ IDEA** | Run and Debug instructions | [IntelliJ](https://blog.jetbrains.com/idea/2025/11/spring-boot-4/)                     |
 
 ---
 
-# 3. Step-by-step Installation
----
-Below are two recommended approaches. Pick A (automatic seeding from app) or B (manual import using psql). Also included: instructions to create the IntelliJ compound Run/Debug configuration named "Zastra Full Stack".
+## 3. Quick Start Summary
 
-**Most important things to do BEFORE running the app**
+**For users who want to get started immediately:**
 
-1. Ensure PostgreSQL is installed and running.
-2. Create the two databases and matching DB users (or configure connection properties to your existing DB users).
-3. Decide how to import the data:
-   * If you want the Spring initializer to run DDL/DML automatically at startup, replace data dumps with INSERT-style SQL (pg_dump --inserts) or ensure the SQL files contain plain INSERTs. ResourceDatabasePopulator cannot reliably run pg_dump COPY/LO blocks.
-   * Otherwise, import the provided SQL using psql (recommended if you want to keep the current dump format).
-4. Ensure the application uses the correct profile (e.g., dev) that points to the DBs in application-dev.yml.
-
-**Option A (Recommended if you want a 1-click app start with database seeding by Spring)**
-1. Re-export data as INSERT statements (on the machine where the DB was created):
+### Step 1: Clone the repository
 ```bash
-pg_dump --data-only --inserts -U <pg_user> -d zastra_db -f data-zastra-inserts.sql
+  git clone <your-repo-url>
+  cd Zastra
 ```
-2. Replace backend/src/main/resources/data-zastra.sql with the new file (inspect it first).
-3. Confirm schema-zastra.sql is in resources (schema file should be plain CREATE TABLE statements without ownership statements that require superuser).
-4. Confirm your Spring Boot properties use spring.jpa.hibernate.ddl-auto=none (or validate) so Hibernate doesn't try to change schema.
-5. Start the app (see IntelliJ or CLI steps below) — the MultiDataSourceInitializer (if configured) will run schema and data SQL from resources.
 
-**Option B (Recommended if you want to import the existing pg_dump with COPY/LO)**
-1. Create DBs & users (run as postgres superuser):
-```bash 
-  psql -U postgres -c "CREATE DATABASE zastra_db;"
-  psql -U postgres -c "CREATE DATABASE media_db;"
-  psql -U postgres -c "CREATE USER zastra_user WITH PASSWORD 'zastra_password';"
-  psql -U postgres -c "CREATE USER media_user  WITH PASSWORD 'media_password';"
-  psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE zastra_db TO zastra_user;"
-  psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE media_db TO media_user;"
+### Step 2: Create databases and users
+```bash
+    psql -U postgres -f init-databases.sql
 ```
-2. Import schema and data using psql (psql understands COPY and pg large-object commands):
-```bash 
-  psql -U zastra_user -d zastra_db -f schema-zastra.sql
-  psql -U zastra_user -d zastra_db -f data-zastra.sql
-  psql -U media_user  -d media_db  -f schema-media.sql
-  psql -U media_user  -d media_db  -f data-media.sql
+This creates both zastra_db and media_db with their respective users.
+
+### Step 3: Import database schema and data
+```bash
+    psql -U zastra_user -d zastra_db -f db/schema-zastra.sql
+    psql -U zastra_user -d zastra_db -f db/data-zastra.sql
+    psql -U media_user  -d media_db  -f db/schema-media.sql
+    psql -U media_user  -d media_db  -f db/data-media.sql
 ```
-3. Then run the Spring Boot app. The app will connect to the already-populated DBs.
 
-**Backend configuration / application-dev.yml example**
+### Step 4: Start the backend
+```bash
+  cd backend
+  mvn spring-boot:run -Dspring-boot.run.profiles=dev
+```
 
-Check and make sure this is already in backend/src/main/resources/application-dev.yml (adjust credentials & ports):
+### Step 5: Start the frontend (in a new terminal)
+```bash
+  cd frontend
+  npm install
+  npm start
+```
+
+### Step 6: Access the application
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8080
+---
+
+## 4. Step-by-step Installation
+
+### 4.1 Prerequisites
+1. Ensure PostgreSQL is installed and running
+```bash
+  # Check if PostgreSQL is running
+    psql --version
+
+  # Start PostgreSQL (if not running)
+  # Windows: Start via Services or pgAdmin
+  # macOS: brew services start postgresql
+  # Linux: sudo systemctl start postgresql
+```
+2. Verify Java and Maven
+```bash
+  java -version    # Should show Java 17+
+  mvn -version     # Should show Maven 3.8+
+```
+
+3. Verify Node.js
+```bash
+  node -v          # Should show v18+
+  npm -v
+```
+### 4.2 Database Setup
+### Option A: Automated Setup (Recommended)
+**Step 1: Create databases and users**
+```bash
+  psql -U postgres -f init-databases.sql
+```
+**Step 2: Import schema and data using psql**
+```bash
+  psql -U zastra_user -d zastra_db -f db/schema-zastra.sql
+  psql -U zastra_user -d zastra_db -f db/data-zastra.sql
+  psql -U media_user  -d media_db  -f db/schema-media.sql
+  psql -U media_user  -d media_db  -f db/data-media.sql
+```
+Why use psql instead of Spring Boot?
+- The SQL files contain PostgreSQL-specific commands (COPY ... FROM stdin, lo_create, large objects)
+- Spring Boot's ResourceDatabasePopulator cannot execute these commands
+- psql is the native PostgreSQL client and handles all dump formats correctly
+
+### Option B: Manual Setup (Alternative)
+If you prefer to create databases manually:
+
 ```bash 
+  # Connect to PostgreSQL
+    psql -U postgres
+
+  # Create databases
+    CREATE DATABASE zastra_db;
+    CREATE DATABASE media_db;
+
+  # Create users
+    CREATE USER zastra_user WITH PASSWORD 'change_me';
+    CREATE USER media_user WITH PASSWORD 'media_secret';
+
+  # Grant privileges
+    GRANT ALL PRIVILEGES ON DATABASE zastra_db TO zastra_user;
+    GRANT ALL PRIVILEGES ON DATABASE media_db TO media_user;
+
+  # Exit
+    \q
+```
+Then import the SQL files as shown in Option A, Step 2.
+
+### 4.3 Backend Configuration
+
+Check backend/src/main/resources/application.yml:
+
+```yaml
   spring:
-    profiles: dev
+  application:
+    name: Zastra
 
+  profiles:
+    active: dev
+
+  # Disable default DataSource auto-config
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+  datasource:
     zastra:
-      datasource:
-        url: jdbc:postgresql://localhost:5432/zastra_db
-        username: zastra_user
-        password: change_me
-        driver-class-name: org.postgresql.Driver
-        ddl-auto: none
+      url: jdbc:postgresql://localhost:5432/zastra_db
+      username: zastra_user
+      password: change_me
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        maximum-pool-size: 20
+        minimum-idle: 5
+        connection-timeout: 30000
 
     media:
-      datasource:
-        url: jdbc:postgresql://localhost:5432/media_db
-        username: media_user
-        password: media_secret
-        driver-class-name: org.postgresql.Driver
-        ddl-auto: none
+      url: jdbc:postgresql://localhost:5432/media_db
+      username: media_user
+      password: media_secret
+      driver-class-name: org.postgresql.Driver
 
-  # Hibernate: do not alter schema if using sql scripts
-  spring.jpa:
+  jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: none  # IMPORTANT: Do not let Hibernate modify schema
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  server:
+    port: 8080
 ```
-Make sure your datasource config classes read the properties shown above.
+## Important:
 
-**Build & Run (CLI)**
+- ddl-auto: none prevents Hibernate from modifying your database schema
+- Passwords should match those in init-databases.sql
 
-Backend (Maven):
+### 4.4 Running the Application
+#### CLI Method
+
+Backend:
 ```bash 
   cd backend
-  mvn clean package
-  # Run with profile dev
+  mvn clean install
   mvn spring-boot:run -Dspring-boot.run.profiles=dev
-  # OR
-  java -jar target/zastra-backend.jar --spring.profiles.active=dev
 ```
 Frontend:
 ```bash 
   cd frontend
   npm install
-  npm run start   # or `yarn` / `yarn start`
+  npm start
 ```
-Note: mvn clean package packages the app but does not change your DB contents.
 
-**Run both in IntelliJ: Create “Zastra Full Stack” compound**
+#### IntelliJ IDEA Method
 
-1. Create individual run configurations:
-    * Backend (Spring Boot / Application): set working dir to backend, Program args: --spring.profiles.active=dev (or set Env var SPRING_PROFILES_ACTIVE=dev). Confirm VM & classpath are correct.
-    * Frontend (npm/yarn): Tools -> External Tools or use an npm Run Configuration pointing to start.
-2. Create a Compound run configuration:
-   * Run -> Edit Configurations -> click + -> Compound
-   * Name: Zastra Full Stack
-   * Add Backend and Frontend run configurations to the compound.
-3. Start the compound. IntelliJ will start both processes. Use Run window to monitor logs.
+**Step 1: Create Backend Run Configuration**
+1. Open IntelliJ IDEA
+2. Go to Run → Edit Configurations 
+3. Click + → Spring Boot 
+4. Configure:
+   - Name: Zastra Backend
+   - Main class: Your @SpringBootApplication class (e.g., com.zastra.ZastraApplication)
+   - Working directory: PROJECT_DIR/backend
+   - Program arguments: --spring.profiles.active=dev
+   - Use classpath of module: backend
+5. Click Apply
 
-**Important:** Ensure backend and frontend ports don't conflict. Backend default, e.g., 8080. Frontend dev server default, e.g., 3000. If you use proxies in frontend, confirm proxy target matches backend port.
+**Step 2: Create Frontend Run Configuration**
+1. Go to Run → Edit Configurations
+2. Click + → npm
+3. Configure:
+   - Name: Zastra Frontend
+   - Package.json: <project-root>/frontend/package.json
+   - Command: run
+   - Scripts: start
+4. Click Apply
 
+**Step 3: Create Compound Configuration**
+1. Go to Run → Edit Configurations
+2. Click + → Compound
+3. Configure:
+   - Name: Zastra Full Stack
+   - Click + and add:
+     - Zastra Backend
+     - Zastra Frontend
+4. Click Apply → OK
 
-### If you successfully download: 
-    * schema-zastra.sql,
-    * schema-media.sql, 
-    * data-zastra.sql,
-    * data-media.sql**
-the application automatically creates these users on first startup:
+**Step 4: Run**
+
+Click the Run button next to "Zastra Full Stack" — both backend and frontend will start together!
+
+---
+
+# 5. Test Users
+
+After successfully importing the database, the following test users are available:
 
 | **first name** | **last name** | **email**                      | **password**     | **role**    |
 |----------------|---------------|--------------------------------|------------------|-------------|
 | **Roy**        | **Anderson**  | **roy@example.com**            | CitizenPass123!  | **Citizen** |
 | **Alice**      | **Smith**     | **alice.smith@example.com**    | CitizenPass123!  | **Citizen** |
 | **Bob**        | **Johnson**   | **bob.johnson@example.com**    | CitizenPass123!  | **Citizen** |
-| **Eva**        | **Green**     | **eva.green@zastra.com**       | OfficerPass123!! | *Officer**  |
-| **Oscar**      | **Polman**    | **oscar.polman@zastra.com**    | OfficerPass123!  | **Officer** 
-| **Lindaria**   | **Purba**     | **lindaria.purba@ezastra.com** | AdminPass123!    | **citizen** |
+| **Eva**        | **Green**     | **eva.green@zastra.com**       | OfficerPass123!! | **Officer** |
+| **Oscar**      | **Polman**    | **oscar.polman@zastra.com**    | OfficerPass123!  | **Officer** |
+| **Lindaria**   | **Purba**     | **lindaria.purba@ezastra.com** | AdminPass123!    | **Admin**   |
 
+
+### Note: 
+
+Passwords are stored as bcrypt hashes in the database. The plaintext passwords above are provided for testing purposes only.
 
 ---
+## Creating Additional Test Users
 
-# 4. Test Users
---
-Important: The repo data file contains bcrypt password hashes — those are not reversible. Either provide the docent with plaintext passwords used to create those hashes or create a demo user with a known password.
+If you need to create a custom demo user:
 
-**Quick demo user SQL (replace <BCRYPT_HASH> with an actual hash)**
 ```bash
   INSERT INTO public.users (
-    id, created_at, email, enabled, first_name, last_name, password, user_role,
-    updated_at, account_non_expired, account_non_locked, credentials_non_expired,
-    email_verified, house_number, postal_code, street_name, date_of_birth,
-    gender, national_id, phone_number, city, province, avatar_url, last_login,
-    google_id, facebook_id
-  ) VALUES (
-    999,
-    now(),
-    'demo@zastra.local',
-    true,
-    'Demo',
-    'User',
-    '<BCRYPT_HASH>',
-    'ADMIN',
-    now(),
-    true, true, true, true,
-    '1', '00000', 'Demo Street', '1990-01-01',
-    'other', 'DEMOTEST0001', '+0000000000',
-    'DemoCity', 'DemoProvince', '/images/default/male.png',
-    NULL, NULL, NULL
+  id, created_at, email, enabled, first_name, last_name, password, user_role,
+  updated_at, account_non_expired, account_non_locked, credentials_non_expired,
+  email_verified, house_number, postal_code, street_name, date_of_birth,
+  gender, national_id, phone_number, city, province, avatar_url, last_login,
+  google_id, facebook_id
+) VALUES (
+  999,
+  now(),
+  'demo@zastra.local',
+  true,
+  'Demo',
+  'User',
+  '<BCRYPT_HASH>',  -- Replace with actual hash
+  'ADMIN',
+  now(),
+  true, true, true, true,
+  '1', '00000', 'Demo Street', '1990-01-01',
+  'other', 'DEMOTEST0001', '+0000000000',
+  'DemoCity', 'DemoProvince', '/images/default/male.png',
+  NULL, NULL, NULL
 );
 
--- ensure sequence is set to avoid collisions
+-- Update sequence to avoid ID conflicts
 SELECT setval('public.users_id_seq', GREATEST((SELECT COALESCE(MAX(id),0) FROM public.users), 999), true);
 ```
 
-How to generate the bcrypt hash for the demo password:
+### Generate bcrypt hash in Java:
 
-Java (run in a small main class or inside project):
 ```bash
   import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-    public class BcryptGen {
+
+  public class BcryptGen {
     public static void main(String[] args) {
-      BCryptPasswordEncoder enc = new BCryptPasswordEncoder(12);
-      System.out.println(enc.encode("Password123!"));
+      BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+      System.out.println(encoder.encode("YourPassword123!"));
+    }
   }
-}
 ```
 ---
 
-# 5. Testing the API with Postman
----
-1. Start backend (profile dev). Backend base URL default: http://localhost:8080.
-2. Common endpoints to test:
-   * POST /api/auth/login
-   * Body (JSON): { "username": "demo@zastra.local", "password": "Password123!" }
-   * Expected: JWT or session depending on your auth setup.
-   * POST /api/auth/register (if present) — create new user.
-   * GET /api/users/me — test with Authorization header Bearer <token> (if JWT).
-3. Example Postman steps:
-   * Create request to POST /api/auth/login
-   * Body -> raw -> JSON -> { "username": "demo@zastra.local", "password": "Password123!" }
-   * Send -> capture token (if returned) and add to subsequent requests' Authorization header.
+# 6. Testing the API with Postman
 
-Include sample Postman collection (optional) in repo if you want to automate tests.
-
----
-# 6. API Overview
----
-1. Auth / registration
-   * POST /api/auth/login
-        1. Body (application/json): LoginRequest
-            Example:
-            ```bash
-              { "email": "demo@zastra.local", "password": "Password123!" }
-            ```
-        2. Returns: ApiResponse (token/session)
-   * POST /api/auth/register
-        1. Body: RegisterRequest (see required fields in schema; includes many user fields)
-   * POST /api/auth/forgot-password
-        1. Body: { "email": "..." } (string map)
-   * POST /api/auth/reset-password
-                  Body: ResetPasswordRequest: { "token": "...", "newPassword": "..." }
-   * GET /api/auth/verify?token= — verify email
-   * OAuth endpoints:
-     1. GET /api/auth/google and GET /api/auth/google/callback?code=...
-     2. GET /api/auth/facebook and GET /api/auth/facebook/callback?code=...
-
-2. Users:
-   * GET /api/users — list users (admin)
-   * GET /api/users/{id} — get user
-   * PUT /api/users/{id} — update
-3. Media:
-   * GET /api/media/{id} — retrieve media
-   * POST /api/media — upload media (multipart)
-
-For more APIs Overview you could check on: C:\Users\Roy\IdeaProjects\Zastra\api-docs.pdf
-
----
-# 7. Troubleshooting
----
-Problems & fixes:
-
-1. DB connection refused / could not connect:
-   * Verify PostgreSQL is running and port (5432) is open.
-   * Verify DB url, username, password in application-dev.yml match PostgreSQL users.
-   * Try psql -h localhost -U zastra_user -d zastra_db to confirm connectivity.
-
-
-2. SQL import fails with COPY or lo_create errors when running through Spring:
-    * Reason: ResourceDatabasePopulator over JDBC cannot process pg_dump COPY ... FROM stdin or large object (lo_create/lowrite) sequences.
-    * Fix: Import using psql (see Option B) OR re-export dumps with --inserts to generate plain INSERT statements and use Option A.
-
-
-3. Login fails with "bad credentials":
-    * Ensure the stored password is bcrypt and the plaintext being used by the docent matches the original password that produced the hash.
-    * If unsure, create a demo user with a known password using the demo SQL above.
-
-
-4. Port in use:
-    * Change server.port in application-dev.yml or kill process listening on that port (Windows: use netstat -ano & taskkill /PID <pid> /F).
-
-
-5. IntelliJ run config doesn’t start frontend:
-    * Confirm the frontend run configuration is set to run the correct npm or yarn command and correct working directory (frontend folder).
-    * For npm: set npm executable and start script.
-
-
-6. Hibernate schema changes when you don't want them:
-    * Ensure spring.jpa.hibernate.ddl-auto is set to none or validate in dev properties. If update is set, Hibernate may alter schema.
-
-
-7. Large object / media not found after import:
-    * If you used a partial data import (e.g., skipped LO import), media LOs might be missing. Use full pg_dump + psql import if you need LOs.
----
-
-# 8. Quick Start Summary
----
-1. Install JDK, Maven, Node.js, and PostgreSQL.
-
-
-2. Create databases & users:
-```bash
-   psql -U postgres -c "CREATE DATABASE zastra_db;"
-````   
-```bash
-   psql -U postgres -c "CREATE DATABASE media_db;"
-```   
-   
-```bash
-   psql -U postgres -c "CREATE USER zastra_user WITH PASSWORD 'zastra_password';"
-```
-```bash
-   psql -U postgres -c "CREATE USER media_user  WITH PASSWORD 'media_password';"
-```   
-```bash
-   psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE zastra_db TO zastra_user;"
-```
-
-```bash  
-   psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE media_db TO media_user;"
-```
-
-
-3. Import DB data:
-   * Recommended: use psql to import the provided SQL files:
-    ```bash
-    psql -U zastra_user -d zastra_db -f schema-zastra.sql
-    ```
-   
-    ```bash
-   psql -U zastra_user -d zastra_db -f data-zastra.sql
+### 6.1.Login Test
+1. Start the backend (default: http://localhost:8080)
+2. Create a new POST request in Postman:
+   - URL: http://localhost:8080/api/auth/login
+   - Method: POST
+   - Headers: Content-Type: application/json
+   - Body (raw JSON):
+   ```bash
+      {
+        "email": "roy@example.com",
+        "password": "CitizenPass123!"
+      }
    ```
-   
-    ```bash
-   psql -U media_user  -d media_db  -f schema-media.sql
-   ```
+3. Send the request
+4. Expected response: JWT token or session cookie
 
-    ```bash
-   psql -U media_user  -d media_db  -f data-media.sql
-   ```
-   * OR: replace data-zastra.sql with a --inserts export and let Spring run the scripts at startup.
+### 6.2 Authenticated Request Test
+1. Copy the JWT token from the login response
+2. Create a new GET request:
+   - URL: http://localhost:8080/api/users/me
+   - Method: GET
+   - Headers:
+     - Authorization: Bearer <your-jwt-token>
+3. Send the request
+4. Expected response: Current user details
 
+---
+# 7. API Overview
+### 7.1 Authentication Endpoints
 
-4. Check backend/src/main/resources/application-dev.yml with DB credentials and ensure ddl-auto: none.
+| **Method** | **Endpoints**                   | **Description**             | **Body**                                 |
+|------------|---------------------------------|-----------------------------|------------------------------------------|
+| **POST**   | **/api/auth/login**             | **User login**              | { "email": "...", "password": "..." }    |
+| **POST**   | **/api/auth/register**          | **User registration**       | RegisterRequest (see schema)             |
+| **POST**   | **/api/auth/forgot-password**   | **Request password reset**  | { "email": "..." }                       |
+| **POST**   | **/api/auth/reset-password**    | **Reset password**          | { "token": "...", "newPassword": "..." } |
+| **GET**    | **/api/auth/verify?token=...**  | **Verify email**            | -                                        |
+| **GET**    | **/api/auth/google**            | **Google OAuth login**      | -                                        |
+| **GET**    | **/api/auth/google/callback**   | **Google OAuth callback**   | -                                        |
+| **GET**    | **/api/auth/facebook**          | **Facebook OAuth login**    | -                                        |
+| **GET**    | **/api/auth/facebook/callback** | **Facebook OAuth callback** | -                                        |
 
+### 7.2 User Endpoints
+| **Method** | **Endpoints**       | **Description**       | **Auth Required** |
+|------------|---------------------|-----------------------|-------------------|
+| **GET**    | **/api/users**      | **List all users**    | Admin             |
+| **GET**    | **/api/users/{id}** | **Get user by ID**    | Yes               |
+| **PUT**    | **/api/users/{id}** | **Update user**       | Yes               |
+| **GET**    | **/api/users/me**   | **Get current user**  | Yes               |
 
-5. Build and run:
+### 7.3 Media Endpoints
+| **Method** | **Endpoints**       | **Description**      | **Auth Required** |
+|------------|---------------------|----------------------|-------------------|
+| **GET**    | **/api/media/{id}** | **Get media by ID**  | Yes               |
+| **POST**   | **/api/media**      | **Upload media**     | Yes               |
+
+#### For complete API documentation, see: api-docs.pdf or Open-API.pdf in the project root.
+
+---
+
+# 8. Troubleshooting
+
+### 8.1 Database Connection Issues
+
+**Problem:** Connection refused or could not connect to server
+
+**Solutions:**
+- Verify PostgreSQL is running:
 ```bash
-  cd backend
-  mvn clean package
-  mvn spring-boot:run -Dspring-boot.run.profiles=dev
+  # Windows
+  services.msc → PostgreSQL service should be "Running"
 
-# then
-  cd ../frontend
+  # macOS
+  brew services list
+
+  # Linux
+  sudo systemctl status postgresql
+```
+- Check port 5432 is not blocked by firewall
+- Test connection manually:
+```bash
+  psql -h localhost -U zastra_user -d zastra_db
+```
+- Verify credentials in application.yml match init-databases.sql
+
+---
+
+### 8.2 SQL Import Errors
+
+**Problem:** COPY ... FROM stdin or lo_create errors when running through Spring
+
+**Cause:** Spring Boot's ResourceDatabasePopulator cannot process PostgreSQL dump formats
+
+**Solution:** Always use psql to import the SQL files:
+```bash
+  psql -U zastra_user -d zastra_db -f db/schema-zastra.sql
+  psql -U zastra_user -d zastra_db -f db/data-zastra.sql
+```
+---
+
+### 8.3 "Relation does not exist" Error
+**Problem:** ERROR: relation "users" does not exist
+
+**Cause:** Database schema was not imported
+
+**Solution:**
+1. Verify databases exist:
+```bash
+  psql -U postgres -l | grep -E "zastra_db|media_db"
+```
+2. Re-import schema:
+```bash
+  psql -U zastra_user -d zastra_db -f db/schema-zastra.sql
+```
+---
+
+### 8.4 "Connection is closed" Error
+
+**Problem:** java.sql.SQLException: Connection is closed
+
+**Causes:**
+- Database doesn't exist
+- User doesn't have proper permissions
+- Wrong credentials in application.yml
+
+**Solutions:**
+1. Run init-databases.sql if you haven't:
+```bash
+  psql -U postgres -f init-databases.sql
+```
+
+2. Verify databases exist:
+```bash
+  psql -U postgres -l
+```
+
+3. Check credentials match between *application.yml* and *init-databases.sql*
+
+---
+
+### 8.5 Login Fails with "Bad Credentials"
+**Problem:** Login returns 401 Unauthorized
+
+**Causes:**
+- Wrong password
+- Bcrypt hash mismatch
+- User not in database
+
+**Solutions:**
+1. Verify user exists:
+```bash
+  psql -U zastra_user -d zastra_db -c "SELECT email, enabled FROM users WHERE email='roy@example.com';"
+```
+2. Use exact passwords from Test Users section
+3. Create a new test user with known password (see Section 5)
+
+---
+
+### 8.6 Port Already in Use
+**Problem:** Port 8080 is already in use
+
+**Solutions:**
+- Change port in application.yml:
+```yaml
+    server:
+      port: 8081
+```
+- Kill process using the port
+```bash
+  # Windows
+    netstat -ano | findstr :8080
+    taskkill /PID <pid> /F
+ 
+  # macOS/Linux
+    lsof -ti:8080 | xargs kill -9
+```
+---
+
+### 8.7 Frontend Won't Start
+**Problem:** npm start fails or frontend doesn't load
+
+**Solutions:**
+
+1. Delete node_modules and reinstall:
+```bash
+  cd frontend
+  rm -rf node_modules package-lock.json
   npm install
-  npm run start
+  npm start
 ```
 
+2. Check Node.js version:
+```bash
+  node -v  # Should be 18+
+```
 
-6. (IntelliJ) Create Run configurations for Backend and Frontend, then create a Compound named Zastra Full Stack and add both configs — run the compound.
+3. Verify backend is running on correct port (check proxy settings in *package.json*)
+---
 
+### 8.8 Hibernate Schema Changes
 
-7. Use Postman to POST to /api/auth/login with provided test credentials or the demo user you inserted.
+**Problem:** Hibernate modifies database schema unexpectedly
 
+**Cause:** ddl-auto is set to update or create
+
+**Solution:** Set to none in application.yml:
+```yaml
+  spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+```
+---
+
+### 8.9 Large Objects / Media Not Found
+**Problem:** Media files return 404 or "large object not found"
+
+**Cause:** Large objects (LOBs) were not imported
+
+**Solution:** Re-import data files using psql:
+```bash
+  psql -U media_user -d media_db -f db/data-media.sql
+```
+---
+
+### 8.10 IntelliJ Run Configuration Issues
+**Problem:** Compound configuration doesn't start both services
+
+**Solutions:**
+1. Verify individual configs work separately first
+2. Check working directories are correct:
+   - Backend: $PROJECT_DIR$/backend
+   - Frontend: $PROJECT_DIR$/frontend
+3. Ensure --spring.profiles.active=dev is in backend Program Arguments
+4. For frontend, verify package.json path is correct
+
+---
+
+End of README
+
+## 4. WHAT TO DO NOW
+
+### Step-by-step actions:
+
+1. **Create the `/db` folder** in your project root:
+```bash
+    mkdir db
+```
+2. Move the SQL files from backend/src/main/resources/ to /db/:
+```bash
+  # Windows (PowerShell)
+    Move-Item backend\src\main\resources\schema-zastra.sql db\
+    Move-Item backend\src\main\resources\data-zastra.sql db\
+    Move-Item backend\src\main\resources\schema-media.sql db\
+    Move-Item backend\src\main\resources\data-media.sql db\
+```
+```bash
+  # macOS/Linux
+  mv backend/src/main/resources/schema-zastra.sql db/
+  mv backend/src/main/resources/data-zastra.sql db/
+  mv backend/src/main/resources/schema-media.sql db/
+  mv backend/src/main/resources/data-media.sql db/
+```
+3. Replace your .gitignore with the updated version above
+
+4. Replace your README.md with the updated version above
+
+5. Test the setup:
+```bash
+  # Drop existing DBs (optional - for clean test)
+    psql -U postgres -c "DROP DATABASE IF EXISTS zastra_db;"
+    psql -U postgres -c "DROP DATABASE IF EXISTS media_db;"
+
+  # Create fresh
+    psql -U postgres -f init-databases.sql
+
+  # Import data
+    psql -U zastra_user -d zastra_db -f db/schema-zastra.sql
+    psql -U zastra_user -d zastra_db -f db/data-zastra.sql
+    psql -U media_user -d media_db -f db/schema-media.sql
+    psql -U media_user -d media_db -f db/data-media.sql
+
+  # Start backend
+    cd backend
+    mvn spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
+6. Commit everything
+```bash
+  git add .
+  git commit -m "Restructure project: move SQL to /db folder, update README and .gitignore"
+  git push
+```
 ---

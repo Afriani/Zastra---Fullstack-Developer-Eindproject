@@ -1,0 +1,1130 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.5
+-- Dumped by pg_dump version 17.5
+
+-- Started on 2025-11-30 19:04:19
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 5 (class 2615 OID 2200)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: zastra_user
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+ALTER SCHEMA public OWNER TO zastra_user;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 245 (class 1259 OID 42692)
+-- Name: announcement_read_status; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.announcement_read_status (
+    id bigint NOT NULL,
+    announcement_id bigint NOT NULL,
+    officer_id bigint NOT NULL,
+    read boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.announcement_read_status OWNER TO zastra_user;
+
+--
+-- TOC entry 244 (class 1259 OID 42691)
+-- Name: announcement_read_status_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+CREATE SEQUENCE public.announcement_read_status_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.announcement_read_status_id_seq OWNER TO zastra_user;
+
+--
+-- TOC entry 5069 (class 0 OID 0)
+-- Dependencies: 244
+-- Name: announcement_read_status_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zastra_user
+--
+
+ALTER SEQUENCE public.announcement_read_status_id_seq OWNED BY public.announcement_read_status.id;
+
+
+--
+-- TOC entry 243 (class 1259 OID 42672)
+-- Name: announcements; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.announcements (
+    id bigint NOT NULL,
+    title character varying(200) NOT NULL,
+    content text NOT NULL,
+    created_by_admin_id bigint NOT NULL,
+    is_urgent boolean DEFAULT false,
+    is_active boolean DEFAULT true,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    end_at timestamp(6) without time zone,
+    is_pinned boolean,
+    start_at timestamp(6) without time zone,
+    visibility character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.announcements OWNER TO zastra_user;
+
+--
+-- TOC entry 242 (class 1259 OID 42671)
+-- Name: announcements_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+CREATE SEQUENCE public.announcements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.announcements_id_seq OWNER TO zastra_user;
+
+--
+-- TOC entry 5070 (class 0 OID 0)
+-- Dependencies: 242
+-- Name: announcements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zastra_user
+--
+
+ALTER SEQUENCE public.announcements_id_seq OWNED BY public.announcements.id;
+
+
+--
+-- TOC entry 247 (class 1259 OID 50985)
+-- Name: app_notifications; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.app_notifications (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    type character varying(255) NOT NULL,
+    title character varying(255) NOT NULL,
+    message text,
+    related_id bigint,
+    is_read boolean DEFAULT false NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE public.app_notifications OWNER TO zastra_user;
+
+--
+-- TOC entry 246 (class 1259 OID 50984)
+-- Name: app_notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+CREATE SEQUENCE public.app_notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.app_notifications_id_seq OWNER TO zastra_user;
+
+--
+-- TOC entry 5071 (class 0 OID 0)
+-- Dependencies: 246
+-- Name: app_notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: zastra_user
+--
+
+ALTER SEQUENCE public.app_notifications_id_seq OWNED BY public.app_notifications.id;
+
+
+--
+-- TOC entry 236 (class 1259 OID 42512)
+-- Name: conversation_messages; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.conversation_messages (
+    id bigint NOT NULL,
+    content oid NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    read boolean NOT NULL,
+    conversation_id bigint NOT NULL,
+    sender_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.conversation_messages OWNER TO zastra_user;
+
+--
+-- TOC entry 235 (class 1259 OID 42511)
+-- Name: conversation_messages_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.conversation_messages ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.conversation_messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 237 (class 1259 OID 42517)
+-- Name: conversation_participants; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.conversation_participants (
+    conversation_id bigint NOT NULL,
+    user_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.conversation_participants OWNER TO zastra_user;
+
+--
+-- TOC entry 239 (class 1259 OID 42523)
+-- Name: conversations; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.conversations (
+    id bigint NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    subject character varying(255),
+    updated_at timestamp(6) with time zone NOT NULL
+);
+
+
+ALTER TABLE public.conversations OWNER TO zastra_user;
+
+--
+-- TOC entry 238 (class 1259 OID 42522)
+-- Name: conversations_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.conversations ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.conversations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 218 (class 1259 OID 26033)
+-- Name: email_verification_tokens; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.email_verification_tokens (
+    id bigint NOT NULL,
+    expires_at timestamp(6) with time zone NOT NULL,
+    token character varying(64) NOT NULL,
+    user_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.email_verification_tokens OWNER TO zastra_user;
+
+--
+-- TOC entry 217 (class 1259 OID 26032)
+-- Name: email_verification_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.email_verification_tokens ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.email_verification_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 241 (class 1259 OID 42619)
+-- Name: inbox_items; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.inbox_items (
+    id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    message character varying(1024),
+    read boolean NOT NULL,
+    officer_id bigint NOT NULL,
+    report_id bigint NOT NULL,
+    is_read boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE public.inbox_items OWNER TO zastra_user;
+
+--
+-- TOC entry 240 (class 1259 OID 42618)
+-- Name: inbox_items_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.inbox_items ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.inbox_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 222 (class 1259 OID 26070)
+-- Name: messages; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.messages (
+    id bigint NOT NULL,
+    content character varying(2000) NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    read boolean NOT NULL,
+    report_id bigint NOT NULL,
+    sender_id bigint NOT NULL,
+    deleted_by_admin boolean NOT NULL,
+    deleted_by_recipient boolean NOT NULL,
+    recipient_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.messages OWNER TO zastra_user;
+
+--
+-- TOC entry 221 (class 1259 OID 26069)
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.messages ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 224 (class 1259 OID 26078)
+-- Name: report_images; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.report_images (
+    id bigint NOT NULL,
+    file_name character varying(255) NOT NULL,
+    file_path character varying(255) NOT NULL,
+    file_size bigint,
+    file_type character varying(255),
+    report_id bigint NOT NULL,
+    image_url character varying(255),
+    video_duration integer,
+    video_url character varying(255)
+);
+
+
+ALTER TABLE public.report_images OWNER TO zastra_user;
+
+--
+-- TOC entry 223 (class 1259 OID 26077)
+-- Name: report_images_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.report_images ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.report_images_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 232 (class 1259 OID 42487)
+-- Name: report_media_entity; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.report_media_entity (
+    id bigint NOT NULL,
+    url character varying(255),
+    video boolean NOT NULL,
+    report_id bigint
+);
+
+
+ALTER TABLE public.report_media_entity OWNER TO zastra_user;
+
+--
+-- TOC entry 231 (class 1259 OID 42486)
+-- Name: report_media_entity_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.report_media_entity ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.report_media_entity_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 234 (class 1259 OID 42493)
+-- Name: report_status_history; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.report_status_history (
+    id bigint NOT NULL,
+    notes character varying(2000),
+    status character varying(255),
+    "timestamp" timestamp(6) without time zone,
+    updated_by character varying(255),
+    report_id bigint,
+    resolved_photo_url character varying(255),
+    CONSTRAINT report_status_history_status_check CHECK (((status)::text = ANY ((ARRAY['SUBMITTED'::character varying, 'IN_REVIEW'::character varying, 'IN_PROGRESS'::character varying, 'RESOLVED'::character varying, 'REJECTED'::character varying, 'CANCELLED'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.report_status_history OWNER TO zastra_user;
+
+--
+-- TOC entry 233 (class 1259 OID 42492)
+-- Name: report_status_history_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.report_status_history ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.report_status_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 226 (class 1259 OID 26086)
+-- Name: reports; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.reports (
+    id bigint NOT NULL,
+    address character varying(255),
+    category character varying(255),
+    created_at timestamp(6) without time zone,
+    description character varying(2000),
+    latitude double precision NOT NULL,
+    longitude double precision NOT NULL,
+    status character varying(255),
+    title character varying(255) NOT NULL,
+    updated_at timestamp(6) without time zone,
+    user_id bigint NOT NULL,
+    video_url character varying(255),
+    officer_id bigint,
+    city character varying(100) NOT NULL,
+    house_number character varying(20) NOT NULL,
+    postal_code character varying(5) NOT NULL,
+    province character varying(100) NOT NULL,
+    street_name character varying(100) NOT NULL,
+    resolved_at timestamp without time zone,
+    CONSTRAINT reports_category_check CHECK (((category)::text = ANY ((ARRAY['ROAD_DAMAGE'::character varying, 'LITTER'::character varying, 'BROKEN_STREETLIGHT'::character varying, 'GRAFFITI'::character varying, 'DAMAGED_SIGN'::character varying, 'FALLEN_TREE'::character varying, 'POTHOLE'::character varying, 'BROKEN_BENCH'::character varying, 'DAMAGED_PLAYGROUND'::character varying, 'ILLEGAL_DUMPING'::character varying, 'OTHER'::character varying])::text[]))),
+    CONSTRAINT reports_status_check CHECK (((status)::text = ANY ((ARRAY['SUBMITTED'::character varying, 'IN_REVIEW'::character varying, 'IN_PROGRESS'::character varying, 'RESOLVED'::character varying, 'REJECTED'::character varying, 'CANCELLED'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.reports OWNER TO zastra_user;
+
+--
+-- TOC entry 225 (class 1259 OID 26085)
+-- Name: reports_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.reports ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.reports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 228 (class 1259 OID 26096)
+-- Name: status_updates; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.status_updates (
+    id bigint NOT NULL,
+    comment character varying(1000),
+    created_at timestamp(6) without time zone,
+    new_status character varying(255),
+    previous_status character varying(255),
+    report_id bigint NOT NULL,
+    updated_by bigint NOT NULL,
+    CONSTRAINT status_updates_new_status_check CHECK (((new_status)::text = ANY ((ARRAY['SUBMITTED'::character varying, 'IN_REVIEW'::character varying, 'IN_PROGRESS'::character varying, 'RESOLVED'::character varying, 'REJECTED'::character varying, 'CANCELLED'::character varying])::text[]))),
+    CONSTRAINT status_updates_previous_status_check CHECK (((previous_status)::text = ANY ((ARRAY['SUBMITTED'::character varying, 'IN_REVIEW'::character varying, 'IN_PROGRESS'::character varying, 'RESOLVED'::character varying, 'REJECTED'::character varying, 'CANCELLED'::character varying])::text[])))
+);
+
+
+ALTER TABLE public.status_updates OWNER TO zastra_user;
+
+--
+-- TOC entry 227 (class 1259 OID 26095)
+-- Name: status_updates_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.status_updates ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.status_updates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 220 (class 1259 OID 26039)
+-- Name: users; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    created_at timestamp(6) with time zone NOT NULL,
+    email character varying(100) NOT NULL,
+    enabled boolean NOT NULL,
+    first_name character varying(50) NOT NULL,
+    last_name character varying(50) NOT NULL,
+    password character varying(255) NOT NULL,
+    user_role character varying(255) NOT NULL,
+    updated_at timestamp(6) with time zone NOT NULL,
+    account_non_expired boolean DEFAULT true NOT NULL,
+    account_non_locked boolean DEFAULT true NOT NULL,
+    credentials_non_expired boolean DEFAULT true NOT NULL,
+    email_verified boolean DEFAULT false NOT NULL,
+    house_number character varying(20) NOT NULL,
+    postal_code character varying(5) NOT NULL,
+    street_name character varying(100) NOT NULL,
+    date_of_birth date NOT NULL,
+    gender character varying(10) NOT NULL,
+    national_id character varying(16) NOT NULL,
+    phone_number character varying(20) NOT NULL,
+    city character varying(100),
+    province character varying(100),
+    avatar_url character varying(512),
+    last_login timestamp(6) without time zone,
+    google_id character varying(255),
+    facebook_id character varying(255),
+    CONSTRAINT users_role_check CHECK (((user_role)::text = ANY (ARRAY[('CITIZEN'::character varying)::text, ('OFFICER'::character varying)::text, ('ADMIN'::character varying)::text])))
+);
+
+
+ALTER TABLE public.users OWNER TO zastra_user;
+
+--
+-- TOC entry 219 (class 1259 OID 26038)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.users ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 230 (class 1259 OID 26106)
+-- Name: verification_tokens; Type: TABLE; Schema: public; Owner: zastra_user
+--
+
+CREATE TABLE public.verification_tokens (
+    id bigint NOT NULL,
+    created_at timestamp(6) without time zone,
+    expired_date timestamp(6) without time zone NOT NULL,
+    token_number character varying(255) NOT NULL,
+    user_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.verification_tokens OWNER TO zastra_user;
+
+--
+-- TOC entry 229 (class 1259 OID 26105)
+-- Name: verification_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE public.verification_tokens ALTER COLUMN id ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.verification_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 4828 (class 2604 OID 42695)
+-- Name: announcement_read_status id; Type: DEFAULT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.announcement_read_status ALTER COLUMN id SET DEFAULT nextval('public.announcement_read_status_id_seq'::regclass);
+
+
+--
+-- TOC entry 4823 (class 2604 OID 42675)
+-- Name: announcements id; Type: DEFAULT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.announcements ALTER COLUMN id SET DEFAULT nextval('public.announcements_id_seq'::regclass);
+
+
+--
+-- TOC entry 4832 (class 2604 OID 50988)
+-- Name: app_notifications id; Type: DEFAULT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.app_notifications ALTER COLUMN id SET DEFAULT nextval('public.app_notifications_id_seq'::regclass);
+
+
+--
+-- TOC entry 4888 (class 2606 OID 42700)
+-- Name: announcement_read_status announcement_read_status_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.announcement_read_status
+    ADD CONSTRAINT announcement_read_status_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4884 (class 2606 OID 42683)
+-- Name: announcements announcements_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.announcements
+    ADD CONSTRAINT announcements_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4892 (class 2606 OID 50994)
+-- Name: app_notifications app_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.app_notifications
+    ADD CONSTRAINT app_notifications_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4876 (class 2606 OID 42516)
+-- Name: conversation_messages conversation_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.conversation_messages
+    ADD CONSTRAINT conversation_messages_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4878 (class 2606 OID 42521)
+-- Name: conversation_participants conversation_participants_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.conversation_participants
+    ADD CONSTRAINT conversation_participants_pkey PRIMARY KEY (conversation_id, user_id);
+
+
+--
+-- TOC entry 4880 (class 2606 OID 42527)
+-- Name: conversations conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.conversations
+    ADD CONSTRAINT conversations_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4842 (class 2606 OID 26037)
+-- Name: email_verification_tokens email_verification_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.email_verification_tokens
+    ADD CONSTRAINT email_verification_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4844 (class 2606 OID 26046)
+-- Name: email_verification_tokens idx_evt_token; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.email_verification_tokens
+    ADD CONSTRAINT idx_evt_token UNIQUE (token);
+
+
+--
+-- TOC entry 4848 (class 2606 OID 34262)
+-- Name: users idx_users_email; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT idx_users_email UNIQUE (email);
+
+
+--
+-- TOC entry 4882 (class 2606 OID 42625)
+-- Name: inbox_items inbox_items_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.inbox_items
+    ADD CONSTRAINT inbox_items_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4857 (class 2606 OID 26076)
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4860 (class 2606 OID 26084)
+-- Name: report_images report_images_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.report_images
+    ADD CONSTRAINT report_images_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4872 (class 2606 OID 42491)
+-- Name: report_media_entity report_media_entity_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.report_media_entity
+    ADD CONSTRAINT report_media_entity_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4874 (class 2606 OID 42500)
+-- Name: report_status_history report_status_history_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.report_status_history
+    ADD CONSTRAINT report_status_history_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4862 (class 2606 OID 26094)
+-- Name: reports reports_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT reports_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4864 (class 2606 OID 26104)
+-- Name: status_updates status_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.status_updates
+    ADD CONSTRAINT status_updates_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4866 (class 2606 OID 26112)
+-- Name: verification_tokens uk3jjlc80ihp62d8sf5ejgrnq28; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.verification_tokens
+    ADD CONSTRAINT uk3jjlc80ihp62d8sf5ejgrnq28 UNIQUE (token_number);
+
+
+--
+-- TOC entry 4890 (class 2606 OID 42702)
+-- Name: announcement_read_status uk_officer_announcement; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.announcement_read_status
+    ADD CONSTRAINT uk_officer_announcement UNIQUE (officer_id, announcement_id);
+
+
+--
+-- TOC entry 4868 (class 2606 OID 26114)
+-- Name: verification_tokens ukdqp95ggn6gvm865km5muba2o5; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.verification_tokens
+    ADD CONSTRAINT ukdqp95ggn6gvm865km5muba2o5 UNIQUE (user_id);
+
+
+--
+-- TOC entry 4851 (class 2606 OID 34288)
+-- Name: users uks0nmswa3ot4wkeja9vk4tlml6; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT uks0nmswa3ot4wkeja9vk4tlml6 UNIQUE (national_id);
+
+
+--
+-- TOC entry 4846 (class 2606 OID 26048)
+-- Name: email_verification_tokens uks3mje1c85ftmp2uld6dt1bffs; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.email_verification_tokens
+    ADD CONSTRAINT uks3mje1c85ftmp2uld6dt1bffs UNIQUE (user_id);
+
+
+--
+-- TOC entry 4853 (class 2606 OID 42777)
+-- Name: users users_facebook_id_key; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_facebook_id_key UNIQUE (facebook_id);
+
+
+--
+-- TOC entry 4855 (class 2606 OID 26044)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4870 (class 2606 OID 26110)
+-- Name: verification_tokens verification_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.verification_tokens
+    ADD CONSTRAINT verification_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4885 (class 1259 OID 42689)
+-- Name: idx_announcements_active_created_at; Type: INDEX; Schema: public; Owner: zastra_user
+--
+
+CREATE INDEX idx_announcements_active_created_at ON public.announcements USING btree (is_active, created_at DESC);
+
+
+--
+-- TOC entry 4886 (class 1259 OID 42690)
+-- Name: idx_announcements_urgent; Type: INDEX; Schema: public; Owner: zastra_user
+--
+
+CREATE INDEX idx_announcements_urgent ON public.announcements USING btree (is_urgent, is_active);
+
+
+--
+-- TOC entry 4893 (class 1259 OID 51001)
+-- Name: idx_app_notifications_created_at; Type: INDEX; Schema: public; Owner: zastra_user
+--
+
+CREATE INDEX idx_app_notifications_created_at ON public.app_notifications USING btree (created_at DESC);
+
+
+--
+-- TOC entry 4894 (class 1259 OID 51000)
+-- Name: idx_app_notifications_user_read; Type: INDEX; Schema: public; Owner: zastra_user
+--
+
+CREATE INDEX idx_app_notifications_user_read ON public.app_notifications USING btree (user_id, is_read);
+
+
+--
+-- TOC entry 4858 (class 1259 OID 42614)
+-- Name: idx_report_images_report_id; Type: INDEX; Schema: public; Owner: zastra_user
+--
+
+CREATE INDEX idx_report_images_report_id ON public.report_images USING btree (report_id);
+
+
+--
+-- TOC entry 4849 (class 1259 OID 26160)
+-- Name: idx_users_role; Type: INDEX; Schema: public; Owner: zastra_user
+--
+
+CREATE INDEX idx_users_role ON public.users USING btree (user_role);
+
+
+--
+-- TOC entry 4918 (class 2606 OID 50995)
+-- Name: app_notifications app_notifications_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.app_notifications
+    ADD CONSTRAINT app_notifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4900 (class 2606 OID 26130)
+-- Name: reports fk2o32rer9hfweeylg7x8ut8rj2; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT fk2o32rer9hfweeylg7x8ut8rj2 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4896 (class 2606 OID 26120)
+-- Name: messages fk4ui4nnwntodh6wjvck53dbk9m; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT fk4ui4nnwntodh6wjvck53dbk9m FOREIGN KEY (sender_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4904 (class 2606 OID 26145)
+-- Name: verification_tokens fk54y8mqsnq1rtyf581sfmrbp4f; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.verification_tokens
+    ADD CONSTRAINT fk54y8mqsnq1rtyf581sfmrbp4f FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4907 (class 2606 OID 42533)
+-- Name: conversation_messages fk57egbymdh9yllolr5i6hdwiwq; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.conversation_messages
+    ADD CONSTRAINT fk57egbymdh9yllolr5i6hdwiwq FOREIGN KEY (sender_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4897 (class 2606 OID 26115)
+-- Name: messages fk5na31h126tmkkaubg2ghupml9; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT fk5na31h126tmkkaubg2ghupml9 FOREIGN KEY (report_id) REFERENCES public.reports(id);
+
+
+--
+-- TOC entry 4902 (class 2606 OID 26135)
+-- Name: status_updates fk6hvl7yfaebksc832n17yh63ch; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.status_updates
+    ADD CONSTRAINT fk6hvl7yfaebksc832n17yh63ch FOREIGN KEY (report_id) REFERENCES public.reports(id);
+
+
+--
+-- TOC entry 4909 (class 2606 OID 42543)
+-- Name: conversation_participants fk84npv3fo2vwl7ut63im0p417q; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.conversation_participants
+    ADD CONSTRAINT fk84npv3fo2vwl7ut63im0p417q FOREIGN KEY (conversation_id) REFERENCES public.conversations(id);
+
+
+--
+-- TOC entry 4915 (class 2606 OID 42684)
+-- Name: announcements fk_announcements_created_by; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.announcements
+    ADD CONSTRAINT fk_announcements_created_by FOREIGN KEY (created_by_admin_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4911 (class 2606 OID 42659)
+-- Name: inbox_items fk_inbox_officer; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.inbox_items
+    ADD CONSTRAINT fk_inbox_officer FOREIGN KEY (officer_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4912 (class 2606 OID 42664)
+-- Name: inbox_items fk_inbox_report; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.inbox_items
+    ADD CONSTRAINT fk_inbox_report FOREIGN KEY (report_id) REFERENCES public.reports(id);
+
+
+--
+-- TOC entry 4916 (class 2606 OID 42703)
+-- Name: announcement_read_status fk_read_status_announcement; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.announcement_read_status
+    ADD CONSTRAINT fk_read_status_announcement FOREIGN KEY (announcement_id) REFERENCES public.announcements(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4917 (class 2606 OID 42708)
+-- Name: announcement_read_status fk_read_status_officer; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.announcement_read_status
+    ADD CONSTRAINT fk_read_status_officer FOREIGN KEY (officer_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4913 (class 2606 OID 42631)
+-- Name: inbox_items fkasupxdq62jgq5atxyhame76pb; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.inbox_items
+    ADD CONSTRAINT fkasupxdq62jgq5atxyhame76pb FOREIGN KEY (report_id) REFERENCES public.reports(id);
+
+
+--
+-- TOC entry 4908 (class 2606 OID 42528)
+-- Name: conversation_messages fkcr8qqgnqnaqq2hw3gr4wtfe2a; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.conversation_messages
+    ADD CONSTRAINT fkcr8qqgnqnaqq2hw3gr4wtfe2a FOREIGN KEY (conversation_id) REFERENCES public.conversations(id);
+
+
+--
+-- TOC entry 4905 (class 2606 OID 42501)
+-- Name: report_media_entity fkfwrskoo2bvlal9yep6afvxief; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.report_media_entity
+    ADD CONSTRAINT fkfwrskoo2bvlal9yep6afvxief FOREIGN KEY (report_id) REFERENCES public.reports(id);
+
+
+--
+-- TOC entry 4898 (class 2606 OID 34355)
+-- Name: messages fkhdkwfnspwb3s60j27vpg0rpg6; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT fkhdkwfnspwb3s60j27vpg0rpg6 FOREIGN KEY (recipient_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4895 (class 2606 OID 26052)
+-- Name: email_verification_tokens fki1c4mmamlb8keqt74k4lrtwhc; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.email_verification_tokens
+    ADD CONSTRAINT fki1c4mmamlb8keqt74k4lrtwhc FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4899 (class 2606 OID 26125)
+-- Name: report_images fkio33xl5nyhe7fv6e8me83ddj5; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.report_images
+    ADD CONSTRAINT fkio33xl5nyhe7fv6e8me83ddj5 FOREIGN KEY (report_id) REFERENCES public.reports(id);
+
+
+--
+-- TOC entry 4910 (class 2606 OID 42538)
+-- Name: conversation_participants fkjukjgq6uinvvk4307y8u9lixu; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.conversation_participants
+    ADD CONSTRAINT fkjukjgq6uinvvk4307y8u9lixu FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4906 (class 2606 OID 42506)
+-- Name: report_status_history fkmj9m188i4os76hh9qx5bh0qsn; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.report_status_history
+    ADD CONSTRAINT fkmj9m188i4os76hh9qx5bh0qsn FOREIGN KEY (report_id) REFERENCES public.reports(id);
+
+
+--
+-- TOC entry 4914 (class 2606 OID 42626)
+-- Name: inbox_items fko0obw4810juxoppkb4tgmgbac; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.inbox_items
+    ADD CONSTRAINT fko0obw4810juxoppkb4tgmgbac FOREIGN KEY (officer_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4901 (class 2606 OID 42481)
+-- Name: reports fkpojigt7nkd979mhpxu2otdmkq; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.reports
+    ADD CONSTRAINT fkpojigt7nkd979mhpxu2otdmkq FOREIGN KEY (officer_id) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4903 (class 2606 OID 26140)
+-- Name: status_updates fkvdaqyd22gn2va1tomv6yq792; Type: FK CONSTRAINT; Schema: public; Owner: zastra_user
+--
+
+ALTER TABLE ONLY public.status_updates
+    ADD CONSTRAINT fkvdaqyd22gn2va1tomv6yq792 FOREIGN KEY (updated_by) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 2119 (class 826 OID 26031)
+-- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: public; Owner: postgres
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON SEQUENCES TO zastra_user;
+
+
+--
+-- TOC entry 2118 (class 826 OID 26030)
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: public; Owner: postgres
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA public GRANT ALL ON TABLES TO zastra_user;
+
+
+-- Completed on 2025-11-30 19:04:19
+
+--
+-- PostgreSQL database dump complete
+--
+

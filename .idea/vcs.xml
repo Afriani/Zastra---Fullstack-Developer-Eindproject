@@ -2,8 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/clean-repo" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/clean-repo/Eindproject-Fullstack-Development-Bootcamp-NOVI-ZASTRA" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/test-clone" vcs="Git" />
   </component>
 </project>
