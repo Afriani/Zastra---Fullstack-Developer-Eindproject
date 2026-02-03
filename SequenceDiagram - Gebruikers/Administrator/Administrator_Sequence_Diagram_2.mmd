@@ -1,0 +1,24 @@
+%% 2. Admin deactiveert of verwijdert Announcement
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'orange','primaryColor':'lightyellow','primaryTextColor':'black','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Admin
+    participant Frontend
+    participant Backend
+    participant AnnouncementService
+    participant Database
+    participant NotificationService
+
+    Admin->>+Frontend: Klik "Deactiveer" op announcement #77
+    Frontend->>+Backend: PATCH /api/admin/announcements/77/deactivate
+    Backend->>+AnnouncementService: deactivateAnnouncement(77)
+    AnnouncementService->>+Database: UPDATE announcements SET isActive=false WHERE id=77
+    Database-->>-AnnouncementService: OK
+    AnnouncementService->>+NotificationService: optionallyNotifyOfficers("Announcement deactivated")
+    NotificationService-->>-AnnouncementService: OK
+    AnnouncementService-->>-Backend: UpdatedAnnouncement
+    Backend-->>-Frontend: 200 OK
+    Frontend-->>-Admin: Bevestiging: "Aankondiging gedeactiveerd"

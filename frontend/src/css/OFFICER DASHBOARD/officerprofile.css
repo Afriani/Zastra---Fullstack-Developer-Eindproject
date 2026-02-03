@@ -1,0 +1,519 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* ========== Reset ========== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ========== Dashboard Layout ========== */
+.dashboard {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    color: #222;
+}
+
+/* Choose a centered container inside main content so it behaves well on very large screens */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #f9fafb;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ========== Profile Header ========== */
+.officer-profile-page {
+    width: -webkit-fill-available;
+}
+
+.officer-profile-page h2 {
+    font-size: clamp(1.6rem, 2.2vw, 2.5rem); /* responsive font-size */
+    text-align: center;
+    margin: 0 0 30px 0;
+    color: forestgreen;
+    background-color: peachpuff;
+    font-weight: 600;
+    padding: 12px 20px;
+    width: -webkit-fill-available;
+    border-radius: 8px;
+}
+
+.officer-picture {
+    padding: 20px 20px;
+    background-color: white;
+    width: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Keep page & cards color context */
+.profile-page,
+.cards-container {
+    color: #222;
+}
+
+/* ========== Cards Container ========== */
+/* Mobile-first: single column stack */
+.cards-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+/* On medium screens: two columns (picture + account info side-by-side) */
+@media (min-width: 900px) {
+    .cards-container {
+        grid-template-columns: 360px 1fr; /* fixed width for picture column, flexible for details */
+        gap: 28px;
+        align-items: start;
+    }
+}
+
+/* On very large screens: allow more space and wider picture */
+@media (min-width: 1400px) {
+    .cards-container {
+        grid-template-columns: 420px 1fr;
+        gap: 32px;
+    }
+}
+
+/* ========== Profile Cards (Unified Styling) ========== */
+.profile-card,
+.user-picture {
+    position: relative;
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+    overflow: visible;
+}
+
+.profile-card:hover,
+.user-picture:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Visual feedback for editing mode */
+.profile-card:has(.editable) {
+    border-left: 4px solid #3498db;
+    background-color: #f8f9ff;
+}
+
+/* ========== User Picture Section ========== */
+/* Desktop: row layout (avatar + details). Mobile: column */
+.user-picture {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    flex-direction: column; /* default mobile: stack */
+    text-align: center;
+}
+
+/* Avatar Container - positioned wrapper for avatar + upload button */
+.avatar-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+/* Avatar */
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #3498db;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+    flex: 0 0 auto;
+}
+
+/* Slightly smaller avatar on small screens */
+@media (max-width: 480px) {
+    .avatar {
+        width: 92px;
+        height: 92px;
+        border-width: 3px;
+    }
+}
+
+/* Avatar hover */
+.avatar:hover {
+    border-color: #2980b9;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
+}
+
+/* Upload button overlay near the avatar */
+.upload-officer-avatar-btn {
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    padding: 6px;
+    background-color: transparent;
+    border: 1px solid #3498db;
+    border-radius: 10%;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* Icon inside the upload button */
+.officer-profile-icons {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Upload button hover effect */
+.upload-officer-avatar-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(52,152,219,0.3);
+}
+
+/* User greeting & joined text block */
+.user-picture > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Responsive spacing when avatar is side-by-side */
+@media (min-width: 900px) {
+    .user-picture > div {
+        margin-left: 6px;
+    }
+}
+
+/* ========== Hidden File Input (replaces inline style) ========== */
+.avatar-file-input-hidden {
+    display: none;
+}
+
+/* ========== Save Avatar Container (replaces inline style) ========== */
+.save-avatar-container {
+    margin-top: 10px;
+}
+
+/* ========== Save Avatar Button ========== */
+.save-avatar-btn {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+}
+
+.save-avatar-btn:hover:not(:disabled) {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+.save-avatar-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ========== Edit Button ========== */
+/* Keep edit button absolute in the picture card but responsive */
+.edit-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 140px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+    z-index: 10;
+}
+
+.edit-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+    .edit-btn {
+        width: 120px;
+        top: 12px;
+        right: 12px;
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+}
+
+/* ========== Save Button ========== */
+.save-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+    width: 100%;
+    max-width: 260px;
+}
+
+.save-btn:hover:not(:disabled) {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+.save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ========== Profile Card Headings & Labels ========== */
+.profile-card h3 {
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    color: #111827;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.profile-card label {
+    display: block;
+    font-size: 0.9rem;
+    color: #374151;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+/* ========== Input Fields ========== */
+.account-info input,
+.residential-address input {
+    border: none;
+    border-bottom: 2px solid #e5e7eb;
+    background-color: transparent;
+    padding: 10px 4px;
+    width: 100%;
+    font-size: 1rem;
+    margin: 6px 0 10px 0;
+    color: #111827;
+    transition: all 0.3s ease;
+}
+
+/* Read-only state */
+.account-info input[readonly],
+.residential-address input[readonly] {
+    color: #6b7280;
+    background-color: #f9fafb;
+    cursor: default;
+    border-bottom-color: #e5e7eb;
+}
+
+/* Editable state */
+.account-info input.editable,
+.residential-address input.editable {
+    background-color: #fff;
+    border-bottom: 2px solid #3498db;
+    color: #111827;
+    cursor: text;
+    padding: 12px 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(52, 152, 219, 0.1);
+}
+
+/* Focus states */
+.account-info input.editable:focus,
+.residential-address input.editable:focus {
+    outline: none;
+    border-bottom-color: #2980b9;
+    box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
+}
+
+/* ========== Residential Address Grid ========== */
+/* Mobile: stack fields vertically */
+.residential-address {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    align-items: start;
+}
+
+/* On medium+ screens: 2-columns for address fields */
+@media (min-width: 900px) {
+    .residential-address {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    /* For better alignment, place full-width street field across both columns */
+    .residential-address .street-name {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Make house-number input narrower if needed */
+.residential-address .house-number input {
+    max-width: 240px;
+}
+
+/* Account info block - align inputs in single column on mobile, two columns on larger screens */
+.account-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media (min-width: 900px) {
+    .account-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    /* Make Email span both columns (if desired) */
+    /*.account-info input[name="email"] {*/
+    /*    grid-column: 1 / -1;*/
+    /*}*/
+}
+
+/* ========== Messages & Loading ========== */
+.error {
+    color: #b91c1c;
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #fef2f2;
+    border-radius: 6px;
+    border: 1px solid #fecaca;
+    font-size: 0.9rem;
+}
+
+.success {
+    color: #065f46;
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #ecfdf5;
+    border-radius: 6px;
+    border: 1px solid #a7f3d0;
+    font-size: 0.9rem;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    color: #6b7280;
+    font-size: 1.1rem;
+}
+
+/* ========== Responsive Tuning ========== */
+
+/* Tablets (≤ 768px) adjustments */
+@media (max-width: 900px) {
+    .main-content { padding: 20px; }
+    .officer-profile-page h2 { font-size: 1.6rem; margin-bottom: 18px; }
+    .edit-btn { width: 120px; font-size: 0.85rem; padding: 8px 12px; top: 12px; right: 12px; }
+    .user-picture { padding-top: 20px; gap: 16px; }
+    .avatar { width: 100px; height: 100px; }
+    .cards-container { gap: 18px; }
+    .profile-card { padding: 18px; }
+    .save-btn { max-width: 100%; }
+}
+
+/* On medium+ screens, place avatar and details side-by-side */
+@media (min-width: 900px) {
+    .user-picture {
+        flex-direction: row;
+        text-align: left;
+        align-items: flex-start;
+        padding-top: 24px;
+    }
+}
+
+/* Large screens: keep a comfortable gutter */
+@media (min-width: 1200px) {
+    .main-content {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    .profile-card,
+    .user-picture {
+        padding: 32px;
+    }
+}
+
+/* ========== Small screen tweaks ========== */
+@media (max-width: 480px) {
+    .main-content { padding: 12px; }
+    .officer-profile-page h2 { font-size: 1.4rem; padding: 10px; }
+    .avatar { width: 88px; height: 88px; }
+    .user-picture { padding-top: 14px; gap: 12px; }
+    .edit-btn { top: 10px; right: 10px; width: 110px; font-size: 0.8rem; }
+    .officer-profile-icons { width: 18px; height: 18px; }
+}
+
+/* ========== Smooth animations & focus states ========== */
+.sidebar,
+.menu-btn,
+.logout-btn,
+.sidebar nav a,
+.close-btn,
+.profile-card,
+.user-picture,
+.edit-btn,
+.save-btn,
+.save-avatar-btn,
+.upload-officer-avatar-btn {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus styles for accessibility */
+.edit-btn:focus,
+.save-btn:focus,
+.save-avatar-btn:focus,
+.upload-officer-avatar-btn:focus,
+.account-info input:focus,
+.residential-address input:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+/* Tiny helper for long text wrapping inside labels/inputs */
+.profile-card label,
+.profile-card input,
+.user-picture div p {
+    word-wrap: break-word;
+    hyphens: auto;
+}

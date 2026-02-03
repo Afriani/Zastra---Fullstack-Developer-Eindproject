@@ -1,0 +1,38 @@
+%% 8. Burger voegt extra Media toen aan bestaand Report.
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'yellow','primaryColor':'green','primaryTextColor':'blue','textColor':'green','mainBkg':'yellow'
+}}}%%
+sequenceDiagram
+    actor Burger
+    participant Frontend
+    participant Backend
+    participant MediaService
+    participant ReportService
+    participant Database
+    participant NotificationService
+    actor Ambtenaar
+
+    Note over Burger: Burger voegt extra foto/video toe aan bestaand report #123
+
+    Burger->>+Frontend: Open report #123 -> Upload media bestand(en) -> Klik "Upload"
+    Frontend->>+Backend: POST /api/reports/123/media (multipart/form-data)
+    Backend->>+MediaService: storeMedia(files, reportId=123, uploadedBy=burgerId)
+    MediaService->>+Database: INSERT INTO media_store (url, storage_meta, uploader, report_id)
+    Database-->>-MediaService: mediaRecords (urls, ids)
+    MediaService-->>-Backend: mediaEntities ([{id, url, type, size}, ...])
+    Backend->>+ReportService: attachMediaToReport(reportId=123, mediaEntities)
+    ReportService->>+Database: INSERT INTO report_media_entity (report_id=123, media_id, url, is_video)
+    Database-->>-ReportService: OK
+    ReportService->>+Database: UPDATE reports SET updatedAt=now() WHERE id=123
+    Database-->>-ReportService: OK
+    ReportService-->>-Backend: UpdatedReportDTO
+
+    alt Report heeft toegewezen ambtenaar
+        Backend->>+NotificationService: notifyOfficer(officerId=456, "Nieuwe media toegevoegd aan report #123")
+        NotificationService-->>-Ambtenaar: Push/notification
+    end
+
+    Backend-->>-Frontend: 201 Created (mediaEntities)
+    Frontend-->>-Burger: Bevestiging: "Media succesvol toegevoegd"
+

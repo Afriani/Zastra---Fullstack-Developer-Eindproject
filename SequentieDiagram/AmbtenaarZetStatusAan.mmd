@@ -1,0 +1,33 @@
+sequenceDiagram
+    title Sequence Diagram - Officer updates Report Status
+
+    participant Officer as "Ambtenaar (User)"
+    participant Frontend
+    participant ReportController
+    participant ReportService
+    participant ReportRepository
+    participant ReportStatusRepository
+    participant FileService
+    participant NotificationService
+
+    Officer->>Frontend: 1) Open report detail and click "Take in charge" / "Mark as resolved"
+    Frontend->>ReportController: 2) PATCH /api/reports/{id}/status { status: IN_PROGRESS/RESOLVED, comment, files? }
+    ReportController->>ReportService: 3) updateStatus(reportId, newStatus, officerId, payload)
+
+    alt if files uploaded (e.g. proof photo on RESOLVED)
+        ReportService->>FileService: 4) upload(file)
+        FileService->>FileService: 5) store to object storage (S3/local)
+        FileService-->>ReportService: 6) fileUrl
+        ReportService->>ReportRepository: 7) addMedia(reportId, fileUrl)
+        ReportRepository-->>ReportService: 8) mediaSaved
+    end
+
+    ReportService->>ReportRepository: 9) update(reportId, { status: newStatus, updatedAt })
+    ReportRepository-->>ReportService: 10) updatedReport
+    ReportService->>ReportStatusRepository: 11) save(statusEntry { reportId, prevStatus, newStatus, officerId, timestamp })
+    ReportStatusRepository-->>ReportService: 12) statusSaved
+    ReportService->>NotificationService: 13) notifyReporter(reportId, newStatus) [async]
+    NotificationService-->>ReportService: 14) queued
+    ReportService-->>ReportController: 15) 200 OK (updatedReport)
+    ReportController-->>Frontend: 16) 200 OK
+    Frontend-->>Officer: 17) Show success "Status updated"

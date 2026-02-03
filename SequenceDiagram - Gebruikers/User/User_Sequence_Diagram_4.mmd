@@ -1,0 +1,20 @@
+%% 4. Burger ontvangt notificatie bij status update
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'yellow','primaryColor':'green','primaryTextColor':'blue','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Citizen
+    participant Backend
+    participant NotificationService
+    participant ReportService
+
+    Note over Citizen: Burger ontvangt notificatie bij statusupdate
+
+    ReportService->>+NotificationService: notifyCitizen(userId, "Uw melding is in behandeling")
+    NotificationService->>+Backend: sendPushNotification(userId, message)
+    Backend-->>-NotificationService: OK
+    NotificationService-->>-ReportService: OK
+
+    Note over Citizen: Burger ontvangt pushbericht op app/telefoon

@@ -1,0 +1,27 @@
+%% Communication domain
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'#39FF14',
+  'primaryColor':'#805AD5','primaryTextColor':'#fff','primaryBorderColor':'#805AD5',
+  'textColor':'#1A202C','mainBkg':'#FFFFFF'
+}}}%%
+classDiagram
+    class User
+    class Conversation
+    class ConversationMessage {
+        -boolean read
+    }
+    class Message {
+        -boolean read
+        -boolean deletedByRecipient
+        -boolean deletedByAdmin
+    }
+    class Report
+    User "0..*" --> "0..*" Conversation : participants
+    Conversation "1" --> "0..*" ConversationMessage : contains
+    ConversationMessage "*" --> "1" User : sender
+    ConversationMessage "*" --> "1" Conversation : in
+    Message "*" --> "1" User : sender
+    Message "*" --> "1" User : recipient
+    Message "*" --> "1" Report : about
+    Report "1" --> "0..*" Message : contains

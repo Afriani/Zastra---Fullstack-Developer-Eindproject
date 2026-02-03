@@ -1,0 +1,28 @@
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'orange','primaryColor':'lightyellow','primaryTextColor':'black','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Admin
+    participant Frontend
+    participant Backend
+    participant ExportService
+    participant ReportService
+    participant Database
+    participant StorageService
+    participant EmailService
+
+    Admin->>+Frontend: Klik "Export" (filters, dateRange)
+    Frontend->>+Backend: POST /api/admin/exports {filters}
+    Backend->>+ExportService: requestExport(filters, adminId)
+    ExportService->>+ReportService: fetchReportsForExport(filters)
+    ReportService->>+Database: SELECT * FROM reports WHERE ...
+    Database-->>-ReportService: reportRows
+    ReportService-->>-ExportService: reportRows
+    ExportService->>+StorageService: generateAndStoreCSV(reportRows)
+    StorageService-->>-ExportService: fileUrl=https://.../exports/reports_2025-10-16.csv
+    ExportService->>+EmailService: sendEmailWithLink(adminEmail, fileUrl)
+    EmailService-->>-ExportService: OK
+    ExportService-->>-Backend: exportJobResult(fileUrl)
+    Backend->>Frontend: 202 Accepted (job running)
+    Frontend->>Admin: Export wordt aangemaakt&#59; link wordt gemaild

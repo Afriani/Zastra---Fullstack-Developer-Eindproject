@@ -1,0 +1,23 @@
+%% 6. Ambtenaar filtert en zoekt meldingen op kaart (bbox + filters)
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'blue','primaryColor':'blue','primaryTextColor':'green','textColor':'green','mainBkg':'#FFFFFF'
+}}}%%
+
+sequenceDiagram
+    actor Officer
+    participant Frontend
+    participant Backend
+    participant ReportQueryService
+    participant Database
+
+    Note over Officer: Filteren op kaart (bv. POTHOLE, IN_PROGRESS)
+
+    Officer->>+Frontend: Zet filter categorie=POTHOLE & status=IN_PROGRESS + zoom bbox
+    Frontend->>+Backend: GET /api/reports?category=POTHOLE&status=IN_PROGRESS&bbox=...
+    Backend->>+ReportQueryService: findReports(filters, bbox)
+    ReportQueryService->>+Database: SELECT * FROM reports WHERE category='POTHOLE' AND status='IN_PROGRESS' AND within(bbox)
+    Database-->>-ReportQueryService: List<Report>
+    ReportQueryService-->>-Backend: ReportMarkerDTO[]
+    Backend-->>-Frontend: ReportMarkerDTO[]
+    Frontend-->>-Officer: Toont markers op kaart

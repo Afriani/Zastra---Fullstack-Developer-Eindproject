@@ -1,0 +1,20 @@
+%% 3. Burger bekijkt status van eigen melding
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'yellow','primaryColor':'green','primaryTextColor':'blue','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Citizen
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Note over Citizen: Burger bekijkt status van melding #123
+
+    Citizen->>+Frontend: Opent melding #123
+    Frontend->>+Backend: GET /api/reports/123
+    Backend->>+Database: SELECT report + images + status_history WHERE id=123 AND user_id=citizenId
+    Database-->>-Backend: ReportDetail
+    Backend-->>-Frontend: ReportDetailDTO
+    Frontend-->>-Citizen: Toont details (status, foto's, geschiedenis)

@@ -1,0 +1,173 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Main menu container */
+.main-menu {
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 700px;
+    margin: 0 auto;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Heading */
+.main-menu h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Paragraph */
+.main-menu p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+/* Buttons (same width, rounded, nice colors) */
+.main-menu button {
+    width: 160px;
+    padding: 12px 0;
+    margin: 0 10px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.main-menu button:hover {
+    background-color: #0056b3;
+}
+.home-button {
+    display: inline-block;
+    padding: 20px 20px;
+    margin: 10px;
+    width: 220px;
+    background-color: #0078d7;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: #005fa3;
+}
+
+/* Video section */
+video {
+    display: block;
+    max-width: 100%;
+    width: 40%;
+    height: auto;
+    margin: 40px auto;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+}
+
+/* Home page alert (dismissible) */
+.home-alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 700px;
+    margin: 0 auto 18px;
+    padding: 12px 14px;
+    background-color: #fff9f0;
+    color: #4a4a4a;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    border-left: 4px solid #ffb84d;
+    font-size: 0.98rem;
+    line-height: 1.2;
+    transition: opacity 200ms ease, transform 150ms ease;
+}
+
+/* Success variant (green) */
+.home-alert.success {
+    background-color: #e9f9ef;          /* very light green */
+    color: #0b6b3a;                     /* dark green text */
+    border-left-color: #28a745;         /* green accent */
+}
+
+/* Dismiss (close) button inside alert */
+.alert-dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: transparent;
+    color: inherit;
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 6px;
+    margin-left: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: background-color 140ms ease, opacity 120ms ease;
+}
+
+/* Hover / focus states for dismiss */
+.alert-dismiss:hover {
+    background-color: rgba(0,0,0,0.04);
+    opacity: 1;
+}
+.alert-dismiss:focus {
+    outline: 2px solid rgba(0,123,255,0.18);
+    outline-offset: 2px;
+}
+
+/* Container for the Register/Login buttons */
+.home-actions {
+    display: inline-flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+/* Make the alert a bit more compact on small screens */
+@media (max-width: 600px) {
+    .home-alert {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    .alert-dismiss {
+        font-size: 1.05rem;
+        padding: 6px;
+    }
+
+    .home-actions {
+        gap: 10px;
+    }
+
+    video {
+        width: 80%;
+        margin: 24px auto;
+    }
+
+    .main-menu button {
+        display: block;
+        width: 80%;
+        margin: 10px auto;
+    }
+
+    .main-menu h1 {
+        font-size: 2rem;
+    }
+
+    .main-menu p {
+        font-size: 1rem;
+    }
+
+}

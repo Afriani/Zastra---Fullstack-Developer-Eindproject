@@ -1,0 +1,20 @@
+%%7. Burger bekijkt aankondigingen (Announcements)
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'yellow','primaryColor':'green','primaryTextColor':'blue','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Citizen
+    participant Frontend
+    participant Backend
+    participant Database
+
+    Note over Citizen: Burger bekijkt aankondigingen
+
+    Citizen->>+Frontend: Opent aankondigingen
+    Frontend->>+Backend: GET /api/announcements?visibility=ALL
+    Backend->>+Database: SELECT * FROM announcements WHERE visibility=ALL AND isActive=true
+    Database-->>-Backend: Announcement[]
+    Backend-->>-Frontend: AnnouncementDTO[]
+    Frontend-->>-Citizen: Toont lijst met aankondigingen

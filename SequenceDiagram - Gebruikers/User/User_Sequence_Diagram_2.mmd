@@ -1,0 +1,29 @@
+%% 2. Burger maakt een nieuwe melding (Report)
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'yellow','primaryColor':'green','primaryTextColor':'blue','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Citizen
+    participant Frontend
+    participant Backend
+    participant ReportService
+    participant MediaService
+    participant Database
+
+    Note over Citizen: Burger maakt nieuwe melding
+
+    Citizen->>+Frontend: Vult formulier (titel, beschrijving, locatie, categorie)
+    Frontend->>+Backend: POST /api/reports
+    Backend->>+ReportService: createReport(reportDTO, userId)
+    ReportService->>+Database: INSERT reports (status=SUBMITTED, user_id=userId)
+    Database-->>-ReportService: Report(id=123)
+    ReportService->>+MediaService: storeMedia(files)  -->> MediaService: returns fileUrls
+    MediaService->>+Database: INSERT report_images(report_id=123, ...)
+    Database-->>-MediaService: OK
+    ReportService->>+Database: INSERT report_status_history(report_id=123, status=SUBMITTED)
+    Database-->>-ReportService: OK
+    ReportService-->>-Backend: Report
+    Backend-->>-Frontend: 201 Created (reportId=123)
+    Frontend-->>-Citizen: Bevestiging: "Melding ingediend"

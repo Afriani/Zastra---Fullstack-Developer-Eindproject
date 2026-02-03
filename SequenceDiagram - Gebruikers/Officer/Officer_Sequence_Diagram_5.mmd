@@ -1,0 +1,28 @@
+%% 5. Ambtenaar wijst melding door aan collega (reassign)
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'blue','primaryColor':'blue','primaryTextColor':'green','textColor':'green','mainBkg':'#FFFFFF'
+}}}%%
+
+sequenceDiagram
+    actor Officer1
+    actor Officer2
+    participant Frontend
+    participant Backend
+    participant ReportService
+    participant Database
+    participant NotificationService
+
+    Note over Officer1,Officer2: Doorsturen / hertoewijzen van report
+
+    Officer1->>+Frontend: Selecteer report en kies "Wijs toe aan" Officer2
+    Frontend->>+Backend: PATCH /api/reports/123/assign {officerId: Officer2}
+    Backend->>+ReportService: reassignReport(123, Officer2)
+    ReportService->>+Database: UPDATE reports SET officer_id=Officer2 WHERE id=123
+    Database-->>-ReportService: OK
+    ReportService->>+NotificationService: notifyOfficer(Officer2, "Nieuwe toewijzing: report #123")
+    NotificationService-->>-ReportService: OK
+    ReportService-->>-Backend: UpdatedReport
+    Backend-->>-Frontend: 200 OK
+    Frontend-->>-Officer1: Bevestiging
+    Note over Officer2: Officer2 ontvangt notificatie

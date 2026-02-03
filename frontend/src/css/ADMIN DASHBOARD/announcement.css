@@ -1,0 +1,573 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Admin Announcements Page */
+.admin-announcements {
+    margin: 0 auto;
+}
+
+.admin-announcements .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+}
+
+.admin-announcements .header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0;
+}
+
+.admin-announcements .header button.primary {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.admin-announcements .header button.primary:hover {
+    background: #2563eb;
+}
+
+/* Filters Section */
+.admin-announcements .filters {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.admin-announcements .filters input[type="text"],
+.admin-announcements .filters select,
+.admin-announcements .filters input[type="datetime-local"] {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    min-width: 150px;
+}
+
+.admin-announcements .filters input[type="text"] {
+    flex: 1;
+    min-width: 250px;
+}
+
+.admin-announcements .filters .date-range {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.admin-announcements .filters .date-range label {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* List Section */
+.admin-announcements .list {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    overflow-x: auto; /* allow scroll for wide tables */
+}
+
+.admin-announcements .list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.admin-announcements .list-header > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+.admin-announcements .list-header select {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* Table */
+.admin-announcements .table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* keep from squashing too hard; scroll instead */
+}
+
+.admin-announcements .table thead {
+    background: #f9fafb;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.admin-announcements .table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-announcements .table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.95rem;
+    color: #1f2937;
+}
+
+.admin-announcements .table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.admin-announcements .table .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.admin-announcements .table .badge.green {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.admin-announcements .table .badge.gray {
+    background: #e5e7eb;
+    color: #6b7280;
+}
+
+.admin-announcements .table .actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.admin-announcements .table .actions button {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.admin-announcements .table .actions button:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+.admin-announcements .table .actions button.danger {
+    color: #dc2626;
+    border-color: #fca5a5;
+}
+
+.admin-announcements .table .actions button.danger:hover {
+    background: #fee2e2;
+    border-color: #dc2626;
+}
+
+/* width for the Actions column (replaces inline style) */
+.admin-announcements .table th.actions-col {
+    width: 200px;
+}
+
+/* Empty row styling (replaces inline styles) */
+.admin-announcements .table .empty-row {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+/* Loading State */
+.admin-announcements .loading {
+    padding: 3rem;
+    text-align: center;
+    color: #6b7280;
+    font-size: 1rem;
+}
+
+/* Pagination */
+.admin-announcements .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.admin-announcements .pagination button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.admin-announcements .pagination button:hover:not(:disabled) {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+.admin-announcements .pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.admin-announcements .pagination span {
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+/* Modal */
+.admin-announcements .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.admin-announcements .modal {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.admin-announcements .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-announcements .modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0;
+}
+
+.admin-announcements .modal-header button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #9ca3af;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.admin-announcements .modal-header button:hover {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.admin-announcements .modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.admin-announcements .modal-body label {
+    display: block;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+.admin-announcements .modal-body label:first-child {
+    margin-top: 0;
+}
+
+.admin-announcements .modal-body input[type="text"],
+.admin-announcements .modal-body textarea,
+.admin-announcements .modal-body select,
+.admin-announcements .modal-body input[type="datetime-local"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.admin-announcements .modal-body input:focus,
+.admin-announcements .modal-body textarea:focus,
+.admin-announcements .modal-body select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-announcements .modal-body textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.admin-announcements .modal-body .row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.admin-announcements .modal-body .row > div {
+    flex: 1;
+}
+
+.admin-announcements .modal-body .row label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    cursor: pointer;
+}
+
+.admin-announcements .modal-body input[type="checkbox"] {
+    width: auto;
+    cursor: pointer;
+}
+
+.admin-announcements .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.admin-announcements .modal-footer button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.admin-announcements .modal-footer button:first-child {
+    background: #3b82f6;
+    color: white;
+}
+
+.admin-announcements .modal-footer button:first-child:hover:not(:disabled) {
+    background: #2563eb;
+}
+
+.admin-announcements .modal-footer button:first-child:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.admin-announcements .modal-footer button.secondary {
+    background: white;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.admin-announcements .modal-footer button.secondary:hover:not(:disabled) {
+    background: #f3f4f6;
+}
+
+/* Responsive – tablets and down */
+@media (max-width: 768px) {
+    .admin-announcements {
+        padding: 1rem;
+    }
+
+    .admin-announcements .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .admin-announcements .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-announcements .filters input[type="text"],
+    .admin-announcements .filters select {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .admin-announcements .table {
+        font-size: 0.85rem;
+    }
+
+    .admin-announcements .table th,
+    .admin-announcements .table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .admin-announcements .table .actions {
+        flex-direction: column;
+    }
+
+    .admin-announcements .modal {
+        max-width: 100%;
+        margin: 0;
+    }
+}
+
+/* Extra small phones (max 468px) */
+@media (max-width: 468px) {
+    .admin-announcements {
+        padding: 0.5rem;
+    }
+
+    .admin-announcements .header h1 {
+        font-size: 1.3rem;
+    }
+
+    .admin-announcements .header button.primary {
+        width: 100%;
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .admin-announcements .filters {
+        gap: 0.5rem;
+    }
+
+    .admin-announcements .filters input[type="text"],
+    .admin-announcements .filters select,
+    .admin-announcements .filters input[type="datetime-local"] {
+        width: 100%;
+        min-width: 0;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .admin-announcements .filters .date-range {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .admin-announcements .filters .date-range label {
+        font-size: 0.75rem;
+    }
+
+    .admin-announcements .list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        font-size: 0.8rem;
+    }
+
+    .admin-announcements .table {
+        font-size: 0.8rem;
+    }
+
+    .admin-announcements .table th,
+    .admin-announcements .table td {
+        padding: 0.4rem 0.5rem;
+    }
+
+    .admin-announcements .table .actions button {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.4rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .admin-announcements .badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+
+    .admin-announcements .pagination {
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: 0.8rem;
+    }
+
+    .admin-announcements .pagination button {
+        width: 100%;
+    }
+
+    .admin-announcements .empty-row {
+        font-size: 0.85rem;
+    }
+
+    .admin-announcements .modal {
+        width: 100%;
+        max-width: 100%;
+        margin: 0.5rem;
+    }
+
+    .admin-announcements .modal-body {
+        max-height: 60vh;
+    }
+
+    .admin-announcements .modal-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .admin-announcements .modal-footer button {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.7rem;
+    }
+
+    .admin-announcements .modal-body .row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .admin-announcements textarea {
+        font-size: 0.8rem;
+    }
+}

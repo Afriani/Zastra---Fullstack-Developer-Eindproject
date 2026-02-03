@@ -1,0 +1,300 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Dashboard Layout */
+.dashboard {
+    display: flex;
+    min-height: 165vh;
+    background-color: #f5f7fa;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    /*padding: 2rem;*/
+    background-color: #f9fafb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* ensure content sits above footer and has breathing room */
+    padding-bottom: 4rem;
+}
+
+.main-content h2 {
+    color: #1f2937;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    /*border-bottom: 2px solid #e5e7eb;*/
+    padding-bottom: 0.5rem;
+    width: 100%;
+    /*max-width: 900px;*/
+}
+
+/* Report Form */
+.report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.report-form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.report-form input,
+.report-form textarea,
+.report-form select {
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.report-form input:focus,
+.report-form textarea:focus,
+.report-form select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
+}
+
+.report-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Map & Controls */
+.report-form h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #1f2937;
+}
+
+.leaflet-container {
+    width: 100% !important;
+    height: 350px !important;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* Map control row (Follow toggle and label) */
+.map-control-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+/* Title in the map control row (removes default margin) */
+.map-title {
+    margin: 0;
+}
+
+/* Right-aligned follow toggle container */
+.map-control-right {
+    margin-left: auto;
+}
+
+/* Toggle label */
+.follow-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+/* Checkbox styling */
+.follow-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.follow-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+.follow-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb; /* modern browsers support */
+    cursor: pointer;
+}
+
+/* Upload Inputs / Previews */
+.file-info {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-style: italic;
+    margin-top: -0.5rem;
+}
+
+/* style file inputs for better appearance */
+.report-form input[type="file"] {
+    padding: 8px 6px;
+    border-radius: 6px;
+    border: 1px dashed #e5e7eb;
+    background: linear-gradient(180deg,#ffffff,#fbfbfb);
+}
+
+/* small preview thumbnails container */
+.preview-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.preview-thumb {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Submit Button */
+.btn-submit {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #fff;
+    padding: 0.9rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59,130,246,0.18);
+}
+
+.btn-submit:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Address block */
+.address-group {
+    background-color: #f9f9f9;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-group.full-width {
+    min-width: 100%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Helper text / small buttons */
+.small-muted {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* Ensure map and form do not overlap footer on small pages */
+.report-form {
+    margin-bottom: 2rem;
+    max-width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1rem;
+    }
+
+    .report-form {
+        padding: 1.25rem;
+    }
+
+    .main-content h2 {
+        font-size: 1.4rem;
+    }
+
+    .leaflet-container {
+        height: 260px !important;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .form-group {
+        min-width: 100%;
+    }
+
+    .btn-submit {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .leaflet-container {
+        height: 320px !important;
+    }
+
+    .report-form {
+        max-width: 100%;
+    }
+}

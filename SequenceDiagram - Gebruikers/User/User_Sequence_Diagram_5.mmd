@@ -1,0 +1,26 @@
+%% 5. Burger stuurt bericht naar ambtenaar over melding
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'yellow','primaryColor':'green','primaryTextColor':'blue','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Citizen
+    participant Frontend
+    participant Backend
+    participant MessageService
+    participant Database
+    participant NotificationService
+
+    Note over Citizen: Burger stuurt bericht over report #123
+
+    Citizen->>+Frontend: Typt bericht en klikt "Verzenden"
+    Frontend->>+Backend: POST /api/reports/123/messages {content}
+    Backend->>+MessageService: sendMessage(reportId=123, senderId=citizenId, recipientId=officerId, content)
+    MessageService->>+Database: INSERT INTO messages (report_id, sender_id=citizenId, recipient_id=officerId, content, read=false)
+    Database-->>-MessageService: Message created
+    MessageService->>+NotificationService: notifyOfficer(officerId, "Nieuw bericht op melding #123")
+    NotificationService-->>-MessageService: OK
+    MessageService-->>-Backend: MessageDTO
+    Backend-->>-Frontend: 201 Created
+    Frontend-->>-Citizen: Bericht verzonden
