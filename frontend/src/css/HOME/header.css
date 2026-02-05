@@ -15,12 +15,17 @@
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.header-logo {
+    cursor: pointer;
+}
+
 /* Logo Styling */
 .header-logo img {
     height: 99px;
     width: auto;
     display: block;
     border-radius: 50%;
+    transition: height 0.3s ease;
 }
 
 .header .nav-menu {
@@ -36,8 +41,9 @@ header .nav-menu ul {
     font-size: 1.5rem;
     color: white;
     gap: 80px;
-    margin-right:  20px;
+    margin-right: 20px;
     padding: 0;
+    transition: gap 0.3s ease, font-size 0.3s ease;
 }
 
 .header .nav-menu ul li a {
@@ -48,4 +54,61 @@ header .nav-menu ul {
     transform: scale(1.5);
 }
 
+/* Tablet screens (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .header-logo img {
+        height: 75px;
+    }
 
+    header .nav-menu ul {
+        font-size: 1.25rem;
+        gap: 50px;
+        margin-right: 15px;
+    }
+
+    .header {
+        padding: 10px 15px;
+    }
+}
+
+/* Small tablets and large phones (max-width: 768px) */
+@media (max-width: 768px) {
+    .header-logo img {
+        height: 80px;
+    }
+
+    header .nav-menu ul {
+        font-size: 1rem;
+        gap: 30px;
+        margin-right: 10px;
+    }
+
+    .header {
+        padding: 8px 12px;
+    }
+
+    .header .nav-menu ul li:hover {
+        transform: scale(1.2);
+    }
+}
+
+/* Mobile screens (max-width: 480px) */
+@media (max-width: 480px) {
+    .header-logo img {
+        height: 80px;
+    }
+
+    header .nav-menu ul {
+        font-size: 1rem;
+        gap: 30px;
+        margin-right: 10px;
+    }
+
+    .header {
+        padding: 6px 10px;
+    }
+
+    .header .nav-menu ul li:hover {
+        transform: scale(1.1);
+    }
+}

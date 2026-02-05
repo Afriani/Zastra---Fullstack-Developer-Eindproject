@@ -7,10 +7,10 @@ import {
     useMapEvents,
     useMap
 } from "react-leaflet";
+
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "../../css/USER DASHBOARD/newreport.css";
-import SidebarUser from "../../components/UserDashboard/SidebarUser.jsx";
 
 // Fix marker issue in Leaflet + React
 delete L.Icon.Default.prototype._getIconUrl;
@@ -56,13 +56,13 @@ function NewReport() {
         province: "",
     });
 
-    // DEFAULT CENTER: Bekasi
-    const [coords, setCoords] = useState({ lat: -6.2383, lng: 106.9756 }); // Bekasi
+    // DEFAULT CENTER: Bekasi (Indonesia)
+    const [coords, setCoords] = useState({ lat: -6.2383, lng: 106.9756 });
     const [images, setImages] = useState([]);
     const [video, setVideo] = useState(null);
 
-    // Follow user's device location
-    const [follow, setFollow] = useState(true);
+    // Follow user's device location - start as FALSE (Option B)
+    const [follow, setFollow] = useState(false);
     const watchIdRef = useRef(null);
 
     // categories
@@ -72,41 +72,23 @@ function NewReport() {
     // reverse geocode debounce
     const reverseTimeoutRef = useRef(null);
 
-    // Try geolocation (get one immediate position then optionally watch)
-    useEffect(() => {
-        if (!navigator.geolocation) {
-            console.warn("Geolocation not supported, using Bekasi as fallback");
-            return;
-        }
-
-        // get current position once (to center quickly)
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-            },
-            (err) => {
-                console.warn("Geolocation initial failed, using fallback Bekasi", err);
-            },
-            { timeout: 8000 }
-        );
-
-        return () => {
-            // cleanup not needed for getCurrentPosition
-        };
-    }, []);
-
-    // watchPosition when follow==true
+    // Option B: Only watch position when 'follow' is true
     useEffect(() => {
         if (!navigator.geolocation) return;
 
         if (follow) {
-            // start watching
+            // Start watching only when user checks the box
             watchIdRef.current = navigator.geolocation.watchPosition(
                 (pos) => {
                     setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
                 },
                 (err) => {
                     console.warn("watchPosition error", err);
+                    // Optional: alert user if they denied permission
+                    if (err.code === 1) {
+                        alert("Location access denied. Please enable it in your browser.");
+                        setFollow(false);
+                    }
                 },
                 {
                     enableHighAccuracy: true,
@@ -115,7 +97,7 @@ function NewReport() {
                 }
             );
         } else {
-            // stop watching
+            // Stop watching when unchecked
             if (watchIdRef.current !== null) {
                 navigator.geolocation.clearWatch(watchIdRef.current);
                 watchIdRef.current = null;
@@ -180,7 +162,6 @@ function NewReport() {
             const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&addressdetails=1`;
             const res = await fetch(url, {
                 headers: {
-                    // browsers disallow custom User-Agent; Nominatim recommends identifying via referer/email.
                     "Accept": "application/json"
                 }
             });
@@ -194,7 +175,6 @@ function NewReport() {
             // Map nominatim fields to our AddressDto
             setAddress((prev) => ({
                 postalCode: addr.postcode || prev.postalCode || "",
-                // street: prefer road or pedestrian or footway; include house number separately
                 streetName: addr.road || addr.pedestrian || addr.cycleway || addr.path || addr.neighbourhood || addr.suburb || "",
                 houseNumber: addr.house_number || prev.houseNumber || "",
                 city: addr.city || addr.town || addr.village || addr.county || "",
@@ -292,6 +272,9 @@ function NewReport() {
             });
             setImages([]);
             setVideo(null);
+            // Reset to Bekasi after submission
+            setCoords({ lat: -6.2383, lng: 106.9756 });
+            setFollow(false);
         } catch (err) {
             console.error("Error submitting report:", err);
             alert("Failed to submit report.");
@@ -300,8 +283,6 @@ function NewReport() {
 
     return (
         <div className="dashboard">
-
-            <SidebarUser />
 
             <div className="main-content">
                 <h2>Submit New Report</h2>
@@ -400,10 +381,10 @@ function NewReport() {
                         </div>
                     </div>
 
-                    <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 8 }}>
-                        <h3 style={{ margin: 0 }}>Pick Location on Map</h3>
-                        <div style={{ marginLeft: "auto" }}>
-                            <label style={{ marginRight: 8 }}>
+                    <div className="map-control-row">
+                        <h3 className="map-title">Pick Location on Map</h3>
+                        <div className="map-control-right">
+                            <label className="follow-toggle">
                                 <input
                                     type="checkbox"
                                     checked={follow}
@@ -414,7 +395,7 @@ function NewReport() {
                         </div>
                     </div>
 
-                    <MapContainer center={[coords.lat, coords.lng]} zoom={15} style={{ height: "350px" }}>
+                    <MapContainer center={[coords.lat, coords.lng]} zoom={15}>
                         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                         <Marker position={[coords.lat, coords.lng]} />
                         <LocationPicker setCoords={setCoords} disableFollow={disableFollow} />
@@ -445,5 +426,3 @@ function NewReport() {
 }
 
 export default NewReport;
-
-

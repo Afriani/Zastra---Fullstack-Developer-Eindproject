@@ -28,8 +28,8 @@ function ForgotPassword() {
     return (
         <div className="forgot-password-container">
             <h2 className="forgot-password-title">Forgot Password</h2>
-            {message && <p style={{ color: 'green' }}>{message}</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {message && <p className="success-message">{message}</p>}
+            {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <label>Email:</label>
                 <input
@@ -48,6 +48,3 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword;
-
-
-

@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
 /* unified adminlayout.css */
 :root {
     --sidebar-width: 260px;
@@ -48,6 +50,10 @@
     padding-right: var(--page-padding-large);
     overflow-y: auto;
     background: transparent;
+}
+
+.main-content {
+    position: relative;
 }
 
 /* Header inside main area */

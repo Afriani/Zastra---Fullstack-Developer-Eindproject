@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import "../../css/HOME/oauthcallback.css"; // <-- add this import
 
 function OAuthCallback() {
     const navigate = useNavigate();
@@ -93,13 +94,16 @@ function OAuthCallback() {
     }, [navigate]);
 
     return (
-        <div style={{ padding: 20 }}>
+        <div className="oauth-callback-container">
             <h3>Logging you in…</h3>
-            <p>If you are not redirected automatically, <button onClick={() => window.location.reload()}>reload</button></p>
+            <p>
+                If you are not redirected automatically,{" "}
+                <button type="button" onClick={() => window.location.reload()}>
+                    reload
+                </button>
+            </p>
         </div>
     );
 }
 
 export default OAuthCallback;
-
-

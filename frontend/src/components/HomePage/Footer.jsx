@@ -19,11 +19,10 @@ function Footer() {
             <div className="footer-left">
                 <div
                     className="footer-logo"
-                    style={{ cursor: 'pointer' }}
                     onClick={() => navigate('/')}
                     role="button"
                     tabIndex={0}
-                    onKeyPress={(e) => { if (e.key === 'Enter') navigate('/'); }}
+                    onKeyDown={(e) => { if (e.key === 'Enter') navigate('/'); }}
                 >
                     <img src={image} alt="app-img" />
                 </div>

@@ -8,8 +8,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: info.zastra@gmail.com
-    password: pxoq ftuq hndq gjla
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -26,5 +26,3 @@ logging:
   level:
     root: WARN
     com.damagereport: INFO
-
-

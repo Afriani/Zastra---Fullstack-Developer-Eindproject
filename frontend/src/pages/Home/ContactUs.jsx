@@ -1,5 +1,10 @@
 import '../../css/HOME/contactus.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
+
+// All Icons
+import telephoneIcone from "../../assets/pictures/contact-us/telephone.png"
+import whatsappIcone from "../../assets/pictures/my-inbox/left-speech-ballon.png"
+import emailIcon from "../../assets/pictures/contact-us/email.png"
 
 function ContactUs() {
     const [activeBox, setActiveBox] = useState(null);
@@ -18,7 +23,10 @@ function ContactUs() {
             <div className="contact-grid">
 
                 <div className="contact-box">
-                    <h3>📞 Call Us</h3>
+                    <h3>
+                        <img src={telephoneIcone} alt="telephone-icon" className="contact-us-icon" />️
+                        Call Us
+                    </h3>
                     <p>Ask questions or speak to an agent directly.</p>
                     <button className="contact-button" onClick={() => handleClick('phone')}>
                         Show Details
@@ -31,7 +39,10 @@ function ContactUs() {
                 </div>
 
                 <div className="contact-box">
-                    <h3>💬 WhatsApp</h3>
+                    <h3>
+                        <img src={whatsappIcone} alt="whatsapp-icon" className="contact-us-icon" />️
+                        WhatsApp
+                    </h3>
                     <p>Instant messaging support.</p>
                     <button className="contact-button" onClick={() => handleClick('whatsapp')}>
                         Show Details
@@ -44,7 +55,10 @@ function ContactUs() {
                 </div>
 
                 <div className="contact-box">
-                    <h3>📧 Email</h3>
+                    <h3>
+                        <img src={emailIcon} alt="email-icon" className="contact-us-icon" />️
+                        Email
+                    </h3>
                     <p>Replies within 24 hours.</p>
                     <button className="contact-button" onClick={() => handleClick('email')}>
                         Show Details
@@ -55,6 +69,7 @@ function ContactUs() {
                         </div>
                     )}
                 </div>
+                <footer />
 
             </div>
         </div>
@@ -62,3 +77,5 @@ function ContactUs() {
 }
 
 export default ContactUs;
+
+

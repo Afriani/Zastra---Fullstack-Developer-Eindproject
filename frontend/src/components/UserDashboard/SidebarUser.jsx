@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import '../../css/USER DASHBOARD/sidebar.css';
 
+import { HiMenuAlt3 } from "react-icons/hi"; // or HiMenu, GiHamburgerMenu, etc.
+
 // Icons for sidebar nav items
 import logoutIcon from '../../assets/pictures/logout.png';
 import overviewIcon from '../../assets/pictures/overview.png';
@@ -67,7 +69,7 @@ function SidebarUser({onLogout}) {
                 onClick={toggleSidebar}
                 aria-label={isOpen ? "Close menu" : "Open menu"}
             >
-                ☰
+                <HiMenuAlt3 className="hamburger-icon" />
             </button>
 
             {/* Overlay - visible only when sidebar is open */}

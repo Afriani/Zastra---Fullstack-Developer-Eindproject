@@ -13,8 +13,8 @@ spring:
   datasource:
     zastra:
       url: jdbc:postgresql://localhost:5432/zastra_db
-      username: zastra_user
-      password: change_me
+      username: ${ZASTRA_DB_USERNAME:zastra_user}
+      password: ${ZASTRA_DB_PASSWORD}
       driver-class-name: org.postgresql.Driver
       hikari:
         maximum-pool-size: 20
@@ -23,8 +23,8 @@ spring:
 
     media:
       url: jdbc:postgresql://localhost:5432/media_db
-      username: media_user
-      password: media_secret
+      username: ${MEDIA_DB_USERNAME:media_user}
+      password: ${MEDIA_DB_PASSWORD}
       driver-class-name: org.postgresql.Driver
 
   servlet:
@@ -51,8 +51,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: info.zastra@gmail.com
-    password: pxoq ftuq hndq gjla
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
     properties:
       mail:
       smtp:
@@ -84,8 +84,8 @@ file:
 # Google Authenticator
 google:
   client:
-    id: 949357721253-e7s1uche78786p3iamor1kaoaru1cihr.apps.googleusercontent.com
-    secret: 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
+    id: ${GOOGLE_CLIENT_ID}
+    secret: ${GOOGLE_CLIENT_SECRET}
 
 
 # Application URLs
@@ -108,7 +108,7 @@ logging:
 
 facebook:
   client:
-    id: 1544540776565570
-    secret: 0b18c9a1f700282bcb28ab09a903707a
+    id: ${FACEBOOK_CLIENT_ID}
+    secret: ${FACEBOOK_CLIENT_SECRET}
 
 

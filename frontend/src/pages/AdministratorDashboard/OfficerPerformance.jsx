@@ -12,7 +12,7 @@ import {
     Bar,
     Legend,
 } from "recharts";
-import OfficerPerformanceTrendTable from "./OfficerPerformanceTrendTable"; // Optional fallback table
+import OfficerPerformanceTrendTable from "./OfficerPerformanceTrendTable";
 import "../../css/ADMIN DASHBOARD/officerperformance.css";
 
 function OfficerPerformance() {
@@ -22,7 +22,7 @@ function OfficerPerformance() {
     const [officers, setOfficers] = useState([{ id: null, name: "All Officers" }]);
     const [filters, setFilters] = useState({
         officerId: null,
-        range: "30d", // 7d, 30d, 90d, custom
+        range: "30d",
         from: "",
         to: "",
     });
@@ -54,7 +54,10 @@ function OfficerPerformance() {
     useEffect(() => {
         const loadMeta = async () => {
             try {
-                const offs = await axios.get("http://localhost:8080/api/admin/performance/officers", { headers: authHeaders });
+                const offs = await axios.get(
+                    "http://localhost:8080/api/admin/performance/officers",
+                    { headers: authHeaders }
+                );
                 setOfficers([{ id: null, name: "All Officers" }, ...(offs.data || [])]);
             } catch {
                 // ignore
@@ -88,10 +91,22 @@ function OfficerPerformance() {
             params.append("to", to);
 
             const [sum, tr, byCat, outs] = await Promise.all([
-                axios.get(`http://localhost:8080/api/admin/performance/summary?${params.toString()}`, { headers: authHeaders }),
-                axios.get(`http://localhost:8080/api/admin/performance/trend?${params.toString()}&interval=week`, { headers: authHeaders }),
-                axios.get(`http://localhost:8080/api/admin/performance/by-category?${params.toString()}`, { headers: authHeaders }),
-                axios.get(`http://localhost:8080/api/admin/performance/outliers?${params.toString()}&limit=10`, { headers: authHeaders }),
+                axios.get(
+                    `http://localhost:8080/api/admin/performance/summary?${params.toString()}`,
+                    { headers: authHeaders }
+                ),
+                axios.get(
+                    `http://localhost:8080/api/admin/performance/trend?${params.toString()}&interval=week`,
+                    { headers: authHeaders }
+                ),
+                axios.get(
+                    `http://localhost:8080/api/admin/performance/by-category?${params.toString()}`,
+                    { headers: authHeaders }
+                ),
+                axios.get(
+                    `http://localhost:8080/api/admin/performance/outliers?${params.toString()}&limit=10`,
+                    { headers: authHeaders }
+                ),
             ]);
 
             setSummary(sum.data || null);
@@ -146,16 +161,24 @@ function OfficerPerformance() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filters.officerId, filters.range, filters.from, filters.to]);
 
-    // Format X-axis labels based on range
     const formatTick = (isoDate) => {
         const d = new Date(isoDate);
-        const days = filters.range === "7d" ? 7 : filters.range === "30d" ? 30 : filters.range === "90d" ? 90 : 30;
-        if (days <= 14) return d.toLocaleDateString(undefined, { day: "numeric", month: "short" }); // "3 Nov"
-        if (days <= 90) return d.toLocaleDateString(undefined, { day: "2-digit", month: "short" }); // "03 Nov"
-        return d.toLocaleDateString(undefined, { month: "short", year: "numeric" }); // "Nov 2025"
+        const days =
+            filters.range === "7d"
+                ? 7
+                : filters.range === "30d"
+                    ? 30
+                    : filters.range === "90d"
+                        ? 90
+                        : 30;
+
+        if (days <= 14)
+            return d.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+        if (days <= 90)
+            return d.toLocaleDateString(undefined, { day: "2-digit", month: "short" });
+        return d.toLocaleDateString(undefined, { month: "short", year: "numeric" });
     };
 
-    // Check if charts have data
     const hasChartData =
         (trend.resolutionTrend?.length > 0 &&
             trend.resolutionTrend.some((p) => p.avgDays > 0)) ||
@@ -163,10 +186,12 @@ function OfficerPerformance() {
             trend.volume.some((v) => v.opened > 0 || v.resolved > 0));
 
     return (
-        <div className="admin-overview">
+        <div className="officer-perf">
             <div className="admin-content-section">
                 <h2>Officer Quality Performance</h2>
-                <div className="filters-row" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+
+                {/* Filters */}
+                <div className="filters-row">
                     <select
                         value={filters.officerId ?? ""}
                         onChange={(e) =>
@@ -185,7 +210,9 @@ function OfficerPerformance() {
 
                     <select
                         value={filters.range}
-                        onChange={(e) => setFilters((f) => ({ ...f, range: e.target.value }))}
+                        onChange={(e) =>
+                            setFilters((f) => ({ ...f, range: e.target.value }))
+                        }
                     >
                         <option value="7d">Last 7 days</option>
                         <option value="30d">Last 30 days</option>
@@ -198,12 +225,16 @@ function OfficerPerformance() {
                             <input
                                 type="date"
                                 value={filters.from}
-                                onChange={(e) => setFilters((f) => ({ ...f, from: e.target.value }))}
+                                onChange={(e) =>
+                                    setFilters((f) => ({ ...f, from: e.target.value }))
+                                }
                             />
                             <input
                                 type="date"
                                 value={filters.to}
-                                onChange={(e) => setFilters((f) => ({ ...f, to: e.target.value }))}
+                                onChange={(e) =>
+                                    setFilters((f) => ({ ...f, to: e.target.value }))
+                                }
                             />
                         </>
                     )}
@@ -219,20 +250,20 @@ function OfficerPerformance() {
             </div>
 
             {/* KPIs */}
-            <div className="stats-grid">
-                <div className="stat-card" style={{ borderTopColor: "#6366f1" }}>
+            <div className="kpi-grid">
+                <div className="stat-card stat-card-resolution">
                     <div className="stat-title">Avg Resolution Days</div>
                     <div className="stat-value">
                         {summary?.avgResolutionDays?.toFixed?.(1) ?? "-"}
                     </div>
                 </div>
-                <div className="stat-card" style={{ borderTopColor: "#14b8a6" }}>
+                <div className="stat-card stat-card-response">
                     <div className="stat-title">Median First Response (hrs)</div>
                     <div className="stat-value">
                         {summary?.medianFirstResponseHours?.toFixed?.(1) ?? "-"}
                     </div>
                 </div>
-                <div className="stat-card" style={{ borderTopColor: "#10b981" }}>
+                <div className="stat-card stat-card-rate">
                     <div className="stat-title">Resolution Rate</div>
                     <div className="stat-value">
                         {summary?.resolutionRatePct != null
@@ -240,7 +271,7 @@ function OfficerPerformance() {
                             : "-"}
                     </div>
                 </div>
-                <div className="stat-card" style={{ borderTopColor: "#3b82f6" }}>
+                <div className="stat-card stat-card-sla">
                     <div className="stat-title">SLA Compliance</div>
                     <div className="stat-value">
                         {summary?.slaCompliancePct != null
@@ -254,7 +285,7 @@ function OfficerPerformance() {
             <div className="charts-grid">
                 <div className="admin-content-section">
                     <h3>Avg Resolution Days (Weekly)</h3>
-                    <div style={{ height: 260 }}>
+                    <div className="chart-box">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={trend.resolutionTrend}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -272,9 +303,10 @@ function OfficerPerformance() {
                         </ResponsiveContainer>
                     </div>
                 </div>
+
                 <div className="admin-content-section">
                     <h3>Volume (Opened vs Resolved)</h3>
-                    <div style={{ height: 260 }}>
+                    <div className="chart-box">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={trend.volume}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -282,8 +314,18 @@ function OfficerPerformance() {
                                 <YAxis allowDecimals={false} />
                                 <Tooltip />
                                 <Legend />
-                                <Bar dataKey="opened" name="Opened" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                                <Bar dataKey="resolved" name="Resolved" fill="#10b981" radius={[4, 4, 0, 0]} />
+                                <Bar
+                                    dataKey="opened"
+                                    name="Opened"
+                                    fill="#f59e0b"
+                                    radius={[4, 4, 0, 0]}
+                                />
+                                <Bar
+                                    dataKey="resolved"
+                                    name="Resolved"
+                                    fill="#10b981"
+                                    radius={[4, 4, 0, 0]}
+                                />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -322,20 +364,21 @@ function OfficerPerformance() {
                                 <div className="list-meta">
                                     <span className="badge">Count: {row.count}</span>
                                     <span className="badge">
-                    Avg Days: {row.avgResolutionDays?.toFixed?.(1) ?? "-"}
-                  </span>
+                                        Avg Days:{" "}
+                                        {row.avgResolutionDays?.toFixed?.(1) ?? "-"}
+                                    </span>
                                     <span className="badge">
-                    SLA:{" "}
+                                        SLA:{" "}
                                         {row.slaCompliancePct != null
                                             ? `${row.slaCompliancePct.toFixed(0)}%`
                                             : "-"}
-                  </span>
+                                    </span>
                                     <span className="badge">
-                    Reopen:{" "}
+                                        Reopen:{" "}
                                         {row.reopenRatePct != null
                                             ? `${row.reopenRatePct.toFixed(0)}%`
                                             : "-"}
-                  </span>
+                                    </span>
                                 </div>
                             </div>
                         ))
@@ -346,7 +389,7 @@ function OfficerPerformance() {
             {/* Outliers */}
             <div className="admin-content-section">
                 <h3>Outliers</h3>
-                <div className="lists-grid">
+                <div className="two-col">
                     <div className="list">
                         <h4>Slowest Resolutions</h4>
                         {outliers.slowestResolutions.length === 0 ? (
@@ -358,11 +401,11 @@ function OfficerPerformance() {
                                     <div className="list-meta">
                                         <span className="badge">{o.category}</span>
                                         <span className="badge">
-                      Days: {o.days?.toFixed?.(1) ?? "-"}
-                    </span>
+                                            Days: {o.days?.toFixed?.(1) ?? "-"}
+                                        </span>
                                         <span className="date">
-                      {new Date(o.createdAt).toLocaleDateString()}
-                    </span>
+                                            {new Date(o.createdAt).toLocaleDateString()}
+                                        </span>
                                     </div>
                                 </div>
                             ))
@@ -379,11 +422,11 @@ function OfficerPerformance() {
                                     <div className="list-meta">
                                         <span className="badge">{o.category}</span>
                                         <span className="badge">
-                      Age: {o.ageDays?.toFixed?.(1) ?? "-"}
-                    </span>
+                                            Age: {o.ageDays?.toFixed?.(1) ?? "-"}
+                                        </span>
                                         <span className="date">
-                      {new Date(o.createdAt).toLocaleDateString()}
-                    </span>
+                                            {new Date(o.createdAt).toLocaleDateString()}
+                                        </span>
                                     </div>
                                 </div>
                             ))
@@ -392,8 +435,12 @@ function OfficerPerformance() {
                 </div>
             </div>
 
-            {loading && <div className="admin-content-section">Loading...</div>}
-            {error && <div className="admin-content-section error-message">{error}</div>}
+            {loading && (
+                <div className="admin-content-section">Loading...</div>
+            )}
+            {error && (
+                <div className="admin-content-section error-message">{error}</div>
+            )}
         </div>
     );
 }

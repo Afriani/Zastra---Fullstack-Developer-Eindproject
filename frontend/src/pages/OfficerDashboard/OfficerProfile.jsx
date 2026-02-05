@@ -4,6 +4,9 @@ import axios from 'axios';
 
 import '../../css/OFFICER DASHBOARD/officerprofile.css';
 
+// Icon
+import cameraIcon from "../../assets/pictures/user-report-detail/images.png";
+
 function OfficerProfile() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -14,7 +17,6 @@ function OfficerProfile() {
     const [isEditing, setIsEditing] = useState(false);
     const [saving, setSaving] = useState(false);
 
-    // ref to file input (safer than document.querySelector)
     const fileInputRef = useRef(null);
 
     useEffect(() => {
@@ -32,8 +34,8 @@ function OfficerProfile() {
                 });
 
                 setUser(res.data);
-                setCacheBustedAvatarUrl(null); // Clear cache buster on fresh load
-                console.log("✅ Profile loaded:", res.data);
+                setCacheBustedAvatarUrl(null);
+                console.log("Profile loaded:", res.data);
 
             } catch (err) {
                 console.error('Profile fetch error:', err);
@@ -80,7 +82,6 @@ function OfficerProfile() {
         const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!validTypes.includes(file.type)) {
             alert('Only JPG, PNG, or WebP images are allowed.');
-            // reset input
             e.target.value = '';
             return;
         }
@@ -90,7 +91,6 @@ function OfficerProfile() {
             return;
         }
 
-        // revoke previous preview if present
         if (avatarPreview) {
             URL.revokeObjectURL(avatarPreview);
         }
@@ -99,7 +99,7 @@ function OfficerProfile() {
         setAvatarPreview(objectUrl);
     };
 
-    // Upload file currently selected in the hidden input (via ref)
+    // Upload file currently selected in the hidden input
     const handleAvatarUpload = async () => {
         const file = fileInputRef.current?.files?.[0];
         if (!file) {
@@ -125,14 +125,12 @@ function OfficerProfile() {
                 },
             });
 
-            // Update user avatarUrl and set cache-busted URL for immediate refresh
             setUser((prev) => ({ ...prev, avatarUrl: res.data.url }));
             setCacheBustedAvatarUrl(res.data.url + '?t=' + new Date().getTime());
             setAvatarPreview(null);
 
-            // reset file input so same file can be chosen again if needed
             if (fileInputRef.current) fileInputRef.current.value = '';
-            alert('✅ Avatar uploaded successfully.');
+            alert('Avatar uploaded successfully.');
         } catch (err) {
             console.error('Avatar upload error:', err);
             alert('Failed to upload avatar.');
@@ -180,11 +178,11 @@ function OfficerProfile() {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            alert('✅ Profile updated successfully!');
+            alert(' Profile updated successfully!');
             setIsEditing(false);
         } catch (err) {
             console.error('Save error:', err);
-            alert('❌ Failed to save changes. Please try again.');
+            alert('Failed to save changes. Please try again.');
         } finally {
             setSaving(false);
         }
@@ -225,7 +223,6 @@ function OfficerProfile() {
 
     return (
         <div className="dashboard">
-
             <div className="main-content">
                 <div className="officer-profile-page">
                     <h2>Profile</h2>
@@ -243,7 +240,7 @@ function OfficerProfile() {
                                 src={getAvatarSrc()}
                                 alt="Profile"
                                 className="avatar"
-                                onLoad={() => console.log("✅ Avatar loaded:", getAvatarSrc())}
+                                onLoad={() => console.log(" Avatar loaded:", getAvatarSrc())}
                                 onError={(e) => {
                                     console.warn("Avatar failed, fallback to placeholder:", e.target.src);
                                     e.target.src = "https://placehold.co/120x120?text=No+Img";
@@ -258,7 +255,7 @@ function OfficerProfile() {
                                 aria-label="Upload new avatar"
                                 title="Upload new avatar"
                             >
-                                📷
+                                <img src={cameraIcon} alt="camera-icon" className="officer-profile-icons" />️
                             </button>
 
                             {/* Hidden file input */}
@@ -267,7 +264,7 @@ function OfficerProfile() {
                                 type="file"
                                 accept="image/*"
                                 onChange={handleAvatarChange}
-                                style={{ display: 'none' }}
+                                className="avatar-file-input-hidden"
                             />
                         </div>
 
@@ -277,8 +274,12 @@ function OfficerProfile() {
 
                             {/* Show Save Avatar button when a file is selected (avatarPreview exists) */}
                             {avatarPreview && (
-                                <div style={{ marginTop: '10px' }}>
-                                    <button onClick={handleAvatarUpload} disabled={uploading}>
+                                <div className="save-avatar-container">
+                                    <button
+                                        className="save-avatar-btn"
+                                        onClick={handleAvatarUpload}
+                                        disabled={uploading}
+                                    >
                                         {uploading ? 'Uploading...' : 'Save Avatar'}
                                     </button>
                                 </div>
@@ -404,3 +405,5 @@ function OfficerProfile() {
 }
 
 export default OfficerProfile;
+
+

@@ -1,5 +1,3 @@
-/* src/css/USER DASHBOARD/myreport.css */
-
 @import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
 
 .dashboard {
@@ -14,11 +12,12 @@
     padding: 2rem;
 }
 
+/* ===== Header ===== */
+
 .report-header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 2rem;
-    /*background-color: white;*/
     align-items: flex-end;
 }
 
@@ -34,7 +33,8 @@ p.report-count {
     color: #6b7280;
 }
 
-/* Card grid */
+/* ===== Card grid ===== */
+
 .cards-grid {
     display: flex;
     flex-direction: column;
@@ -56,9 +56,25 @@ p.report-count {
     box-shadow: 0 4px 14px rgba(0,0,0,0.12);
 }
 
-/* Card header */
+/* ===== Card header ===== */
+
 .card-header {
     margin-bottom: 1rem;
+}
+
+/* Fix sidebar z-index to appear above Leaflet maps */
+.sidebar {
+    z-index: 2000 !important;
+}
+
+/* Ensure sidebar overlay appears above maps on mobile */
+.sidebar-overlay {
+    z-index: 1999 !important;
+}
+
+/* Leaflet map container - lower z-index */
+.leaflet-container {
+    z-index: 1 !important;
 }
 
 .status-row {
@@ -89,6 +105,7 @@ p.report-count {
 }
 
 /* Category & title */
+
 .report-title {
     font-size: 1.2rem;
     font-weight: 600;
@@ -100,14 +117,19 @@ p.report-count {
     color: #555;
 }
 
-/* Media grid */
+/* ===== Media grid ===== */
+
 .images-grid {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
+    overflow: hidden;
 }
 
 .report-image {
-    width: 435px;
+    flex: 1;
+    min-width: 0;
+    max-width: 435px;
     height: 400px;
     object-fit: cover;
     border-radius: 6px;
@@ -126,13 +148,27 @@ p.report-count {
 }
 
 /* Video */
+
 .report-video {
     width: 100%;
     border-radius: 8px;
     margin-top: 0.5rem;
 }
 
-/* Location */
+/* ===== Description ===== */
+
+.description-section {
+    margin-top: 0.75rem;
+}
+
+.description {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* ===== Location ===== */
+
 .location-section {
     display: flex;
     justify-content: space-between;
@@ -141,19 +177,97 @@ p.report-count {
     color: #555;
 }
 
-.location-icon {
-    margin-right: 0.3rem;
+.location-info {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
 }
 
-/* Officer */
+.location-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* NEW: shared icon styling for MyReport */
+.my-report-icons {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.address {
+    display: inline-block;
+}
+
+/* Coordinates text under address */
+.coordinates {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* ===== Map wrapper & small map (for inline-style removal) ===== */
+
+/* Map wrapper spacing */
+.map-wrapper {
+    margin-top: 12px;
+}
+
+/* Report map container */
+.report-map {
+    height: 200px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* Popup content spacing + layout (icon + text) */
+.popup-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+/* Google Maps directions link */
+
+.gmaps-directions-link {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 8px 10px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.gmaps-directions-link:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+/* ===== Officer ===== */
+
 .officer-section {
     margin-top: 1rem;
     font-size: 0.9rem;
 }
 
-.officer-label { font-weight: 600; margin-right: 0.5rem; }
+.officer-label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
 
-/* Dates */
+.officer-name {
+    color: #111827;
+}
+
+/* ===== Dates ===== */
+
 .dates-section {
     display: flex;
     gap: 1.5rem;
@@ -162,9 +276,22 @@ p.report-count {
     color: #555;
 }
 
-.date-label { font-weight: 600; }
+.date-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
 
-/* History timeline */
+.date-label {
+    font-weight: 600;
+}
+
+.date-value {
+    color: #374151;
+}
+
+/* ===== History timeline ===== */
+
 .history-section {
     margin-top: 1rem;
 }
@@ -210,6 +337,11 @@ p.report-count {
     border-radius: 50%;
 }
 
+.timeline-content {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
 .timeline-header {
     display: flex;
     justify-content: space-between;
@@ -217,31 +349,105 @@ p.report-count {
     font-weight: 600;
 }
 
-.timeline-date { color: #888; font-weight: normal; }
+.timeline-status {
+    color: #111827;
+}
 
-.timeline-user { font-size: 0.8rem; color: #555; }
+.timeline-date {
+    color: #888;
+    font-weight: normal;
+}
 
-/* Empty & Loading */
-.empty-state, .loading-state, .error-state {
+.timeline-details {
+    margin-top: 0.3rem;
+}
+
+.timeline-user {
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.timeline-notes {
+    font-size: 0.85rem;
+    color: #444;
+    margin-top: 0.25rem;
+}
+
+/* Resolved photo in timeline */
+.timeline-photo {
+    margin-top: 0.4rem;
+}
+
+/* This matches how you're using <img className="resolved-photo" ...> */
+.resolved-photo {
+    max-width: 250px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    display: block;
+}
+
+/* ===== Empty, Loading, Error states ===== */
+
+.empty-state,
+.loading-state,
+.error-state {
     text-align: center;
     margin-top: 3rem;
     color: #555;
 }
 
-/* Google Maps directions link */
-.gmaps-directions-link {
-    display: inline-block;
-    margin-top: 6px;
-    padding: 8px 10px;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.9rem;
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
 }
 
-.gmaps-directions-link:hover {
-    opacity: 0.95;
-    transform: translateY(-1px);
+/* Simple spinner */
+.spinner {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid #e5e7eb;
+    border-top-color: #3b82f6;
+    margin: 0 auto 0.5rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== Light responsiveness (layout only, no size/color changes) ===== */
+
+/* Allow header text to wrap neatly on smaller screens */
+@media (max-width: 768px) {
+    .report-header {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .location-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .dates-section {
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+    }
+
+    .status-row {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+/* Stack layout vertically if sidebar and content get tight */
+@media (max-width: 600px) {
+    .dashboard {
+        flex-direction: column;
+    }
 }

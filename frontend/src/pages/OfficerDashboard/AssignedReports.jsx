@@ -7,6 +7,14 @@ import "../../css/OFFICER DASHBOARD/assignedreports.css";
 
 const API_BASE = "http://localhost:8080/api/reports/officer";
 
+// All Assigned Report Images
+import errors from "../../assets/pictures/user-report-detail/warning.png"
+import refresh from "../../assets/pictures/assigned-report/refresh.png"
+import category from "../../assets/pictures/officer-dashboard/category.png"
+import created from "../../assets/pictures/officer-dashboard/created-at.png"
+import address from "../../assets/pictures/user-report-detail/location.png"
+import mailbox from "../../assets/pictures/officer-dashboard/mailbox.png"
+
 // normalize/validate incoming status query param to backend enum names
 const normalizeStatusParam = (raw) => {
     if (!raw) return null;
@@ -83,25 +91,6 @@ function AssignedReports() {
             minute: "2-digit",
         });
 
-    const getStatusColor = (statusVal) => {
-        switch (statusVal) {
-            case "SUBMITTED":
-                return "#ffc107";
-            case "IN_REVIEW":
-                return "#17a2b8";
-            case "IN_PROGRESS":
-                return "#007bff";
-            case "RESOLVED":
-                return "#28a745";
-            case "REJECTED":
-                return "#dc3545";
-            case "CANCELLED":
-                return "#9b9b9b";
-            default:
-                return "#6c757d";
-        }
-    };
-
     const handleFilterChange = (e) => {
         const v = e.target.value;
         if (!v || v === "ALL") {
@@ -131,7 +120,10 @@ function AssignedReports() {
             <div className="dashboard">
                 <div className="main-content">
                     <div className="error-message">
-                        <h3>⚠️ {error}</h3>
+                        <h3>
+                            <img src={errors} alt="error-icon" className="assigned-report" />
+                            {error}
+                        </h3>
                         <button onClick={() => navigate("/login")} className="btn-primary">
                             Go to Login
                         </button>
@@ -173,7 +165,8 @@ function AssignedReports() {
                             className="refresh-btn"
                             aria-label="Refresh reports"
                         >
-                            🔄 Refresh
+                            <img src={refresh} alt="refresh-icon" className="assigned-report" />
+                            Refresh
                         </button>
                     </div>
                 </header>
@@ -202,20 +195,28 @@ function AssignedReports() {
                                                 #{report.id} - {report.title}
                                             </h4>
                                             <span
-                                                className="status-badge"
-                                                style={{ backgroundColor: getStatusColor(report.status) }}
+                                                className={`status-badge status-${report.status?.toLowerCase().replace(/_/g, "-")}`}
                                             >
-                        {report.status?.replace(/_/g, " ")}
-                      </span>
+                                                {report.status?.replace(/_/g, " ")}
+                                            </span>
                                         </div>
 
                                         <p className="report-description">{report.description?.slice(0, 120)}...</p>
 
                                         <div className="report-meta">
-                                            <span className="category">📂 {report.category}</span>
-                                            <span className="date">🕒 {formatDate(report.createdAt)}</span>
+                                            <span className="category">
+                                                <img src={category} alt="category-icon" className="assigned-report" />
+                                                {report.category}
+                                            </span>
+                                            <span className="date">
+                                                <img src={created} alt="created-at-icon" className="assigned-report" />
+                                                {formatDate(report.createdAt)}
+                                            </span>
                                             {report.address && (
-                                                <span className="location">📍 {report.address.city}, {report.address.province}</span>
+                                                <span className="location">
+                                                    <img src={address} alt="address-icon" className="assigned-report" />
+                                                    {report.address.city}, {report.address.province}
+                                                </span>
                                             )}
                                         </div>
 
@@ -230,7 +231,9 @@ function AssignedReports() {
                         </div>
                     ) : (
                         <div className="empty-state">
-                            <div className="empty-icon">📭</div>
+                            <div className="empty-icon">
+                                <img src={mailbox} alt="mailbox-icon" className="assigned-report" />
+                            </div>
                             <h3>No Assigned Reports</h3>
                             <p>You don't have any reports assigned to you yet.</p>
                         </div>
@@ -242,3 +245,5 @@ function AssignedReports() {
 }
 
 export default AssignedReports;
+
+

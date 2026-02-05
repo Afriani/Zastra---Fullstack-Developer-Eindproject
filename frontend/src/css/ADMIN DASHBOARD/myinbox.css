@@ -44,7 +44,7 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1rem;
-    gap: 8px;
+    gap: 8px; /* replaces inline style gap: 8px */
 }
 
 .btn-new-message {
@@ -76,6 +76,7 @@
     cursor: pointer;
     font-size: 0.9rem;
     transition: background-color 0.2s ease, transform 0.05s ease;
+    margin-left: 8px; /* replaces inline marginLeft */
 }
 
 .btn-delete:hover {
@@ -150,7 +151,7 @@
     border-bottom: 1px solid #e5e7eb;
     transition: all 0.3s ease;
     position: relative;
-    cursor: pointer;
+    cursor: pointer; /* replaces inline cursor: pointer */
 }
 
 .folder-row:hover {
@@ -233,7 +234,7 @@
 .thread-container {
     background: #fff;
     border-radius: 8px;
-    margin-top: 16px;
+    margin-top: 16px; /* replaces inline marginTop: 16px */
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     overflow: hidden;
 }
@@ -536,5 +537,3 @@
         font-size: 0.8rem;
     }
 }
-
-

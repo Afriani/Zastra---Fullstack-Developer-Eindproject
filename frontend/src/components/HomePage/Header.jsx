@@ -13,7 +13,6 @@ function Header() {
             <header className="header">
                 <div
                     className="header-logo"
-                    style={{ cursor: 'pointer' }}
                     onClick={() => navigate('/')}
                     role="button"
                     tabIndex={0}

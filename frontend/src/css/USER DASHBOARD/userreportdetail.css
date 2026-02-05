@@ -1,4 +1,4 @@
-/* src/css/USER DASHBOARD/userreportdetail.css */
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
 
 /* ==========================
    USER REPORT DETAIL PAGE
@@ -12,6 +12,18 @@
     align-items: center;
     font-family: 'Inter', sans-serif;
     color: #2b2b2b;
+}
+
+/* ==========================
+   ICON STYLING (NEW)
+   ========================== */
+.user-report-detail-icons {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
 }
 
 /* Back button */
@@ -37,7 +49,6 @@
 .report-detail-card {
     background: white;
     width: 100%;
-    max-width: 900px;
     padding: 30px 40px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -48,6 +59,12 @@
     margin-bottom: 10px;
     color: #1a1a1a;
     font-size: 26px;
+}
+
+.report-detail-card h2 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 20px;
 }
 
 .report-meta {
@@ -186,6 +203,12 @@
     opacity: 1;
 }
 
+.media-overlay span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
 /* Video player */
 .video-container {
     margin-top: 15px;
@@ -243,6 +266,24 @@
     position: relative;
 }
 
+.leaflet-map {
+    height: 350px;
+    width: 100%;
+}
+
+.popup-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.popup-content img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
 .location-info {
     background-color: #f8f9fa;
     padding: 15px;
@@ -253,6 +294,9 @@
 .location-info p {
     margin: 5px 0;
     font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .location-info strong {
@@ -360,16 +404,34 @@
     gap: 10px;
 }
 
-.resolution-photo {
+.timeline-content .status-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.resolution-photo-container {
     margin-top: 10px;
+}
+
+.resolution-photo {
     max-width: 100%;
+    max-height: 250px;
     border-radius: 6px;
     cursor: pointer;
     transition: transform 0.2s ease;
+    display: block;
 }
 
 .resolution-photo:hover {
     transform: scale(1.02);
+}
+
+.photo-caption {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    text-align: center;
 }
 
 /* ==========================
@@ -427,6 +489,79 @@
 }
 
 /* ==========================
+   ERROR CONTAINER
+   ========================== */
+.error-container {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.error-icon {
+    margin-bottom: 20px;
+}
+
+.error-icon img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.error-container h3 {
+    color: #e53935;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.error-container .btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.error-container .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* ==========================
+   LOADING CONTAINER
+   ========================== */
+.loading-container {
+    text-align: center;
+    padding: 60px 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+    color: #666;
+    font-size: 16px;
+}
+
+/* ==========================
    RESPONSIVE BEHAVIOR
    ========================== */
 @media (max-width: 768px) {
@@ -442,8 +577,21 @@
         font-size: 22px;
     }
 
+    .report-detail-card h2 {
+        font-size: 18px;
+    }
+
+    .report-section h3 {
+        font-size: 16px;
+    }
+
     .report-section p {
         font-size: 15px;
+    }
+
+    .user-report-detail-icons {
+        width: 18px;
+        height: 18px;
     }
 
     .media-grid {
@@ -455,7 +603,11 @@
         height: 150px;
     }
 
-    .map-container {
+    .map-container .leaflet-container {
+        height: 250px;
+    }
+
+    .leaflet-map {
         height: 250px;
     }
 
@@ -468,21 +620,127 @@
         width: 14px;
         height: 14px;
     }
+
+    .timeline-content {
+        padding: 12px;
+    }
+
+    .timeline-content .status-meta {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .resolution-photo {
+        max-height: 200px;
+    }
+
+    .lightbox-close {
+        top: -35px;
+        font-size: 28px;
+    }
 }
 
-/* Loading and error states */
-.loading {
-    text-align: center;
-    font-size: 18px;
-    color: #666;
-    margin-top: 100px;
-}
+@media (max-width: 480px) {
+    .report-detail-container {
+        padding: 15px;
+    }
 
-.error {
-    text-align: center;
-    color: #e53935;
-    font-weight: 500;
-    margin-top: 100px;
+    .report-detail-card {
+        padding: 15px;
+    }
+
+    .report-detail-card h1 {
+        font-size: 20px;
+    }
+
+    .report-detail-card h2 {
+        font-size: 16px;
+    }
+
+    .report-section h3 {
+        font-size: 15px;
+    }
+
+    .report-section p {
+        font-size: 14px;
+    }
+
+    .user-report-detail-icons {
+        width: 16px;
+        height: 16px;
+    }
+
+    .report-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .media-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 8px;
+    }
+
+    .media-item img {
+        height: 120px;
+    }
+
+    .map-container .leaflet-container {
+        height: 200px;
+    }
+
+    .leaflet-map {
+        height: 200px;
+    }
+
+    .location-info {
+        padding: 12px;
+    }
+
+    .location-info p {
+        font-size: 14px;
+    }
+
+    .timeline {
+        padding-left: 20px;
+    }
+
+    .timeline-marker {
+        left: -20px;
+        width: 12px;
+        height: 12px;
+    }
+
+    .timeline-content {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .timeline-content .status-label {
+        font-size: 12px;
+    }
+
+    .timeline-content .status-notes {
+        font-size: 13px;
+    }
+
+    .timeline-content .status-meta {
+        font-size: 11px;
+    }
+
+    .resolution-photo {
+        max-height: 150px;
+    }
+
+    .back-button {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .lightbox-close {
+        top: -30px;
+        font-size: 24px;
+        padding: 3px 10px;
+    }
 }
 
 /* Smooth transitions for interactions */

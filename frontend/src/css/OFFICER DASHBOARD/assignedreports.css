@@ -1,4 +1,4 @@
-/* src/css/OFFICER DASHBOARD/assignedreports.css */
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
 
 /* ---------- Base / Layout ---------- */
 .dashboard {
@@ -87,6 +87,27 @@
     transform: translateY(1px);
 }
 
+/* NEW: Universal class for all assigned report icons */
+.assigned-report {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+/* Specific sizing for error icon in h3 */
+.error-message h3 .assigned-report {
+    width: 24px;
+    height: 24px;
+}
+
+/* Specific sizing for empty state mailbox icon */
+.empty-icon .assigned-report {
+    width: 64px;
+    height: 64px;
+}
+
 /* ========== Reports Section ========== */
 .reports-section {
     width: 100%;
@@ -131,6 +152,7 @@
 /* left media column */
 .report-media {
     flex: 0 0 120px;
+    min-width: 0;
     height: 90px;
     border-radius: 8px;
     overflow: hidden;
@@ -147,6 +169,7 @@
     object-fit: cover;
     border-radius: 6px;
     transition: transform 0.28s ease;
+    display: block;
 }
 
 .report-item:hover .report-thumb {
@@ -185,7 +208,7 @@
     gap: 12px;
 }
 
-.report-header h4 {
+.report-header-assigned h4 {
     margin: 0;
     color: #112233;
     font-size: 18px;
@@ -193,28 +216,43 @@
     line-height: 1.2;
 }
 
-.report-item:hover .report-header h4 {
+.report-item:hover .report-header-assigned h4 {
     color: #2a6fbe;
 }
 
 /* status badge */
 .status-badge {
-    padding: 6px 12px;
-    border-radius: 18px;
+    padding: 4px 10px;
+    border-radius: 20px;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
     color: white;
-    white-space: nowrap;
-    display: inline-block;
+    background-color: #6c757d; /* default */
 }
 
-/* Optional: class-specific badges, in case you apply classes server-side */
-.status-badge.submitted { background: #ffc107; color: white; }
-.status-badge.in-review { background: #17a2b8; color: white;}
-.status-badge.in-progress { background: #007bff; color: white;}
-.status-badge.resolved { background: #28a745; color: white; }
-.status-badge.rejected { background: #dc3545; color: white;}
-.status-badge.cancelled { background: #6c757d; color: white;}
+.status-badge.status-submitted {
+    background-color: #ffc107;
+}
+
+.status-badge.status-in-review {
+    background-color: #17a2b8;
+}
+
+.status-badge.status-in-progress {
+    background-color: #007bff;
+}
+
+.status-badge.status-resolved {
+    background-color: #28a745;
+}
+
+.status-badge.status-rejected {
+    background-color: #dc3545;
+}
+
+.status-badge.status-cancelled {
+    background-color: #9b9b9b;
+}
 
 /* description */
 .report-description {
@@ -238,6 +276,13 @@
     margin-bottom: 10px;
     align-items: center;
     flex-wrap: wrap;
+}
+
+/* NEW: Ensure meta items (category, date, location) display icons inline */
+.report-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .report-actions {
@@ -278,6 +323,9 @@
 .empty-icon {
     font-size: 48px;
     margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .empty-state h3 {
@@ -302,6 +350,10 @@
 .error-message h3 {
     color: #e74c3c;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
 .btn-primary {
@@ -347,7 +399,7 @@
     }
 
     .header-content h1 {
-        font-size: 24px;
+        font-size: 19px;
     }
 
     .header-actions {
@@ -370,8 +422,14 @@
     }
 
     .report-media {
-        flex: 0 0 80px;
-        height: 60px;
+        flex: 0 0 100px;
+        min-width: 100px;
+        height: 75px;
+    }
+
+    .report-thumb {
+        object-fit: cover;
+        object-position: center;
     }
 
     .report-header-assigned {
@@ -380,13 +438,29 @@
         gap: 8px;
     }
 
-    .report-header h4 {
+    .report-header-assigned h4 {
         font-size: 16px;
     }
 
     .report-meta {
         flex-wrap: wrap;
         gap: 10px;
+    }
+
+    /* Scale down icons on tablet */
+    .assigned-report {
+        width: 16px;
+        height: 16px;
+    }
+
+    .error-message h3 .assigned-report {
+        width: 22px;
+        height: 22px;
+    }
+
+    .empty-icon .assigned-report {
+        width: 56px;
+        height: 56px;
     }
 }
 
@@ -408,7 +482,7 @@
     }
 
     .header-actions {
-        flex-direction: column;
+        flex-direction: row;
         width: 100%;
         gap: 10px;
     }
@@ -416,10 +490,6 @@
     .filter-select {
         width: 100%;
         max-width: none;
-    }
-
-    .refresh-btn {
-        width: 100%;
     }
 
     .reports-section {
@@ -443,7 +513,7 @@
         width: 100%;
     }
 
-    .report-header h4 {
+    .report-header-assigned h4 {
         font-size: 16px;
     }
 
@@ -460,5 +530,21 @@
         width: 100%;
         text-align: center;
         padding: 10px 16px;
+    }
+
+    /* Scale down icons on mobile */
+    .assigned-report {
+        width: 14px;
+        height: 14px;
+    }
+
+    .error-message h3 .assigned-report {
+        width: 20px;
+        height: 20px;
+    }
+
+    .empty-icon .assigned-report {
+        width: 48px;
+        height: 48px;
     }
 }

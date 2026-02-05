@@ -20,6 +20,34 @@ L.Icon.Default.mergeOptions({
 import "../../css/OFFICER DASHBOARD/reportdetails.css";
 import SidebarOfficer from "../../components/OfficerDashboard/SidebarOfficer.jsx";
 
+// All Icons
+import backArrowIcon from "../../assets/pictures/officer-report-detail/back-arrow.png"
+import descriptionIcon from "../../assets/pictures/user-report-detail/description.png"
+import cameraIcon from "../../assets/pictures/user-report-detail/images.png"
+import searchIcon from "../../assets/pictures/user-report-detail/view.png"
+import videoIcon from "../../assets/pictures/user-report-detail/video.png"
+import historyIcon from "../../assets/pictures/email-service/report-status-update.png"
+import userIcon from "../../assets/pictures/profile.png"
+import clockIcon from "../../assets/pictures/user-report-detail/timestamp.png"
+import infoIcon from "../../assets/pictures/officer-report-detail/info.png"
+import locationIcon from "../../assets/pictures/user-report-detail/location.png"
+import mapIcon from "../../assets/pictures/user-report-detail/map-view.png"
+import actionIcon from "../../assets/pictures/officer-report-detail/action.png"
+import officerIcon from "../../assets/pictures/user-report-detail/asigned-officer.png"
+import directionIcon from "../../assets/pictures/officer-dashboard/direction.png"
+import closeIcon from "../../assets/pictures/officer-report-detail/close.png"
+import saveIcon from "../../assets/pictures/officer-report-detail/save.png"
+import messageIcon from "../../assets/pictures/my-inbox/right-speech-ballon.png"
+import errorIcon from "../../assets/pictures/officer-report-detail/error.png"
+
+// Status-specific icons
+import submittedIcon from "../../assets/pictures/submitted.gif";
+import inReviewIcon from "../../assets/pictures/inreview.gif";
+import inProgressIcon from "../../assets/pictures/inprogress.gif";
+import resolvedIcon from "../../assets/pictures/resolved.gif";
+import rejectedIcon from "../../assets/pictures/reject.gif";
+import cancelledIcon from "../../assets/pictures/cancel.gif";
+
 export default function ReportDetails() {
     const {id} = useParams();
     const navigate = useNavigate();
@@ -33,6 +61,28 @@ export default function ReportDetails() {
     const [userRole, setUserRole] = useState(null);
     const [resolvedPhoto, setResolvedPhoto] = useState(null);
 
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    // Map status to icon
+    const statusIcons = {
+        'SUBMITTED': submittedIcon,
+        'IN_REVIEW': inReviewIcon,
+        'IN_PROGRESS': inProgressIcon,
+        'RESOLVED': resolvedIcon,
+        'REJECTED': rejectedIcon,
+        'CANCELLED': cancelledIcon
+    };
+
+    // Map status to display text
+    const statusLabels = {
+        'SUBMITTED': 'Submitted',
+        'IN_REVIEW': 'In Review',
+        'IN_PROGRESS': 'In Progress',
+        'RESOLVED': 'Resolved',
+        'REJECTED': 'Rejected',
+        'CANCELLED': 'Cancelled'
+    };
+
     // Clear resolvedPhoto if status changes away from RESOLVED
     useEffect(() => {
         if (selectedStatus !== "RESOLVED") {
@@ -40,7 +90,7 @@ export default function ReportDetails() {
         }
     }, [selectedStatus]);
 
-    // ✅ Officer transition rules
+    // Officer transition rules
     const getValidOfficerTransitions = (currentStatus) => {
         const transitions = {
             'SUBMITTED': ['IN_REVIEW'],
@@ -53,7 +103,7 @@ export default function ReportDetails() {
         return transitions[currentStatus] || [];
     };
 
-    // ✅ All status options for admins
+    // All status options for admins
     const getAllStatusOptions = () => [
         'SUBMITTED', 'IN_REVIEW', 'IN_PROGRESS', 'RESOLVED', 'REJECTED', 'CANCELLED'
     ];
@@ -122,12 +172,12 @@ export default function ReportDetails() {
 
     const handleStatusUpdate = async () => {
         if (selectedStatus === "RESOLVED" && !resolvedPhoto) {
-            alert("⚠️ Please attach a resolution photo before resolving.");
+            alert("Please attach a resolution photo before resolving.");
             return;
         }
 
         if (selectedStatus === report.status && !statusNote.trim() && !resolvedPhoto) {
-            alert("⚠️ No changes to save");
+            alert("No changes to save");
             return;
         }
 
@@ -155,12 +205,12 @@ export default function ReportDetails() {
             });
 
             if (resp.data && resp.data.message) {
-                alert(`✅ ${resp.data.message}`);
+                alert(`${resp.data.message}`);
                 await fetchReport(); // Refresh the report details
                 setStatusNote("");
                 setResolvedPhoto(null);
             } else {
-                alert("✅ Status updated successfully!");
+                alert("Status updated successfully!");
                 await fetchReport();
                 setStatusNote("");
                 setResolvedPhoto(null);
@@ -173,7 +223,7 @@ export default function ReportDetails() {
                 err.response?.data?.error ||
                 err.message ||
                 "Unknown error occurred";
-            alert(`❌ Failed to update status: ${errorMsg}`);
+            alert(`Failed to update status: ${errorMsg}`);
         } finally {
             setIsUpdating(false);
         }
@@ -209,7 +259,9 @@ export default function ReportDetails() {
                 }}/>
                 <div className="main-content">
                     <div className="error-container">
-                        <div className="error-icon">⚠️</div>
+                        <div className="error-icon">
+                            <img src={errorIcon} alt="error-icon" className="officer-report-detail" />
+                        </div>
                         <h3>{error}</h3>
                         <button onClick={handleBack} className="btn-primary">Go Back</button>
                     </div>
@@ -230,7 +282,7 @@ export default function ReportDetails() {
         ? [latNum, lngNum]
         : [-6.2088, 106.8456]; // Default to Jakarta
 
-    // ✅ Get available status options based on user role
+    // Get available status options based on user role
     const getAvailableStatusOptions = () => {
         if (userRole === 'ROLE_OFFICER') {
             const validTransitions = getValidOfficerTransitions(report.status);
@@ -247,7 +299,9 @@ export default function ReportDetails() {
             <div className="main-content report-details-container">
                 <div className="report-header-detail">
                     <button onClick={handleBack} className="btn-back">
-                        <span className="back-icon">←</span>
+                        <span className="back-icon">
+                            <img src={backArrowIcon} alt="back-icon" className="officer-report-detail" />
+                        </span>
                         Back
                     </button>
                     <div className="report-title">
@@ -263,7 +317,10 @@ export default function ReportDetails() {
                     <div className="report-main-content">
                         <section className="card description-card">
                             <div className="card-header">
-                                <h3>📝 Description</h3>
+                                <h3>
+                                    <img src={descriptionIcon} alt="description-icon" className="officer-report-detail" />
+                                    Description
+                                </h3>
                             </div>
                             <div className="card-body">
                                 <p>{report.description}</p>
@@ -272,7 +329,10 @@ export default function ReportDetails() {
 
                         <section className="card media-section">
                             <div className="card-header">
-                                <h3>📷 Media Files</h3>
+                                <h3>
+                                    <img src={cameraIcon} alt="camera-icon" className="officer-report-detail" />
+                                    Media Files
+                                </h3>
                             </div>
                             <div className="card-body">
                                 <div className="media-subsection">
@@ -287,14 +347,19 @@ export default function ReportDetails() {
                                                 >
                                                     <img src={url} alt={`Report evidence ${idx + 1}`}/>
                                                     <div className="image-overlay">
-                                                        <span>🔍 View</span>
+                                                        <span>
+                                                            <img src={searchIcon} alt="search-icon" className="officer-report-detail" />
+                                                            View
+                                                        </span>
                                                     </div>
                                                 </div>
                                             ))}
                                         </div>
                                     ) : (
                                         <div className="no-media">
-                                            <span>📷</span>
+                                            <span>
+                                                <img src={cameraIcon} alt="camera-icon" className="officer-report-detail" />
+                                            </span>
                                             <p>No images attached</p>
                                         </div>
                                     )}
@@ -308,7 +373,9 @@ export default function ReportDetails() {
                                         </div>
                                     ) : (
                                         <div className="no-media">
-                                            <span>🎥</span>
+                                            <span>
+                                                <img src={videoIcon} alt="video-icon" className="officer-report-detail" />
+                                            </span>
                                             <p>No video attached</p>
                                         </div>
                                     )}
@@ -318,7 +385,10 @@ export default function ReportDetails() {
 
                         <section className="card status-history-card">
                             <div className="card-header">
-                                <h3>📋 Status History</h3>
+                                <h3 className="status-history">
+                                    <img src={historyIcon} alt="status-history-icon" className="officer-report-detail" />
+                                    Status History
+                                </h3>
                             </div>
 
                             <div className="card-body">
@@ -347,10 +417,12 @@ export default function ReportDetails() {
                                                     </div>
                                                     <div className="status-meta">
                                                         <span className="updated-by">
-                                                            👤 {s.updatedBy || "System"}
+                                                            <img src={userIcon} alt="user-icon" className="officer-report-detail" />
+                                                            {s.updatedBy || "System"}
                                                         </span>
                                                         <span className="timestamp">
-                                                            🕒 {s.timestamp ? new Date(s.timestamp).toLocaleString() : ""}
+                                                            <img src={clockIcon} alt="clock-icon" className="officer-report-detail" />
+                                                            {s.timestamp ? new Date(s.timestamp).toLocaleString() : ""}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -359,7 +431,9 @@ export default function ReportDetails() {
                                     </div>
                                 ) : (
                                     <div className="no-history">
-                                        <span>📋</span>
+                                        <span>
+                                            <img src={historyIcon} alt="status-history-icon" className="officer-report-detail" />
+                                        </span>
                                         <p>No status updates yet</p>
                                     </div>
                                 )}
@@ -370,7 +444,10 @@ export default function ReportDetails() {
                     <aside className="report-sidebar">
                         <section className="card details-card">
                             <div className="card-header">
-                                <h4>ℹ️ Report Details</h4>
+                                <h4>
+                                    <img src={infoIcon} alt="info-icon" className="officer-report-detail" />
+                                    Report Details
+                                </h4>
                             </div>
                             <div className="card-body">
                                 <div className="detail-item">
@@ -410,7 +487,10 @@ export default function ReportDetails() {
                                 {userRole === 'ROLE_OFFICER' && (
                                     <div className="detail-item">
                                         <span className="detail-label">Your Role:</span>
-                                        <span className="detail-value officer-role">👮‍♂️ Officer</span>
+                                        <span className="detail-value officer-role">
+                                            <img src={officerIcon} alt="officer-icon" className="officer-report-detail" />
+                                            Officer
+                                        </span>
                                     </div>
                                 )}
 
@@ -419,7 +499,10 @@ export default function ReportDetails() {
 
                         <section className="card location-card">
                             <div className="card-header">
-                                <h4>📍 Location</h4>
+                                <h4>
+                                    <img src={locationIcon} alt="location-icon" className="officer-report-detail" />
+                                    Location
+                                </h4>
                             </div>
                             <div className="card-body">
                                 {report.address ? (
@@ -432,13 +515,16 @@ export default function ReportDetails() {
                                         </div>
                                         {hasValidCoords && (
                                             <div className="coordinates">
-                                                📍 {latNum.toFixed(6)}, {lngNum.toFixed(6)}
+                                                <img src={locationIcon} alt="location-icon" className="officer-report-detail" />
+                                                {latNum.toFixed(6)}, {lngNum.toFixed(6)}
                                             </div>
                                         )}
                                     </div>
                                 ) : (
                                     <div className="no-location">
-                                        <span>📍</span>
+                                        <span>
+                                            <img src={locationIcon} alt="location-icon" className="officer-report-detail" />
+                                        </span>
                                         <p>No location information</p>
                                     </div>
                                 )}
@@ -448,7 +534,10 @@ export default function ReportDetails() {
                         {/* Always render Map Card; Map will use numeric coords when available, otherwise fallback */}
                         <section className="card map-card">
                             <div className="card-header">
-                                <h4>🗺️ Map View</h4>
+                                <h4>
+                                    <img src={mapIcon} alt="map-icon" className="officer-report-detail" />
+                                    Map View
+                                </h4>
                             </div>
                             <div className="card-body">
                                 <div className="map-container">
@@ -456,7 +545,7 @@ export default function ReportDetails() {
                                         key={`${position[0]}-${position[1]}`}
                                         center={position}
                                         zoom={15}
-                                        style={{height: '350px', width: '100%'}} // explicit height ensures container exists
+                                        className="report-map"
                                         whenCreated={(map) => {
                                             // invalidate size after layout settle
                                             setTimeout(() => map.invalidateSize(), 200);
@@ -469,12 +558,13 @@ export default function ReportDetails() {
                                     >
                                         <TileLayer
                                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                            attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                         />
                                         <Marker position={position}>
                                             <Popup>
-                                                <div style={{ marginBottom: 8 }}>
-                                                    📍 <strong>Report Location</strong><br/>
+                                                <div className="popup-location-header">
+                                                    <img src={locationIcon} alt="location-icon" className="officer-report-detail" />
+                                                    <strong>Report Location</strong><br/>
                                                     {report.address?.streetName ? `${report.address.streetName} ${report.address.houseNumber || ''}, ` : ''}
                                                     {report.address?.city ? `${report.address.city}, ` : ''}
                                                     {report.address?.province || ''}
@@ -487,7 +577,8 @@ export default function ReportDetails() {
                                                     rel="noopener noreferrer"
                                                     className="gmaps-directions-link"
                                                 >
-                                                    ➜ Open in Google Maps for Directions
+                                                    <img src={directionIcon} alt="direction-icon" className="officer-report-detail" />
+                                                    Open in Google Maps for Directions
                                                 </a>
                                             </Popup>
                                         </Marker>
@@ -498,35 +589,59 @@ export default function ReportDetails() {
 
                         <section className="card actions-card">
                             <div className="card-header">
-                                <h4>⚡ Actions</h4>
+                                <h4>
+                                    <img src={actionIcon} alt="action-icon" className="officer-report-detail" />
+                                    Actions
+                                </h4>
                                 {userRole === 'ROLE_OFFICER' && (
                                     <div className="officer-notice">
-                                        <small>👮‍♂️ Officer transitions:
-                                            SUBMITTED→IN_REVIEW→IN_PROGRESS→RESOLVED</small>
+                                        <small>
+                                            <img src={officerIcon} alt="officer-icon" className="officer-report-detail" />
+                                            Officer transitions: SUBMITTED→IN_REVIEW→IN_PROGRESS→RESOLVED
+                                        </small>
                                     </div>
                                 )}
                             </div>
                             <div className="card-body">
                                 <div className="status-update-section">
                                     <label htmlFor="status-select">Update Status:</label>
-                                    <select
-                                        id="status-select"
-                                        className="status-select"
-                                        value={selectedStatus}
-                                        onChange={(e) => setSelectedStatus(e.target.value)}
-                                        disabled={isUpdating}
-                                    >
-                                        {availableStatuses.map(status => (
-                                            <option key={status} value={status}>
-                                                {status === 'SUBMITTED' && '📝 Submitted'}
-                                                {status === 'IN_REVIEW' && '👀 In Review'}
-                                                {status === 'IN_PROGRESS' && '⚙️ In Progress'}
-                                                {status === 'RESOLVED' && '✅ Resolved'}
-                                                {status === 'REJECTED' && '❌ Rejected'}
-                                                {status === 'CANCELLED' && '🚫 Cancelled'}
-                                            </option>
-                                        ))}
-                                    </select>
+
+                                    {/* Custom Dropdown with Images */}
+                                    <div className="custom-select-wrapper">
+                                        <div
+                                            className="custom-select-trigger"
+                                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                                        >
+                                            <img
+                                                src={statusIcons[selectedStatus]}
+                                                alt={statusLabels[selectedStatus]}
+                                                className="status-icon-dropdown"
+                                            />
+                                            <span>{statusLabels[selectedStatus]}</span>
+                                            <span className="dropdown-arrow">{dropdownOpen ? '▲' : '▼'}</span>
+                                        </div>
+                                        {dropdownOpen && (
+                                            <div className="custom-select-options">
+                                                {availableStatuses.map(status => (
+                                                    <div
+                                                        key={status}
+                                                        className={`custom-option ${selectedStatus === status ? 'selected' : ''}`}
+                                                        onClick={() => {
+                                                            setSelectedStatus(status);
+                                                            setDropdownOpen(false);
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={statusIcons[status]}
+                                                            alt={statusLabels[status]}
+                                                            className="status-icon-dropdown"
+                                                        />
+                                                        <span>{statusLabels[status]}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
 
                                     <label htmlFor="status-note">Add Note (Optional):</label>
                                     <textarea
@@ -564,7 +679,8 @@ export default function ReportDetails() {
                                             </>
                                         ) : (
                                             <>
-                                                💾 Save Status
+                                                <img src={saveIcon} alt="save-icon" className="officer-report-detail" />
+                                                Save Status
                                             </>
                                         )}
                                     </button>
@@ -575,7 +691,8 @@ export default function ReportDetails() {
                                         className="btn-secondary"
                                         onClick={() => navigate(`/officer/reports/${report.id}/messages`)}
                                     >
-                                        💬 View Messages
+                                        <img src={messageIcon} alt="message-icon" className="officer-report-detail" />
+                                        View Messages
                                     </button>
                                 </div>
                             </div>
@@ -589,7 +706,7 @@ export default function ReportDetails() {
                 <div className="lightbox-overlay" onClick={closeLightbox}>
                     <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
                         <button className="lightbox-close" onClick={closeLightbox}>
-                            ✕
+                            <img src={closeIcon} alt="close-icon" className="officer-report-detail" />
                         </button>
                         <img src={lightboxImage} alt="Full size preview" className="lightbox-image"/>
                     </div>

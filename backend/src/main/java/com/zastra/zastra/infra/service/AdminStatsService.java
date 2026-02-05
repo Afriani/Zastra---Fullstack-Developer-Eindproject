@@ -42,16 +42,15 @@ public class AdminStatsService {
         long submitted = reportRepo.countByStatus(ReportStatus.SUBMITTED);
         long inProgress = reportRepo.countByStatus(ReportStatus.IN_PROGRESS);
 
-        LocalDateTime from30 = LocalDateTime.now(zone).minusDays(30);
-        long resolved30 = reportRepo.countResolvedSince(from30);
+        LocalDateTime from180 = LocalDateTime.now(zone).minusDays(180);
+        long resolved180 = reportRepo.countResolvedSince(from180);
 
-        // Convert LocalDateTime to java.sql.Timestamp and call repository method matching signature
-        java.sql.Timestamp from30Ts = java.sql.Timestamp.valueOf(from30);
-        Double avg = reportRepo.avgResolutionDaysSince(from30Ts, null);
+        java.sql.Timestamp from180Ts = java.sql.Timestamp.valueOf(from180);
+        Double avg = reportRepo.avgResolutionDaysSince(from180Ts, null);
 
         double avgDays = avg == null ? 0.0 : Math.round(avg * 10.0) / 10.0;
 
-        return new ReportSummaryDTO(total, submitted, inProgress, resolved30, avgDays);
+        return new ReportSummaryDTO(total, submitted, inProgress, resolved180, avgDays);
     }
 
     public List<CategoryCountDTO> getReportsByCategory() {

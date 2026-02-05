@@ -1,4 +1,4 @@
-/* sidebaradministrator.css - corrected and robust */
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
 
 /* Sidebar (fixed overlay) */
 .sidebar-final {
@@ -87,13 +87,13 @@
     cursor: pointer;
     font-weight: 600;
     text-align: left;
-    bottom: 16px;       /* space from bottom edge */
+    bottom: 16px;
     align-self: stretch;
     position: sticky;
-    /*bottom: 2rem;*/
     left: 1rem;
     right: 1rem;
 }
+
 .logout-container-officer:hover {
     background: rgba(255,255,255,0.06);
 }
@@ -103,6 +103,8 @@
     padding: 12px 63px;
     border-radius:25px;
     cursor: pointer;
+    margin: 0 28px;
+    text-align: center;
 }
 
 /* Hamburger Toggle */
@@ -120,6 +122,11 @@
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+
+.hamburger-icon {
+    width: 24px;
+    height: 24px;
 }
 
 /* Hide hamburger button when sidebar open (to avoid blocking) */

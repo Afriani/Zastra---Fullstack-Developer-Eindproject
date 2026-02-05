@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../css/USER DASHBOARD/myprofile.css';
-import SidebarUser from '../../components/UserDashboard/SidebarUser.jsx';
 
 function MyProfile() {
     const [user, setUser] = useState(null);
@@ -203,7 +202,6 @@ function MyProfile() {
 
     return (
         <div className="dashboard">
-            <SidebarUser />
 
             <div className="main-content">
                 <div className="profile-page">
@@ -243,7 +241,7 @@ function MyProfile() {
                                 type="file"
                                 accept="image/*"
                                 onChange={handleAvatarChange}
-                                style={{ display: 'none' }}
+                                className="avatar-file-input"
                             />
                         </div>
 
@@ -251,7 +249,7 @@ function MyProfile() {
                             <h3>{greeting}, {user.firstName || user.name}</h3>
                             <p>Joined since: {new Date(user.createdAt).toLocaleDateString()}</p>
                             {avatarPreview && (
-                                <div style={{ marginTop: '10px' }}>
+                                <div className="avatar-preview-actions">
                                     <button onClick={handleAvatarUpload} disabled={uploading}>
                                         {uploading ? 'Uploading...' : 'Save Avatar'}
                                     </button>

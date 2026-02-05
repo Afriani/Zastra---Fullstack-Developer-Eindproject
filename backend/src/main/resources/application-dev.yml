@@ -2,14 +2,15 @@ spring:
   datasource:
     zastra: # <-- Main Zastra DB (users, roles, reports, etc.)
       url: jdbc:postgresql://localhost:5432/zastra_db
-      username: zastra_user
-      password: change_me
+
+      username: ${ZASTRA_DB_USERNAME:zastra_user}
+      password: ${ZASTRA_DB_PASSWORD}
       driver-class-name: org.postgresql.Driver
 
     media: # <-- Secondary Media DB (media files, storage)
       url: jdbc:postgresql://localhost:5432/media_db
-      username: media_user
-      password: media_secret
+      username: ${MEDIA_DB_USERNAME:media_user}
+      password: ${MEDIA_DB_PASSWORD}
       driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -37,8 +38,8 @@ spring:
   mail:
     host: smtp.mailtrap.io
     port: 2525
-    username: your_mailtrap_username   # Replace with your Mailtrap username
-    password: your_mailtrap_password   # Replace with your Mailtrap password
+    username: ${MAILTRAP_USERNAME}
+    password: ${MAILTRAP_PASSWORD}
     properties:
       mail:
         smtp:
@@ -56,14 +57,14 @@ spring:
   # Facebook OAuth Configuration
   facebook:
     client:
-      id: 1544540776565570
-      secret: 0b18c9a1f700282bcb28ab09a903707a
+      id: ${FACEBOOK_CLIENT_ID}
+      secret: ${FACEBOOK_CLIENT_SECRET}
 
   # Google OAuth Configuration
   google:
     client:
-      id: 949357721253-e7s1uche78786p3iamor1kaoaru1cihr.apps.googleusercontent.com
-      secret: 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
+      id: ${GOOGLE_CLIENT_ID}
+      secret: ${GOOGLE_CLIENT_SECRET}
 
   # Frontend URL for OAuth redirects
   app:
@@ -75,3 +76,6 @@ logging:
     com.zastra: DEBUG
     org.springframework.security: DEBUG
     org.springframework.data.jpa: DEBUG
+
+# Laatste update: 6 februari 2026
+

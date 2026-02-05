@@ -4,6 +4,9 @@ import axios from 'axios';
 
 import '../../css/ADMIN DASHBOARD/adminprofile.css';
 
+// Import icons
+import camera from "../../assets/pictures/user-report-detail/images.png"
+
 function AdminProfile() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -44,6 +47,10 @@ function AdminProfile() {
     const getAvatarSrc = () => {
         if (avatarPreview) return avatarPreview;
         return user?.avatarUrl || "https://placehold.co/120x120?text=No+Img";
+    };
+
+    const handleAvatarError = (e) => {
+        e.target.src = "https://placehold.co/120x120?text=No+Img";
     };
 
     const handleAvatarChange = (e) => {
@@ -160,9 +167,31 @@ function AdminProfile() {
         setIsEditing(!isEditing);
     };
 
-    if (loading) return <div className="dashboard"><h2>Loading profile...</h2></div>;
-    if (error) return <div className="dashboard"><h2>Profile</h2><p>{error}</p></div>;
-    if (!user) return <div className="dashboard"><h2>Profile</h2><p>No profile found.</p></div>;
+    if (loading) {
+        return (
+            <div className="dashboard">
+                <h2>Loading profile...</h2>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="dashboard">
+                <h2>Profile</h2>
+                <p>{error}</p>
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="dashboard">
+                <h2>Profile</h2>
+                <p>No profile found.</p>
+            </div>
+        );
+    }
 
     return (
         <div className="dashboard">
@@ -182,7 +211,7 @@ function AdminProfile() {
                                 src={getAvatarSrc()}
                                 alt="Profile"
                                 className="avatar"
-                                onError={(e) => { e.target.src = "https://placehold.co/120x120?text=No+Img"; }}
+                                onError={handleAvatarError}
                             />
 
                             {/* Visible camera button that triggers the hidden input */}
@@ -193,7 +222,7 @@ function AdminProfile() {
                                 aria-label="Upload new avatar"
                                 title="Upload new avatar"
                             >
-                                📷
+                                <img src={camera} alt="upload-icon" className="admin-profile" />
                             </button>
 
                             {/* Hidden file input, controlled via ref */}
@@ -202,7 +231,7 @@ function AdminProfile() {
                                 type="file"
                                 accept="image/*"
                                 onChange={handleAvatarChange}
-                                style={{ display: 'none' }}
+                                className="hidden-file-input"
                             />
                         </div>
 
@@ -212,7 +241,7 @@ function AdminProfile() {
                             </h3>
                             <p>Joined since: {new Date(user.createdAt).toLocaleDateString()}</p>
                             {avatarPreview && (
-                                <div style={{ marginTop: '10px' }}>
+                                <div className="avatar-preview-actions">
                                     <button onClick={handleAvatarUpload} disabled={uploading}>
                                         {uploading ? 'Uploading...' : 'Save Avatar'}
                                     </button>
@@ -331,4 +360,7 @@ function AdminProfile() {
         </div>
     );
 }
+
 export default AdminProfile;
+
+

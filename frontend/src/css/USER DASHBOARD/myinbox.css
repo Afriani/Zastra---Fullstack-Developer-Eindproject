@@ -26,6 +26,13 @@
     z-index: 1;
 }
 
+.my-inbox-icons {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+}
+
 /* Header */
 .user-inbox-header {
     margin-bottom: 1rem;
@@ -42,6 +49,7 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1rem;
+    gap: 8px;
 }
 
 .btn-new-message {
@@ -388,6 +396,7 @@
     width: 90%;
     max-width: 500px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    margin-left: 250px;
 }
 
 .modal-content h3 {
@@ -521,6 +530,16 @@
     .send-btn {
         width: 100%;
     }
+
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        margin-left: 50px;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -542,6 +561,16 @@
 
     .folder-meta {
         font-size: 0.8rem;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        margin-left: 60px;
     }
 }
 

@@ -5,7 +5,7 @@ public record ReportSummaryDTO(
         long totalReports,
         long totalOpen,
         long totalInProgress,
-        long totalResolved30d,
-        double avgResolutionDays30d
+        long totalResolved180d,
+        double avgResolutionDays180d
 
 ) {}

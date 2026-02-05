@@ -1,5 +1,29 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
 .admin-reports {
     margin: 0 auto;
+}
+
+/* Header */
+/* Header Content Alignment */
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Sort Icon Image Styling */
+.sort-icon-img {
+    width: 12px;
+    height: 12px;
+    object-fit: contain;
+    /* Optional: if you want the icon to pop */
+    filter: drop-shadow(0px 1px 1px rgba(0,0,0,0.1));
+}
+
+/* Ensure table headers don't wrap weirdly */
+.reports-table th {
+    white-space: nowrap;
 }
 
 .reports-header {
@@ -102,6 +126,13 @@
     font-size: 2.5rem;
 }
 
+.kpi-icon-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    display: block;
+}
+
 .kpi-content h3 {
     font-size: 1.75rem;
     color: #1a1a1a;
@@ -122,7 +153,7 @@
     margin-bottom: 2rem;
 }
 
-/* Reports Table */
+/* Reports Table Container */
 .reports-table-container {
     background: white;
     border-radius: 8px;
@@ -130,6 +161,7 @@
     overflow: hidden;
 }
 
+/* Table header */
 .table-header {
     display: flex;
     justify-content: space-between;
@@ -159,6 +191,17 @@
     border-radius: 4px;
 }
 
+/* ✅ NEW: Wrapper to allow horizontal scrolling on small screens */
+.table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.table-wrapper .reports-table {
+    min-width: 800px; /* Prevent table from shrinking too much */
+}
+
+/* Table */
 .reports-table {
     width: 100%;
     border-collapse: collapse;
@@ -189,6 +232,13 @@
     color: #333;
 }
 
+/* ✅ Empty table cell (no inline style) */
+.empty-table-cell {
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Clickable rows */
 .clickable-row {
     cursor: pointer;
     transition: background 0.2s;
@@ -198,6 +248,7 @@
     background: #f9f9f9;
 }
 
+/* Badges */
 .category-badge {
     display: inline-block;
     padding: 0.25rem 0.75rem;
@@ -217,6 +268,7 @@
     text-transform: uppercase;
 }
 
+/* Status variants */
 .status-submitted {
     background: #fff3e0;
     color: #f57c00;
@@ -228,8 +280,8 @@
 }
 
 .status-in_progress {
-    background: #e8f5e9;
-    color: #388e3c;
+    background: #e8eaf6;
+    color: #3f51b5;
 }
 
 .status-resolved {
@@ -242,6 +294,12 @@
     color: #c62828;
 }
 
+.status-cancelled {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+/* Loading message under table */
 .table-loading {
     text-align: center;
     padding: 3rem;
@@ -283,7 +341,7 @@
     color: #666;
 }
 
-/* Modal */
+/* Modal Overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -298,6 +356,7 @@
     padding: 1rem;
 }
 
+/* Modal Content */
 .modal-content {
     background: white;
     border-radius: 8px;
@@ -319,6 +378,7 @@
     cursor: pointer;
     color: #666;
     line-height: 1;
+    z-index: 1101;
 }
 
 .modal-close:hover {
@@ -337,6 +397,7 @@
     gap: 1.5rem;
 }
 
+/* Detail Sections */
 .detail-section {
     padding-bottom: 1.5rem;
     border-bottom: 1px solid #eee;
@@ -364,6 +425,7 @@
     font-weight: 600;
 }
 
+/* Images in detail */
 .report-images {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -377,6 +439,12 @@
     border-radius: 4px;
 }
 
+/* ✅ Video styling (replaces inline style in JSX) */
+.report-video {
+    max-width: 100%;
+}
+
+/* Status history */
 .status-history {
     display: flex;
     flex-direction: column;
@@ -402,13 +470,96 @@
     color: #999;
 }
 
+/* Resolved photo in history */
 .resolved-photo {
     margin-top: 0.5rem;
     max-width: 300px;
     border-radius: 4px;
 }
 
-/* Responsive */
+/* Map inside Report Details modal */
+.report-map {
+    margin-top: 0.75rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.report-map .leaflet-container {
+    width: 100%;
+    height: 320px;
+}
+
+/* Leaflet link color override */
+.leaflet-container a {
+    color: black;
+}
+
+/* Popup content (moved from inline styles) */
+.popup-content {
+    /* structure container */
+}
+
+.popup-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.popup-address {
+    margin-bottom: 6px;
+}
+
+.popup-coords {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+/* No coords message */
+.no-coords-message {
+    color: #999;
+    margin-top: 0.75rem;
+}
+
+/* Google Maps link/button */
+.gmaps-link {
+    color: #1976d2;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.gmaps-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    background: #1976d2;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.gmaps-btn:hover {
+    background: #125aa1;
+}
+
+/* ===================== */
+/*      RESPONSIVE       */
+/* ===================== */
+
+/* Tablet breakpoint (optional enhancement) */
+@media (max-width: 1024px) {
+    .kpi-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .report-images {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Medium screens */
 @media (max-width: 768px) {
     .admin-reports {
         padding: 1rem;
@@ -433,5 +584,35 @@
 
     .modal-content {
         padding: 1rem;
+        max-height: 95vh;
+    }
+
+    .report-map .leaflet-container {
+        height: 240px;
+    }
+
+    .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .kpi-icon-img {
+        width: 40px;
+        height: 40px;
     }
 }
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .reports-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .kpi-icon-img {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+

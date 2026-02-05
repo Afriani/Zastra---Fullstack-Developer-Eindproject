@@ -2,6 +2,37 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation, useSearchParams, useNavigate } from "react-router-dom";
 import '../../css/ADMIN DASHBOARD/reports.css';
 
+// Map (Leaflet)
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix default marker icons (important in many React setups)
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// All Stat Icons
+import submittedGif from "../../assets/pictures/submitted.gif"
+import inreviewGif from "../../assets/pictures/inreview.gif"
+import inprogressGif from "../../assets/pictures/inprogress.gif"
+import resolvedGif from "../../assets/pictures/resolved.gif"
+import cancelGif from "../../assets/pictures/cancel.gif"
+import rejectGif from "../../assets/pictures/reject.gif"
+import totalreportGif from "../../assets/pictures/totalreport.gif"
+import clockGif from "../../assets/pictures/user-report-detail/timestamp.png"
+
+// Icons for srting up
+import sortUpIcon from "../../assets/pictures/administrator-reports/upArrow.png";
+import sortDownIcon from "../../assets/pictures/administrator-reports/downArrow.png";
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: markerIcon2x,
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow
+});
+
 const Reports = () => {
     const location = useLocation();
     const [searchParams] = useSearchParams();
@@ -30,6 +61,15 @@ const Reports = () => {
         OTHER: 'Other'
     };
 
+    const statusConfig = {
+        SUBMITTED: { icon: submittedGif, label: 'Submitted' },
+        IN_REVIEW: { icon: inreviewGif, label: 'In Review' },
+        IN_PROGRESS: { icon: inprogressGif, label: 'In Progress' },
+        RESOLVED: { icon: resolvedGif, label: 'Resolved' },
+        REJECTED: { icon: rejectGif, label: 'Rejected' },
+        CANCELLED: { icon: cancelGif, label: 'Cancelled' }
+    };
+
     const [summary, setSummary] = useState(null);
     const [reports, setReports] = useState([]);
     const [officers, setOfficers] = useState([]);
@@ -38,6 +78,8 @@ const Reports = () => {
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(50);
     const [sort, setSort] = useState('createdAt,desc');
+    const [totalElements, setTotalElements] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     const [loading, setLoading] = useState(false);
     const [summaryLoading, setSummaryLoading] = useState(false);
@@ -93,7 +135,13 @@ const Reports = () => {
             params.append('page', page);
             params.append('size', size);
             params.append('sort', sort);
-            if (filters.status) params.append('status', filters.status);
+
+            // Read status from URL first, then fall back to filters.status
+            const urlParams = new URLSearchParams(window.location.search);
+            const statusFromUrl = urlParams.get('status');
+            const statusToUse = statusFromUrl || filters.status;
+
+            if (statusToUse) params.append('status', statusToUse);
             if (filters.category) params.append('category', filters.category);
             if (filters.officerId) params.append('officerId', filters.officerId);
             if (filters.from) params.append('from', filters.from);
@@ -102,36 +150,47 @@ const Reports = () => {
 
             const url = `http://localhost:8080/api/admin/reports?${params.toString()}`;
 
-            // Debug log: what we request
-            console.log('REPORTS FETCH — requesting', url, 'filters:', filters, 'page:', page, 'size:', size, 'sort:', sort);
+            console.log('REPORTS FETCH — requesting', url, 'filters:', filters, 'statusFromUrl:', statusFromUrl, 'statusToUse:', statusToUse);
 
             const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
             if (response.ok) {
                 const data = await response.json();
 
-                // Normalize possible shapes
                 let items = [];
+                let total = 0;
+                let pages = 0;
+
                 if (Array.isArray(data)) {
                     items = data;
-                } else if (Array.isArray(data.content)) {
+                    total = data.length;
+                    pages = 1;
+                } else if (data.content && Array.isArray(data.content)) {
                     items = data.content;
+                    total = data.totalElements || 0;
+                    pages = data.totalPages || 0;
                 } else {
                     items = data?.data ?? data?.items ?? [];
                     if (!Array.isArray(items)) items = [];
+                    total = items.length;
+                    pages = 1;
                 }
 
-                // Debug log: first few statuses returned
-                console.log('REPORTS FETCH — backend returned', items.length, 'items; first statuses =',
-                    items.slice(0, 10).map(i => (i.status ?? '').toUpperCase()));
+                console.log('REPORTS FETCH — backend returned', items.length, 'items; total:', total, 'pages:', pages);
 
                 setReports(items);
+                setTotalElements(total);
+                setTotalPages(pages);
             } else {
                 console.error('Reports fetch failed:', response.status);
                 setReports([]);
+                setTotalElements(0);
+                setTotalPages(0);
             }
-        } catch {
-            console.error('Error fetching reports');
+        } catch (err) {
+            console.error('Error fetching reports:', err);
             setReports([]);
+            setTotalElements(0);
+            setTotalPages(0);
         } finally {
             setLoading(false);
         }
@@ -174,7 +233,7 @@ const Reports = () => {
             });
 
             setPage(Number(pageParam ?? 0));
-            setSize(Number(sizeParam ?? 10));
+            setSize(Number(sizeParam ?? 50));
             setSort(sortParam ?? 'createdAt,desc');
         };
 
@@ -193,34 +252,51 @@ const Reports = () => {
     }, [location.search]);
 
     useEffect(() => {
-        const getInitialStatus = () => {
-            const urlStatus = searchParams.get('status');
-            if (urlStatus) return urlStatus;
+        const urlStatus = searchParams.get('status');
+
+        if (urlStatus) {
+            // If status is already in URL, use it directly
+            const normalized = String(urlStatus).toUpperCase();
+            setFilters(prev => {
+                if (prev.status === normalized) return prev; // Avoid unnecessary updates
+                return { ...prev, status: normalized };
+            });
+            // Clean up sessionStorage since we've already applied the filter
+            sessionStorage.removeItem('adminReportsFilter');
+        } else {
+            // Only check sessionStorage if there's no URL parameter
             try {
                 const stored = JSON.parse(sessionStorage.getItem('adminReportsFilter'));
-                if (stored?.status) return stored.status;
-            } catch {
-                // ignore
+                if (stored?.status) {
+                    const normalized = String(stored.status).toUpperCase();
+                    setFilters(prev => ({ ...prev, status: normalized }));
+
+                    // Update URL to reflect the filter
+                    const params = new URLSearchParams(location.search);
+                    params.set('status', normalized);
+                    navigate(`/admin/reports?${params.toString()}`, { replace: true });
+
+                    // Clean up sessionStorage
+                    sessionStorage.removeItem('adminReportsFilter');
+                }
+            } catch (err) {
+                console.warn('Failed to read adminReportsFilter from sessionStorage', err);
             }
-            return null;
-        };
-
-        const initStatus = getInitialStatus();
-        if (initStatus) {
-            const normalized = String(initStatus).toUpperCase();
-            setFilters(prev => ({ ...prev, status: normalized }));
-
-            const params = new URLSearchParams();
-            params.set('status', normalized);
-            navigate(`/admin/reports?${params.toString()}`, { replace: true });
-
-            sessionStorage.removeItem('adminReportsFilter');
         }
-    }, [searchParams, navigate]);
+    }, [searchParams, navigate, location.search]);
 
     const handleFilterChange = (key, value) => {
         setFilters(prev => ({ ...prev, [key]: value }));
         setPage(0);
+
+        // Update URL to reflect the new filter
+        const params = new URLSearchParams(location.search);
+        if (value) {
+            params.set(key, value);
+        } else {
+            params.delete(key);
+        }
+        navigate(`/admin/reports?${params.toString()}`, { replace: true });
     };
 
     const handleSort = (field) => {
@@ -259,35 +335,43 @@ const Reports = () => {
         setPage(0);
     };
 
-    // effectiveReports: prefer server result; if server didn't filter by status when a status is set,
-    // apply a local fallback filter and log it so we can see what's happening.
-    const effectiveReports = useMemo(() => {
-        if (!filters.status) return reports;
-        const wanted = String(filters.status).toUpperCase();
-        const serverAllMatch = reports.length > 0 && reports.every(r => (r.status ?? '').toUpperCase() === wanted);
-        if (serverAllMatch) return reports;
+    // Backend handles filtering and pagination - no client-side filtering needed
+    const pagedReports = reports;
+    const displayedTotalElements = totalElements;
+    const displayedTotalPages = Math.max(1, totalPages);
 
-        // If server returned mixed statuses while client requested a status, apply fallback
-        const filtered = reports.filter(r => (r.status ?? '').toUpperCase() === wanted);
-        if (filtered.length !== reports.length) {
-            console.warn('REPORTS FETCH — applying client-side fallback filter for status=', wanted, '; serverReturned=', reports.length, '; filtered=', filtered.length);
+    // Check if status filter is active
+    const hasStatusFilter = !!filters.status;
+
+    // Map helpers for selected report
+    const selectedCoords = useMemo(() => {
+        const lat = Number(selectedReport?.latitude);
+        const lng = Number(selectedReport?.longitude);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+        return [lat, lng];
+    }, [selectedReport?.latitude, selectedReport?.longitude]);
+
+    const selectedAddressText = useMemo(() => {
+        const a = selectedReport?.address;
+        if (!a) return '';
+        const parts = [
+            [a.streetName, a.houseNumber].filter(Boolean).join(' ').trim(),
+            [a.postalCode, a.city].filter(Boolean).join(' ').trim(),
+            a.province
+        ].filter(Boolean);
+        return parts.join(', ');
+    }, [selectedReport?.address]);
+
+    const googleMapsUrl = useMemo(() => {
+        // Prefer address search; fall back to coordinates
+        if (selectedAddressText) {
+            return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedAddressText)}`;
         }
-        return filtered;
-    }, [reports, filters.status]);
-
-    // pagination derived from effectiveReports
-    const displayedTotalElements = effectiveReports.length;
-    const displayedTotalPages = Math.max(1, Math.ceil(displayedTotalElements / size));
-
-    const pagedReports = useMemo(() => {
-        const start = page * size;
-        return effectiveReports.slice(start, start + size);
-    }, [effectiveReports, page, size]);
-
-    // Ensure page reset when filters change
-    useEffect(() => {
-        setPage(0);
-    }, [filters.status, filters.category, filters.officerId, filters.from, filters.to, filters.search, size]);
+        if (selectedCoords) {
+            return `https://www.google.com/maps?q=${selectedCoords[0]},${selectedCoords[1]}`;
+        }
+        return null;
+    }, [selectedAddressText, selectedCoords]);
 
     return (
         <div className="admin-reports">
@@ -388,66 +472,48 @@ const Reports = () => {
                 <div className="kpi-loading">Loading summary...</div>
             ) : summary && (
                 <div className="kpi-cards">
-                    {summary.byStatus && (
-                        <>
-                            <div className="kpi-card">
-                                <div className="kpi-icon">📝</div>
+                    {/* Always show all status cards */}
+                    {Object.keys(statusConfig).map(status => {
+                        const count = hasStatusFilter
+                            ? (status === filters.status ? (summary.byStatus?.[status] || 0) : 0)
+                            : (summary.byStatus?.[status] || 0);
+
+                        return (
+                            <div key={status} className="kpi-card">
+                                <div className="kpi-icon">
+                                    <img src={statusConfig[status].icon} alt={`${statusConfig[status].label}-icon`} className="kpi-icon-img" />
+                                </div>
                                 <div className="kpi-content">
-                                    <h3>{summary.byStatus.SUBMITTED || 0}</h3>
-                                    <p>Submitted</p>
+                                    <h3>{count}</h3>
+                                    <p>{statusConfig[status].label}</p>
                                 </div>
                             </div>
-                            <div className="kpi-card">
-                                <div className="kpi-icon">🔄</div>
-                                <div className="kpi-content">
-                                    <h3>{summary.byStatus.IN_REVIEW || 0}</h3>
-                                    <p>In Review</p>
-                                </div>
-                            </div>
-                            <div className="kpi-card">
-                                <div className="kpi-icon">🔄</div>
-                                <div className="kpi-content">
-                                    <h3>{summary.byStatus.IN_PROGRESS || 0}</h3>
-                                    <p>In Progress</p>
-                                </div>
-                            </div>
-                            <div className="kpi-card">
-                                <div className="kpi-icon">🔄</div>
-                                <div className="kpi-content">
-                                    <h3>{summary.byStatus.RESOLVED || 0}</h3>
-                                    <p>Resolved</p>
-                                </div>
-                            </div>
-                            <div className="kpi-card">
-                                <div className="kpi-icon">🔄</div>
-                                <div className="kpi-content">
-                                    <h3>{summary.byStatus.REJECTED || 0}</h3>
-                                    <p>Rejected</p>
-                                </div>
-                            </div>
-                            <div className="kpi-card">
-                                <div className="kpi-icon">🔄</div>
-                                <div className="kpi-content">
-                                    <h3>{summary.byStatus.CANCELLED || 0}</h3>
-                                    <p>Canceled</p>
-                                </div>
-                            </div>
-                        </>
-                    )}
+                        );
+                    })}
+
+                    {/* Total Reports card */}
                     <div className="kpi-card">
-                        <div className="kpi-icon">📊</div>
+                        <div className="kpi-icon">
+                            <img src={totalreportGif} alt="total-reports-icon" className="kpi-icon-img" />
+                        </div>
                         <div className="kpi-content">
                             <h3>{summary.total}</h3>
-                            <p>Total Reports</p>
+                            <p>{hasStatusFilter ? 'Total Filtered Reports' : 'Total Reports'}</p>
                         </div>
                     </div>
-                    <div className="kpi-card">
-                        <div className="kpi-icon">⏱️</div>
-                        <div className="kpi-content">
-                            <h3>{summary.avgResolutionDays} days</h3>
-                            <p>Avg Resolution Time</p>
+
+                    {/* Avg Resolution Time card */}
+                    {summary.avgResolutionDays !== undefined && (
+                        <div className="kpi-card">
+                            <div className="kpi-icon">
+                                <img src={clockGif} alt="timer-icon" className="kpi-icon-img" />
+                            </div>
+                            <div className="kpi-content">
+                                <h3>{summary.avgResolutionDays} days</h3>
+                                <p>Avg Resolution Time</p>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             )}
 
@@ -474,50 +540,71 @@ const Reports = () => {
                 {loading ? (
                     <div className="table-loading">Loading reports...</div>
                 ) : (
-                    <table className="reports-table">
-                        <thead>
-                        <tr>
-                            <th onClick={() => handleSort('id')}>ID {sort.startsWith('id') && (sort.includes('asc') ? '↑' : '↓')}</th>
-                            <th onClick={() => handleSort('title')}>Title {sort.startsWith('title') && (sort.includes('asc') ? '↑' : '↓')}</th>
-                            <th onClick={() => handleSort('category')}>Category {sort.startsWith('category') && (sort.includes('asc') ? '↑' : '↓')}</th>
-                            <th onClick={() => handleSort('status')}>Status {sort.startsWith('status') && (sort.includes('asc') ? '↑' : '↓')}</th>
-                            <th>Author</th>
-                            <th>Officer</th>
-                            <th onClick={() => handleSort('createdAt')}>Created {sort.startsWith('createdAt') && (sort.includes('asc') ? '↑' : '↓')}</th>
-                            <th onClick={() => handleSort('updatedAt')}>Updated {sort.startsWith('updatedAt') && (sort.includes('asc') ? '↑' : '↓')}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {pagedReports.length === 0 ? (
+                    <div className="table-wrapper">
+                        <table className="reports-table">
+                            <thead>
                             <tr>
-                                <td colSpan="8" style={{ textAlign: 'center', padding: '2rem' }}>
-                                    No reports found
-                                </td>
+                                {[
+                                    { id: 'id', label: 'ID' },
+                                    { id: 'title', label: 'Title' },
+                                    { id: 'category', label: 'Category' },
+                                    { id: 'status', label: 'Status' },
+                                    { id: 'author', label: 'Author', noSort: true },
+                                    { id: 'officer', label: 'Officer', noSort: true },
+                                    { id: 'createdAt', label: 'Created' },
+                                    { id: 'updatedAt', label: 'Updated' }
+                                ].map((col) => (
+                                    <th
+                                        key={col.id}
+                                        onClick={() => !col.noSort && handleSort(col.id)}
+                                        style={{ cursor: col.noSort ? 'default' : 'pointer' }}
+                                    >
+                                        <div className="header-content">
+                                            {col.label}
+                                            {!col.noSort && sort.startsWith(col.id) && (
+                                                <img
+                                                    src={sort.includes('asc') ? sortUpIcon : sortDownIcon}
+                                                    alt="sort-icon"
+                                                    className="sort-icon-img"
+                                                />
+                                            )}
+                                        </div>
+                                    </th>
+                                ))}
                             </tr>
-                        ) : (
-                            pagedReports.map(report => (
-                                <tr key={report.id} onClick={() => handleRowClick(report.id)} className="clickable-row">
-                                    <td>{report.id}</td>
-                                    <td>{report.title}</td>
-                                    <td>
-                                        <span className="category-badge">
-                                            {categoryLabels[report.category] || report.category || 'Uncategorized'}
-                                        </span>
+                            </thead>
+                            <tbody>
+                            {pagedReports.length === 0 ? (
+                                <tr>
+                                    <td colSpan="8" className="empty-table-cell">
+                                        No reports found
                                     </td>
-                                    <td>
-                                        <span className={`status-badge status-${(report.status || '').toLowerCase()}`}>
-                                            {report.status}
-                                        </span>
-                                    </td>
-                                    <td>{report.authorName}</td>
-                                    <td>{report.officerName || 'Not assigned'}</td>
-                                    <td>{report.createdAt ? new Date(report.createdAt).toLocaleString() : ''}</td>
-                                    <td>{report.updatedAt ? new Date(report.updatedAt).toLocaleString() : ''}</td>
                                 </tr>
-                            ))
-                        )}
-                        </tbody>
-                    </table>
+                            ) : (
+                                pagedReports.map(report => (
+                                    <tr key={report.id} onClick={() => handleRowClick(report.id)} className="clickable-row">
+                                        <td>{report.id}</td>
+                                        <td>{report.title}</td>
+                                        <td>
+                                            <span className="category-badge">
+                                                {categoryLabels[report.category] || report.category || 'Uncategorized'}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className={`status-badge status-${(report.status || '').toLowerCase().replace(/_/g, '-')}`}>
+                                                {report.status?.replace(/_/g, ' ')}
+                                            </span>
+                                        </td>
+                                        <td>{report.authorName}</td>
+                                        <td>{report.officerName || 'Not assigned'}</td>
+                                        <td>{report.createdAt ? new Date(report.createdAt).toLocaleString() : ''}</td>
+                                        <td>{report.updatedAt ? new Date(report.updatedAt).toLocaleString() : ''}</td>
+                                    </tr>
+                                ))
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
 
                 <div className="pagination">
@@ -553,7 +640,7 @@ const Reports = () => {
                                     {categoryLabels[selectedReport.category] || selectedReport.category || 'Uncategorized'}
                                 </span></p>
                                 <p><strong>Status:</strong> <span
-                                    className={`status-badge status-${(selectedReport.status || '').toLowerCase()}`}>{selectedReport.status}</span>
+                                    className={`status-badge status-${(selectedReport.status || '').toLowerCase().replace(/_/g, '-')}`}>{selectedReport.status?.replace(/_/g, ' ')}</span>
                                 </p>
                             </div>
 
@@ -565,6 +652,7 @@ const Reports = () => {
 
                             <div className="detail-section">
                                 <h3>Location</h3>
+
                                 {selectedReport.address && (
                                     <>
                                         <p>
@@ -576,8 +664,75 @@ const Reports = () => {
                                         <p><strong>Postal Code:</strong> {selectedReport.address.postalCode}</p>
                                     </>
                                 )}
-                                <p><strong>Coordinates:</strong> {selectedReport.latitude}, {selectedReport.longitude}
-                                </p>
+
+                                <p><strong>Coordinates:</strong> {selectedReport.latitude}, {selectedReport.longitude}</p>
+
+                                {googleMapsUrl && (
+                                    <p>
+                                        <strong>Open:</strong>{' '}
+                                        <a className="gmaps-link" href={googleMapsUrl} target="_blank" rel="noreferrer">
+                                            View in Google Maps
+                                        </a>
+                                    </p>
+                                )}
+
+                                {selectedCoords ? (
+                                    <div className="report-map">
+                                        <MapContainer
+                                            key={`${selectedCoords[0]}-${selectedCoords[1]}`}
+                                            center={selectedCoords}
+                                            zoom={15}
+                                            scrollWheelZoom={false}
+                                            whenReady={(evt) => evt?.target?.invalidateSize()}
+                                        >
+                                            <TileLayer
+                                                attribution='&copy; OpenStreetMap contributors'
+                                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                            />
+                                            <Marker position={selectedCoords}>
+                                                <Popup>
+                                                    <div className="popup-content">
+                                                        <div className="popup-title">
+                                                            Report location
+                                                        </div>
+
+                                                        {selectedAddressText ? (
+                                                            <div className="popup-address">
+                                                                <a
+                                                                    className="gmaps-link"
+                                                                    href={googleMapsUrl}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                >
+                                                                    {selectedAddressText}
+                                                                </a>
+                                                            </div>
+                                                        ) : null}
+
+                                                        <div className="popup-coords">
+                                                            {selectedCoords[0]}, {selectedCoords[1]}
+                                                        </div>
+
+                                                        {googleMapsUrl ? (
+                                                            <a
+                                                                className="gmaps-btn"
+                                                                href={googleMapsUrl}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                            >
+                                                                Open in Google Maps
+                                                            </a>
+                                                        ) : null}
+                                                    </div>
+                                                </Popup>
+                                            </Marker>
+                                        </MapContainer>
+                                    </div>
+                                ) : (
+                                    <p className="no-coords-message">
+                                        No valid coordinates available for map.
+                                    </p>
+                                )}
                             </div>
 
                             <div className="detail-section">
@@ -600,7 +755,7 @@ const Reports = () => {
                             {selectedReport.videoUrl && (
                                 <div className="detail-section">
                                     <h3>Video</h3>
-                                    <video controls src={selectedReport.videoUrl} style={{ maxWidth: '100%' }} />
+                                    <video className="report-video" controls src={selectedReport.videoUrl} />
                                 </div>
                             )}
 
@@ -611,8 +766,8 @@ const Reports = () => {
                                         {selectedReport.statusHistory.map((entry, idx) => (
                                             <div key={idx} className="history-entry">
                                                 <div className="history-header">
-                                                    <span className={`status-badge status-${(entry.status || '').toLowerCase().replace(' ', '-')}`}>
-                                                        {entry.status}
+                                                    <span className={`status-badge status-${(entry.status || '').toLowerCase().replace(/_/g, '-')}`}>
+                                                        {entry.status?.replace(/_/g, ' ')}
                                                     </span>
                                                     <span className="history-time">{entry.timestamp ? new Date(entry.timestamp).toLocaleString() : ''}</span>
                                                 </div>
@@ -635,3 +790,5 @@ const Reports = () => {
 };
 
 export default Reports;
+
+

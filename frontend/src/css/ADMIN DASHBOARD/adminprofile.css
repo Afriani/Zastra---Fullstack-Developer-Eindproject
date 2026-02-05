@@ -195,9 +195,27 @@
     justify-content: center;
     line-height: 1;
 }
+
+.upload-admin-avatar-btn img.admin-profile {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+}
+
 .upload-admin-avatar-btn:hover {
     background: #2980b9;
     transform: translateY(-2px);
+}
+
+/* Hidden file input (replaces inline style display: none) */
+.hidden-file-input {
+    display: none;
+}
+
+/* Avatar preview actions container (replaces inline marginTop: 10px) */
+.avatar-preview-actions {
+    margin-top: 10px;
 }
 
 /* Greeting text */
@@ -345,6 +363,11 @@
         right: -4px;
         padding: 6px;
         font-size: 12px;
+    }
+
+    .upload-admin-avatar-btn img.admin-profile {
+        width: 16px;
+        height: 16px;
     }
 }
 

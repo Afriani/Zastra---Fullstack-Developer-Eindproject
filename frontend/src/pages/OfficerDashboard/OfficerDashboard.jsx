@@ -5,6 +5,31 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 
+// All Stat Icons
+import errorIcon from "../../assets/pictures/error.gif"
+import refreshIcon from "../../assets/pictures/refresh.gif"
+import submittedIcon from "../../assets/pictures/submitted.gif"
+import inreviewIcon from "../../assets/pictures/inreview.gif"
+import inprogressIcon from "../../assets/pictures/inprogress.gif"
+import resolvedIcon from "../../assets/pictures/resolved.gif"
+import cancelIcon from "../../assets/pictures/cancel.gif"
+import rejectIcon from "../../assets/pictures/reject.gif"
+import totalreportIcon from "../../assets/pictures/totalreport.gif"
+
+// All Quick Action images
+import reportview from "../../assets/pictures/reportview.png"
+import communityfeed from "../../assets/pictures/communityfeed.png"
+import profile from "../../assets/pictures/profile.png"
+
+// All Report Items images
+import address from "../../assets/pictures/user-report-detail/location.png"
+import categories from "../../assets/pictures/officer-dashboard/category.png"
+import created from "../../assets/pictures/officer-dashboard/created-at.png"
+import mailbox from "../../assets/pictures/officer-dashboard/mailbox.png"
+
+// All Recent Report images
+import viewAll from "../../assets/pictures/officer-dashboard/view-all.png"
+
 import "../../css/OFFICER DASHBOARD/officerdashboard.css";
 
 export default function OfficerDashboard() {
@@ -138,7 +163,10 @@ export default function OfficerDashboard() {
         return (
             <div className="dashboard-page-error">
                 <div className="error-message">
-                    <h3>⚠️ {error}</h3>
+                    <h3>
+                        <img src={errorIcon} alt="error-icon" className="dashboard-icon" />
+                        {error}
+                    </h3>
                     <button onClick={() => navigate("/login")} className="btn-primary">
                         Go to Login
                     </button>
@@ -155,7 +183,10 @@ export default function OfficerDashboard() {
                     <h1>Overview</h1>
                     <p>Welcome back! Here's your overview for today.</p>
                 </div>
-                <button onClick={fetchDashboardData} className="refresh-btn">🔄 Refresh</button>
+                <button onClick={fetchDashboardData} className="refresh-btn">
+                    <img src={refreshIcon} alt="refresh-icon" className="dashboard-icons" />
+                    Refresh
+                </button>
             </header>
 
             {/* WebSocket Status Indicator */}
@@ -171,46 +202,51 @@ export default function OfficerDashboard() {
                 <div className="stats-grid">
                     <StatCard
                         label="SUBMITTED"
+                        gif={submittedIcon}
                         count={stats.pendingReports}
-                        emoji="⏳"
                         onClick={() => navigate("/officer/reports?status=SUBMITTED")}
                     />
 
                     <StatCard
                         label="IN REVIEW"
                         count={stats.inReviewReports}
-                        emoji="🔎" onClick={() => navigate("/officer/reports?status=IN_REVIEW")}
+                        gif={inreviewIcon}
+                        onClick={() => navigate("/officer/reports?status=IN_REVIEW")}
                     />
 
                     <StatCard
                         label="IN PROGRESS"
                         count={stats.inProgressReports}
-                        emoji="🔄" onClick={() => navigate("/officer/reports?status=IN_PROGRESS")}
+                        gif={inprogressIcon}
+                        onClick={() => navigate("/officer/reports?status=IN_PROGRESS")}
                     />
 
                     <StatCard
                         label="RESOLVED"
                         count={stats.resolvedReports}
-                        emoji="✅" onClick={() => navigate("/officer/reports?status=RESOLVED")}
+                        gif={resolvedIcon}
+                        onClick={() => navigate("/officer/reports?status=RESOLVED")}
                     />
 
                     <StatCard
                         label="REJECTED"
                         count={stats.rejectedReports}
-                        emoji="❌" onClick={() => navigate("/officer/reports?status=REJECTED")}
+                        gif={rejectIcon}
+                        onClick={() => navigate("/officer/reports?status=REJECTED")}
                     />
 
                     <StatCard
                         label="CANCELLED"
                         count={stats.cancelledReports}
-                        emoji="🚫"
+                        gif={cancelIcon}
                         onClick={() => navigate("/officer/reports?status=CANCELLED")}
                     />
 
                     <StatCard
                         label="Total Assigned Reports"
                         count={stats.totalAssignedReports}
-                        emoji="📊" onClick={() => navigate("/officer/reports")}
+                        gif={totalreportIcon}
+                        onClick={() => navigate("/officer/reports")}
                     />
 
                 </div>
@@ -221,21 +257,21 @@ export default function OfficerDashboard() {
                 <h2>Quick Actions</h2>
                 <div className="actions-grid">
                     <ActionCard
-                        icon="📋"
+                        gif={reportview}
                         title="View All Reports"
                         desc="Manage your assigned reports"
                         to="/officer/reports"
                     />
 
                     <ActionCard
-                        icon="🌍"
+                        gif={communityfeed}
                         title="Community Feed"
                         desc="Browse public reports"
                         to="/officer/community"
                     />
 
                     <ActionCard
-                        icon="👤"
+                        gif={profile}
                         title="My Profile"
                         desc="Update your information"
                         to="/officer/profile"
@@ -248,7 +284,11 @@ export default function OfficerDashboard() {
             <section className="recent-reports">
                 <div className="section-header">
                     <h2>Recent Assigned Reports</h2>
-                    <Link to="/officer/reports" className="view-all-btn">View All →</Link>
+                    <Link to="/officer/reports" className="view-all-btn">
+                        View All
+                        <img src={viewAll} alt="view-all-icon" className="recent-report" />
+
+                    </Link>
                 </div>
                 <div className="reports-container">
                     {stats.recentReports?.length > 0 ? (
@@ -267,11 +307,13 @@ export default function OfficerDashboard() {
 }
 
 // Reusable Stat Card
-function StatCard({ label, count, emoji, onClick }) {
+function StatCard({ label, count, gif, onClick }) {
     return (
         <div className="stat-card" role="button" tabIndex={0} onClick={onClick} onKeyDown={(e) => e.key === "Enter" && onClick()}>
             <div className="stat-top-row">
-                <div className="stat-icon">{emoji}</div>
+                <div className="stat-icon">
+                    <img src={gif} alt={label} className="stat-gif" />
+                </div>
                 <h3 className="stat-number">{count}</h3>
             </div>
             <p className="stat-label">{label}</p>
@@ -280,10 +322,12 @@ function StatCard({ label, count, emoji, onClick }) {
 }
 
 // Reusable Action Card
-function ActionCard({ icon, title, desc, to }) {
+function ActionCard({ gif, title, desc, to }) {
     return (
         <Link to={to} className="action-card">
-            <div className="action-icon">{icon}</div>
+            <div className="action-icon">
+                <img src={gif} alt="action-gif" className="quick-actions-gif"/>
+            </div>
             <h4>{title}</h4>
             <p>{desc}</p>
         </Link>
@@ -346,7 +390,7 @@ const getReportImage = (report) => {
 };
 
 // Report Item
-function ReportItem({ report, formatDate, getStatusColor }) {
+function ReportItem({ report, formatDate }) {
     const imgUrl = getReportImage(report);
 
     return (
@@ -367,20 +411,24 @@ function ReportItem({ report, formatDate, getStatusColor }) {
             <div className="report-main">
                 <div className="report-header-officer-dashboard">
                     <h4>#{report.id} - {report.title}</h4>
-                    <span
-                        className="status-badge"
-                        style={{ backgroundColor: getStatusColor(report.status) }}
-                    >
+                    <span className={`status-badge status-${report.status.toLowerCase().replace(/_/g, "-")}`}>
                         {report.status.replace(/_/g, " ")}
                     </span>
                 </div>
                 <p className="report-description">{report.description?.slice(0, 120)}...</p>
                 <div className="report-meta">
-                    <span className="category">📂 {report.category}</span>
-                    <span className="date">🕒 {formatDate(report.createdAt)}</span>
+                    <span className="category">
+                        <img src={categories} alt="categories-icon" className="report-items" />
+                        {report.category}
+                    </span>
+                    <span className="date">
+                        <img src={created} alt="created-at-icon" className="report-items" />
+                        {formatDate(report.createdAt)}
+                    </span>
                     {report.address && (
                         <span className="location">
-                            📍 {report.address.city}, {report.address.province}
+                            <img src={address} alt="address-icon" className="report-items" />
+                            {report.address.city}, {report.address.province}
                         </span>
                     )}
                 </div>
@@ -400,10 +448,13 @@ function ReportItem({ report, formatDate, getStatusColor }) {
 function EmptyState() {
     return (
         <div className="empty-state">
-            <div className="empty-icon">📭</div>
+            <div className="empty-icon">
+                <img src={mailbox} alt="mailbox-icon" className="report-items" />
+            </div>
             <h3>No Recent Reports</h3>
             <p>You don't have any assigned reports yet.</p>
         </div>
     );
 }
+
 

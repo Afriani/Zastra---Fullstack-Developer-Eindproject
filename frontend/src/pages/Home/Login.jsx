@@ -1,12 +1,15 @@
 import '../../css/HOME/login.css';
 
 // Frontend packages
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 // Backend packages
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
+
+// Context import
+import { AuthContext } from '../../context/AuthContext.jsx';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -19,6 +22,9 @@ function Login() {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const error = params.get("error");
+
+    // Context gebruiken
+    const { login } = useContext(AuthContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -59,7 +65,6 @@ function Login() {
             // Backend returns: { success: true, message: "...", data: { token: "..." } }
             if (response.data.success && response.data.data && response.data.data.token) {
                 const token = response.data.data.token;
-                localStorage.setItem("token", token);
 
                 // Optionally decode token for debugging
                 try {
@@ -91,6 +96,9 @@ function Login() {
                 // Get role from user object
                 const role = (user.userRole || user.role || "").toString().toUpperCase();
                 console.log("User role detected:", role);
+
+                // NIEUWE CODE: Gebruik de login functie uit Context
+                login(token, user);
 
                 // Navigate based on role
                 setTimeout(() => {
@@ -238,6 +246,3 @@ function Login() {
 }
 
 export default Login;
-
-
-

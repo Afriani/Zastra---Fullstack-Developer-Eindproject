@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useLocation} from "react-router-dom";
-import SidebarUser from "../../components/UserDashboard/SidebarUser.jsx";
+
 import "../../css/USER DASHBOARD/myreport.css";
 
 // Add these imports near the top; place them after your current imports
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+
+// All Icons
+import address from "../../assets/pictures/user-report-detail/location.png"
 
 // Fix default icon paths in Leaflet (do once per file where Leaflet components used)
 delete L.Icon.Default.prototype._getIconUrl;
@@ -119,10 +122,10 @@ function MyReport() {
 
                 const headers = {Authorization: `Bearer ${token}`};
 
-                // ✅ Base endpoint for user's reports
+                // Base endpoint for user's reports
                 let url = "http://localhost:8080/api/reports/my";
 
-                // ✅ Handle filter logic from dashboard
+                // Handle filter logic from dashboard
                 if (filter) {
                     const statusMap = {
                         pending: "SUBMITTED",
@@ -139,7 +142,7 @@ function MyReport() {
                     }
                 }
 
-                // ✅ Single axios call with dynamic URL
+                // Single axios call with dynamic URL
                 const res = await axios.get(url, {headers});
 
                 // After fetching, normalize to an array
@@ -237,8 +240,6 @@ function MyReport() {
     return (
         <div className="dashboard">
 
-            <SidebarUser/>
-
             <div className="reports-container">
 
                 <div className="report-header">
@@ -319,7 +320,9 @@ function MyReport() {
                             {/* Location */}
                             <div className="location-section">
                                 <div className="location-info">
-                                    <span className="location-icon">📍</span>
+                                    <span className="location-icon">
+                                        <img src={address} alt="address-icon" className="my-report-icons" />
+                                    </span>
                                     <span className="address">{formatAddress(report?.address)}</span>
                                 </div>
                                 <div className="coordinates">
@@ -329,11 +332,11 @@ function MyReport() {
 
                             {/* Small map for this report (show only when coords available) */}
                             {Number.isFinite(Number(report?.latitude)) && Number.isFinite(Number(report?.longitude)) && (
-                                <div style={{ marginTop: 12 }}>
+                                <div className="map-wrapper">
                                     <MapContainer
                                         center={[Number(report.latitude), Number(report.longitude)]}
                                         zoom={15}
-                                        style={{ height: "200px", width: "100%", borderRadius: 8 }}
+                                        className="report-map"
                                         scrollWheelZoom={true}   // enable mouse-wheel zoom
                                         minZoom={8}              // user cannot zoom out beyond this
                                         maxZoom={18}             // user cannot zoom in beyond this
@@ -347,8 +350,9 @@ function MyReport() {
                                         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                                         <Marker position={[Number(report.latitude), Number(report.longitude)]}>
                                             <Popup>
-                                                <div style={{ marginBottom: 8 }}>
-                                                    📍 <strong>Report Location</strong><br/>
+                                                <div className="popup-content">
+                                                    <img src={address} alt="address-icon" className="my-report-icons" />
+                                                    <strong>Report Location</strong><br/>
                                                     {report.address?.streetName ? `${report.address.streetName} ${report.address.houseNumber || ''}, ` : ''}
                                                     {report.address?.city ? `${report.address.city}, ` : ''}
                                                     {report.address?.province || ''}
@@ -415,19 +419,13 @@ function MyReport() {
                                                             className="timeline-user">by {h?.updatedBy ?? "System"}</span>
                                                         {h?.notes && <p className="timeline-notes">{h.notes}</p>}
 
-                                                        {/* ✅ SHOW Officer-Uploaded Photo if available */}
+                                                        {/* SHOW Officer-Uploaded Photo if available */}
                                                         {h?.resolvedPhotoUrl && (
                                                             <div className="timeline-photo">
                                                                 <img
                                                                     src={h.resolvedPhotoUrl}
                                                                     alt="Resolution proof"
                                                                     className="resolved-photo"
-                                                                    style={{
-                                                                        maxWidth: "250px",
-                                                                        marginTop: "8px",
-                                                                        borderRadius: "6px",
-                                                                        border: "1px solid #ccc"
-                                                                    }}
                                                                 />
                                                             </div>
                                                         )}
@@ -447,3 +445,5 @@ function MyReport() {
 }
 
 export default MyReport;
+
+

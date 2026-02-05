@@ -24,6 +24,10 @@ p {
     margin-bottom: 0.5rem;
 }
 
+.footer-logo {
+    cursor: pointer;
+}
+
 /* Logo Styling */
 .footer-logo img {
     height: 99px;

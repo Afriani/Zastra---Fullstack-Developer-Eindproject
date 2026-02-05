@@ -64,7 +64,7 @@ export default function AdminLayout() {
 
             <SidebarAdmin onLogout={handleLogout} />
 
-            <div className="main-content" style={{ position: "relative" }}>
+            <div className="main-content">
                 {/* Floating global controls (top-right) */}
                 <div className="notification-bell-container">
                     <NotificationBell />

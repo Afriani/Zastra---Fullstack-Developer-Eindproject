@@ -1,6 +1,4 @@
-
-
-/* src/css/ADMIN DASHBOARD/adminlayout.css */
+/* src/App.css */
 
 /* --- variables --- */
 :root {
@@ -61,6 +59,45 @@
     -webkit-overflow-scrolling: touch;
 }
 
+/* --- User Layout Styles --- */
+.user-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f6fa;
+}
+
+.user-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.notification-bell-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.user-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: white;
+}
+
+.user-header h1 {
+    font-size: 2rem;
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.user-header p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
 /* small utilities */
 .hidden-on-mobile {
     display: inline-flex;
@@ -90,6 +127,22 @@
     }
 }
 
+/* User Layout Mobile Responsive */
+@media screen and (max-width: 468px) {
+    .user-layout {
+        flex-direction: column;
+    }
+
+    .notification-bell-container {
+        top: 10px;
+        right: 10px;
+    }
+
+    .user-header h1 {
+        font-size: 1.5rem;
+    }
+}
+
 /* --- accessibility / focus rings --- */
 .refresh-btn:focus {
     outline: 2px solid rgba(59,130,246,0.25);
@@ -105,4 +158,8 @@
     box-shadow: 0 1px 2px rgba(16,24,40,0.03);
 }
 
-
+/* --- Error page styling (replaces inline styles for 403/404 pages) --- */
+.error-page {
+    text-align: center;
+    padding: 50px;
+}

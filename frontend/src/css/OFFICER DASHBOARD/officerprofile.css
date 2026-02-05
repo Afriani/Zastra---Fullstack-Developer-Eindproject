@@ -1,5 +1,3 @@
-/* src/css/OFFICER DASHBOARD/officerprofile.css */
-
 @import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
 
 /* ========== Reset ========== */
@@ -125,6 +123,13 @@
     text-align: center;
 }
 
+/* Avatar Container - positioned wrapper for avatar + upload button */
+.avatar-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
 /* Avatar */
 .avatar {
     width: 120px;
@@ -136,11 +141,6 @@
     box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
     flex: 0 0 auto;
 }
-
-.avatar-container {
-    margin-bottom: 15px;
-}
-
 
 /* Slightly smaller avatar on small screens */
 @media (max-width: 480px) {
@@ -158,32 +158,35 @@
     box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3);
 }
 
-/* The upload button (camera icon) overlay near the avatar */
-.avatar-officer-container {
-    position: relative;
-    display: inline-block;
-}
-
-.avatar-officer-container button {
-    background-color: transparent;
-}
-
+/* Upload button overlay near the avatar */
 .upload-officer-avatar-btn {
     position: absolute;
-    bottom: -6px;
-    right: -6px;
-    padding: 8px 16px;
+    bottom: 1px;
+    right: 1px;
+    padding: 6px;
     background-color: transparent;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    border: 1px solid #3498db;
+    border-radius: 10%;
     cursor: pointer;
-    font-size: 14px;
-    box-shadow: 0 4px 10px rgba(52,152,219,0.15);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
 }
-.upload-avatar-btn:hover {
-    background: #2980b9;
-    transform: translateY(-2px);
+
+/* Icon inside the upload button */
+.officer-profile-icons {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Upload button hover effect */
+.upload-officer-avatar-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(52,152,219,0.3);
 }
 
 /* User greeting & joined text block */
@@ -198,6 +201,40 @@
     .user-picture > div {
         margin-left: 6px;
     }
+}
+
+/* ========== Hidden File Input (replaces inline style) ========== */
+.avatar-file-input-hidden {
+    display: none;
+}
+
+/* ========== Save Avatar Container (replaces inline style) ========== */
+.save-avatar-container {
+    margin-top: 10px;
+}
+
+/* ========== Save Avatar Button ========== */
+.save-avatar-btn {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+}
+
+.save-avatar-btn:hover:not(:disabled) {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
+.save-avatar-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* ========== Edit Button ========== */
@@ -219,8 +256,20 @@
     box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
     z-index: 10;
 }
+
+.edit-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+}
+
 @media (max-width: 480px) {
-    .edit-btn { width: 120px; top: 12px; right: 12px; font-size: 0.85rem; padding: 8px 10px; }
+    .edit-btn {
+        width: 120px;
+        top: 12px;
+        right: 12px;
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
 }
 
 /* ========== Save Button ========== */
@@ -239,9 +288,15 @@
     width: 100%;
     max-width: 260px;
 }
+
 .save-btn:hover:not(:disabled) {
     background-color: #218838;
     transform: translateY(-1px);
+}
+
+.save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* ========== Profile Card Headings & Labels ========== */
@@ -337,24 +392,23 @@
 .account-info {
     display: flex;
     flex-direction: column;
-    /*grid-template-columns: 1fr;*/
     gap: 8px;
 }
 
 @media (min-width: 900px) {
     .account-info {
+        display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
     }
 
     /* Make Email span both columns (if desired) */
-    .account-info input[name="email"] {
-        grid-column: 1 / -1;
-    }
+    /*.account-info input[name="email"] {*/
+    /*    grid-column: 1 / -1;*/
+    /*}*/
 }
 
 /* ========== Messages & Loading ========== */
-/* Keep existing styles */
 .error {
     color: #b91c1c;
     margin-top: 15px;
@@ -427,6 +481,7 @@
     .avatar { width: 88px; height: 88px; }
     .user-picture { padding-top: 14px; gap: 12px; }
     .edit-btn { top: 10px; right: 10px; width: 110px; font-size: 0.8rem; }
+    .officer-profile-icons { width: 18px; height: 18px; }
 }
 
 /* ========== Smooth animations & focus states ========== */
@@ -438,13 +493,17 @@
 .profile-card,
 .user-picture,
 .edit-btn,
-.save-btn {
+.save-btn,
+.save-avatar-btn,
+.upload-officer-avatar-btn {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Focus styles for accessibility */
 .edit-btn:focus,
 .save-btn:focus,
+.save-avatar-btn:focus,
+.upload-officer-avatar-btn:focus,
 .account-info input:focus,
 .residential-address input:focus {
     outline: 2px solid #3498db;

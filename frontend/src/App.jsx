@@ -14,6 +14,7 @@ import Privacy from "./pages/Home/Privacy.jsx";
 // Login pages and all pages after login successfully
 import Login from "./pages/Home/Login.jsx";
 import UsersDashboard from "./pages/UserDashboard/UsersDashboard.jsx";
+import UserLayout from "./pages/UserDashboard/UserLayout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RoleRoute from "./components/RoleRoute.jsx";
 import OAuthCallback from "./pages/Home/OAuthCallback.jsx"
@@ -69,87 +70,105 @@ function App() {
                 <Route path="/oauth2/callback" element={<OAuthCallback />} />
                 <Route path="/oauth-callback" element={<OAuthCallback />} />
 
-                {/* Protected User Dashboard routes - require login */}
+                {/* Protected User Dashboard routes - wrapped with UserLayout */}
                 <Route
                     path="/dashboard"
                     element={
                         <ProtectedRoute>
-                            <UsersDashboard />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<UsersDashboard />} />
+                </Route>
 
                 <Route
                     path="/user-dashboard"
                     element={
                         <ProtectedRoute>
-                            <UsersDashboard />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<UsersDashboard />} />
+                </Route>
 
                 <Route
                     path="/new-report"
                     element={
                         <ProtectedRoute>
-                            <NewReport />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<NewReport />} />
+                </Route>
 
                 <Route
                     path="/user-report"
                     element={
                         <ProtectedRoute>
-                            <MyReport />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<MyReport />} />
+                </Route>
 
                 <Route
                     path="/user-report/:id"
                     element={
                         <ProtectedRoute>
-                            <UserReportDetail />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<UserReportDetail />} />
+                </Route>
 
                 <Route
                     path="/user/announcements/:id"
                     element={
                         <ProtectedRoute>
-                            <AnnouncementDetail />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<AnnouncementDetail />} />
+                </Route>
 
                 <Route
                     path="/my-inbox"
                     element={
                         <ProtectedRoute>
-                            <MyInbox />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<MyInbox />} />
+                </Route>
 
                 <Route
                     path="/conversation-view"
                     element={
                         <ProtectedRoute>
-                            <ConversationView />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<ConversationView />} />
+                </Route>
 
                 <Route
                     path="/user-profile"
                     element={
                         <ProtectedRoute>
-                            <MyProfile />
+                            <UserLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route index element={<MyProfile />} />
+                </Route>
 
                 {/* Officer dashboard - requires OFFICER role */}
                 <Route path="/officer" element={
@@ -190,7 +209,7 @@ function App() {
                 <Route
                     path="/403"
                     element={
-                        <div style={{ textAlign: 'center', padding: '50px' }}>
+                        <div className="error-page">
                             <h1>403 - Forbidden 🚫</h1>
                             <p>You don't have permission to access this page.</p>
                         </div>
@@ -201,7 +220,7 @@ function App() {
                 <Route
                     path="*"
                     element={
-                        <div style={{ textAlign: 'center', padding: '50px' }}>
+                        <div className="error-page">
                             <h1>404 - Page Not Found 😕</h1>
                             <p>The page you're looking for doesn't exist.</p>
                         </div>

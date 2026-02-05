@@ -2,7 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 
 import "../../css/USER DASHBOARD/myinbox.css";
-import SidebarUser from "../../components/UserDashboard/SidebarUser.jsx";
+
+// All icons
+import unreadIcon from "../../assets/pictures/my-inbox/right-speech-ballon.png";
+import readIcon from "../../assets/pictures/my-inbox/left-speech-ballon.png";
 
 function MyInbox() {
     const [activeTab, setActiveTab] = useState("received");
@@ -172,14 +175,13 @@ function MyInbox() {
 
     return (
         <div className="dashboard">
-            <SidebarUser />
 
             <div className="inbox-container">
                 <div className="user-inbox-header">
                     <h2>My Inbox</h2>
                 </div>
 
-                <div className="btn-container" style={{ gap: "8px" }}>
+                <div className="btn-container">
                     <button className="btn-new-message" onClick={() => setShowNewMessageModal(true)}>
                         Compose Message
                     </button>
@@ -215,9 +217,14 @@ function MyInbox() {
                                 key={`${item.id}`}
                                 className={`folder-row ${item.unread && activeTab === "received" ? "unread" : ""}`}
                                 onClick={() => openItem(item)}
-                                style={{ cursor: "pointer" }}
                             >
-                                <div className="folder-icon">{item.unread && activeTab === "received" ? "💬" : "🗨️"}</div>
+                                <div className="folder-icon">
+                                    {item.unread && activeTab === "received" ? (
+                                        <img src={unreadIcon} alt="Unread" className="my-inbox-icons" />
+                                    ) : (
+                                        <img src={readIcon} alt="Read" className="my-inbox-icons" />
+                                    )}
+                                </div>
                                 <div className="folder-details">
                                     <div className="folder-subject">{item.title}</div>
                                     <div className="folder-snippet">
@@ -235,7 +242,7 @@ function MyInbox() {
                 </div>
 
                 {selectedItem && (
-                    <div className="thread-container" style={{ marginTop: "16px" }}>
+                    <div className="thread-container">
                         <div className="thread-header">
                             <h3>{selectedItem.title}</h3>
                             <button className="btn-close" onClick={() => setSelectedItem(null)}>

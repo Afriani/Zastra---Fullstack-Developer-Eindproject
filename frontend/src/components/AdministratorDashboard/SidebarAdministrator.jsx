@@ -4,6 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 
 import "../../css/ADMIN DASHBOARD/sidebaradministrator.css";
 
+import { HiMenuAlt3 } from "react-icons/hi"; // or HiMenu, GiHamburgerMenu, etc.
+
 // Icons for admin sidebar
 import overviewIcon from '../../assets/pictures/overview.png';
 import myReportIcon from '../../assets/pictures/myreport.png';
@@ -56,7 +58,7 @@ function SidebarAdmin({ onLogout }) {
                 onClick={toggle}
                 aria-label={open ? "Close menu" : "Open menu"}
             >
-                ☰
+                <HiMenuAlt3 className="hamburger-icon" />
             </button>
 
             {/* Overlay (renders only when open) */}
@@ -129,7 +131,7 @@ function SidebarAdmin({ onLogout }) {
                 </nav>
 
                 {/* Logout inside sidebar, sits near bottom via sticky (no footer element) */}
-                <div className="logout-container-officer">
+                <div className="logout-container-administrator">
                     <button
                         className="logout-btn-final"
                         onClick={() => { onLogout?.(); handleNavClick(); }}
