@@ -1,14 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-import "../../css/HOME/oauthcallback.css"; // <-- add this import
+import { AuthContext } from "../../context/AuthContext.jsx"; // Pas pad aan indien nodig
+import "../../css/HOME/oauthcallback.css";
 
 function OAuthCallback() {
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext); // NIEUW: gebruik Context
 
     useEffect(() => {
-        console.log("OAuthCallback mounted", { search: window.location.search, hash: window.location.hash });
+        console.log("OAuthCallback mounted", {
+            search: window.location.search,
+            hash: window.location.hash
+        });
 
         // Function to read token from URL query or hash
         const readToken = () => {
@@ -30,29 +35,28 @@ function OAuthCallback() {
             return;
         }
 
-        // Save token and set axios default Authorization header
-        localStorage.setItem("token", token);
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        console.log("OAuth token saved and axios header set");
+        console.log("OAuth token found:", token.substring(0, 20) + "...");
 
-        // Decode token to extract role
-        let role = "CITIZEN";
+        // Decode token to extract user info
+        let userRole = "USER";
+        let decodedUser = null;
+
         try {
-            const decoded = jwtDecode(token);
-            console.log("Decoded JWT:", decoded);
+            decodedUser = jwtDecode(token);
+            console.log("Decoded JWT:", decodedUser);
 
-            if (decoded.role) {
-                role = decoded.role.toString().toUpperCase();
-            } else if (decoded.userRole) {
-                role = decoded.userRole.toString().toUpperCase();
-            } else if (Array.isArray(decoded.authorities) && decoded.authorities.length > 0) {
-                const authority = decoded.authorities[0];
-                role = authority.replace("ROLE_", "").toUpperCase();
-            } else if (Array.isArray(decoded.roles) && decoded.roles.length > 0) {
-                role = decoded.roles[0].toString().toUpperCase();
+            if (decodedUser.role) {
+                userRole = decodedUser.role.toString().toUpperCase();
+            } else if (decodedUser.userRole) {
+                userRole = decodedUser.userRole.toString().toUpperCase();
+            } else if (Array.isArray(decodedUser.authorities) && decodedUser.authorities.length > 0) {
+                const authority = decodedUser.authorities[0];
+                userRole = authority.replace("ROLE_", "").toUpperCase();
+            } else if (Array.isArray(decodedUser.roles) && decodedUser.roles.length > 0) {
+                userRole = decodedUser.roles[0].toString().toUpperCase();
             }
 
-            console.log("Extracted role:", role);
+            console.log("Extracted role:", userRole);
         } catch (decodeErr) {
             console.warn("Failed to decode JWT in OAuthCallback:", decodeErr);
         }
@@ -67,31 +71,54 @@ function OAuthCallback() {
             console.warn("Failed to clean URL after OAuth:", replaceErr);
         }
 
-        // Navigate user based on role
-        const navigateToRole = (userRole) => {
-            console.log("Navigating for role:", userRole);
-            if (userRole === "ADMIN" || userRole === "ROLE_ADMIN") {
-                navigate("/admin", { replace: true });
-            } else if (userRole === "OFFICER" || userRole === "ROLE_OFFICER") {
-                navigate("/officer", { replace: true });
-            } else {
-                navigate("/user-dashboard", { replace: true });
+        // Fetch user profile to get full user object
+        axios.get("http://localhost:8080/api/users/profile", {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
-        };
-
-        // Fetch user profile to confirm role and redirect accordingly
-        axios.get("http://localhost:8080/api/users/profile")
+        })
             .then((response) => {
                 console.log("Profile fetch successful:", response.data);
-                const profileRole = (response.data.userRole || response.data.role || role).toString().toUpperCase();
-                navigateToRole(profileRole);
+                const user = response.data;
+
+                // NIEUW: Gebruik de login functie uit Context
+                login(token, user);
+
+                // Navigate based on role
+                const role = (user.userRole || user.role || userRole).toString().toUpperCase();
+
+                if (role === "ADMIN" || role === "ROLE_ADMIN") {
+                    navigate("/admin", { replace: true });
+                } else if (role === "OFFICER" || role === "ROLE_OFFICER") {
+                    navigate("/officer", { replace: true });
+                } else {
+                    navigate("/user-dashboard", { replace: true });
+                }
             })
             .catch((fetchErr) => {
                 console.warn("Profile fetch failed after OAuth:", fetchErr);
-                navigateToRole(role);
+
+                // Fallback: gebruik decoded token data
+                const fallbackUser = {
+                    email: decodedUser?.sub || decodedUser?.email,
+                    userRole: userRole,
+                    ...decodedUser
+                };
+
+                // NIEUW: Gebruik de login functie uit Context (ook bij fallback)
+                login(token, fallbackUser);
+
+                // Navigate based on decoded role
+                if (userRole === "ADMIN" || userRole === "ROLE_ADMIN") {
+                    navigate("/admin", { replace: true });
+                } else if (userRole === "OFFICER" || userRole === "ROLE_OFFICER") {
+                    navigate("/officer", { replace: true });
+                } else {
+                    navigate("/user-dashboard", { replace: true });
+                }
             });
 
-    }, [navigate]);
+    }, [navigate, login]); // NIEUW: voeg 'login' toe aan dependencies
 
     return (
         <div className="oauth-callback-container">

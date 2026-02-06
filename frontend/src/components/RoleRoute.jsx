@@ -1,39 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
 
-// Wrapper that checks token role before rendering
+import { AuthContext } from "../context/AuthContext.jsx";
+
 function RoleRoute({ children, allowedRoles }) {
-    const token = localStorage.getItem("token");
+    const { isAuthenticated, role, loading } = useContext(AuthContext);
 
-    if (!token) {
-        // 🚫 No token => go back to login
+    // Wacht tot Context klaar is met laden
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    // Geen token dan terug naar login
+    if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
     }
 
-    try {
-        const decoded = jwtDecode(token);
+    // Normaliseer de role - strip "ROLE_" prefix als aanwezig
+    const normalizedRole = role?.startsWith("ROLE_")
+        ? role.substring(5)
+        : role;
 
-        // 🚀 Extract roles from JWT (default empty array if none)
-        const roles = decoded.roles || [];
+    console.log("User role from Context:", role, "→ Normalized:", normalizedRole);
 
-        // ✅ Normalize roles: strip "ROLE_" prefix if present
-        const normalizedRoles = roles.map(r =>
-            r.startsWith("ROLE_") ? r.substring(5) : r
-        );
+    // Check of de gebruiker een toegestane rol heeft
+    const hasRole = allowedRoles.includes(normalizedRole);
 
-        console.log("User roles:", roles, "→ Normalized:", normalizedRoles);
-
-        // ✅ Check if user has an allowed role
-        const hasRole = normalizedRoles.some(role =>
-            allowedRoles.includes(role)
-        );
-
-        return hasRole ? children : <Navigate to="/403" replace />;
-    } catch (err) {
-        console.error("❌ Error decoding token", err);
-        return <Navigate to="/login" replace />;
-    }
+    return hasRole ? children : <Navigate to="/403" replace />;
 }
 
 export default RoleRoute;

@@ -88,7 +88,7 @@ function Login() {
 
                 // Check email verification - handle different field names
                 if (!user.emailVerified) {
-                    setErrors({ general: "⚠️ Please verify your email before logging in." });
+                    setErrors({ general: "Please verify your email before logging in." });
                     localStorage.removeItem("token");
                     return;
                 }
