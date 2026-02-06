@@ -13,7 +13,7 @@ spring:
   datasource:
     zastra:
       url: jdbc:postgresql://localhost:5432/zastra_db
-      username: ${ZASTRA_DB_USERNAME:zastra_user}
+      username: ${ZASTRA_DB_USERNAME}
       password: ${ZASTRA_DB_PASSWORD}
       driver-class-name: org.postgresql.Driver
       hikari:
@@ -23,7 +23,7 @@ spring:
 
     media:
       url: jdbc:postgresql://localhost:5432/media_db
-      username: ${MEDIA_DB_USERNAME:media_user}
+      username: ${MEDIA_DB_USERNAME}
       password: ${MEDIA_DB_PASSWORD}
       driver-class-name: org.postgresql.Driver
 
