@@ -263,14 +263,14 @@ Click the Run button next to "Zastra Full Stack" — both backend and frontend w
 
 After successfully importing the database, the following test users are available:
 
-| **first name** | **last name** | **email**                      | **password**     | **role**    |
-|----------------|---------------|--------------------------------|------------------|-------------|
-| **Roy**        | **Anderson**  | **roy@example.com**            | CitizenPass123!  | **Citizen** |
-| **Alice**      | **Smith**     | **alice.smith@example.com**    | CitizenPass123!  | **Citizen** |
-| **Bob**        | **Johnson**   | **bob.johnson@example.com**    | CitizenPass123!  | **Citizen** |
-| **Eva**        | **Green**     | **eva.green@zastra.com**       | OfficerPass123!! | **Officer** |
-| **Oscar**      | **Polman**    | **oscar.polman@zastra.com**    | OfficerPass123!  | **Officer** |
-| **Lindaria**   | **Purba**     | **lindaria.purba@ezastra.com** | AdminPass123!    | **Admin**   |
+| **first name** | **last name** | **email**                      | **password**    | **role**    |
+|----------------|---------------|--------------------------------|-----------------|-------------|
+| **Roy**        | **Anderson**  | **roy@example.com**            | CitizenPass123! | **Citizen** |
+| **Alice**      | **Smith**     | **alice.smith@example.com**    | CitizenPass123! | **Citizen** |
+| **Bob**        | **Johnson**   | **bob.johnson@example.com**    | CitizenPass123! | **Citizen** |
+| **Eva**        | **Green**     | **eva.green@zastra.com**       | EvaPassword123  | **Officer** |
+| **Oscar**      | **Polman**    | **oscar.polman@zastra.com**    | OfficerPass123! | **Officer** |
+| **Lindaria**   | **Purba**     | **lindaria.purba@ezastra.com** | AdminPass123!   | **Admin**   |
 
 
 ### Note: 
