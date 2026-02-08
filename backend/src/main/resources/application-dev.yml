@@ -1,0 +1,77 @@
+spring:
+  datasource:
+    zastra: # <-- Main Zastra DB (users, roles, reports, etc.)
+      url: jdbc:postgresql://localhost:5432/zastra_db
+      username: ${ZASTRA_DB_USERNAME}
+      password: ${ZASTRA_DB_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+
+    media: # <-- Secondary Media DB (media files, storage)
+      url: jdbc:postgresql://localhost:5432/media_db
+      username: ${MEDIA_DB_USERNAME}
+      password: ${MEDIA_DB_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+
+  jpa:
+    # Make Hibernate NOT manage schema on startup (we will initialize with your SQL files)
+    hibernate:
+      ddl-auto: none
+
+    # Per-datasource overrides (used by your DataSource configs when reading env)
+    zastra:
+      hibernate:
+        ddl-auto: none
+
+    media:
+      hibernate:
+        ddl-auto: none
+
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          time-zone: UTC
+
+  mail:
+    host: smtp.mailtrap.io
+    port: 2525
+    username: ${MAILTRAP_USERNAME}
+    password: ${MAILTRAP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          ssl:
+            trust: smtp.mailtrap.io
+      debug: true                     # enable detailed mail debug logs (temporary)
+
+  # Facebook OAuth Configuration
+  facebook:
+    client:
+      id: ${FACEBOOK_CLIENT_ID}
+      secret: ${FACEBOOK_CLIENT_SECRET}
+
+  # Google OAuth Configuration
+  google:
+    client:
+      id: ${GOOGLE_CLIENT_ID}
+      secret: ${GOOGLE_CLIENT_SECRET}
+
+  # Frontend URL for OAuth redirects
+  app:
+    frontend-url: http://localhost:5173
+
+logging:
+  level:
+    root: INFO
+    com.zastra: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.data.jpa: DEBUG

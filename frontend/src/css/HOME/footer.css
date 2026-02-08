@@ -1,0 +1,76 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Footer styling */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    padding: 15px 20px;
+    background-color: lightskyblue;
+    color: #fff;
+    height: 100%;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+p {
+    font-family:  'Raleway', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-logo {
+    cursor: pointer;
+}
+
+/* Logo Styling */
+.footer-logo img {
+    height: 99px;
+    width: auto;
+    display: block;
+    border-radius: 40%;
+}
+
+/* Private section (if using a <button> inside p) */
+.footer .nav-menu a {
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+.footer .nav-menu a:hover {
+    transform: scale(1.5);
+    text-decoration: underline;
+}
+
+/* Social media container */
+.social-medias ol {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+/* Social media icons without background */
+.social-medias li a {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.social-medias li a img {
+    width: 24px;
+    height: 24px;
+    display: block;
+    transition: transform 0.2s;
+}
+
+.social-medias li a img:hover {
+    transform: scale(2);
+}

@@ -1,0 +1,165 @@
+/* src/App.css */
+
+/* --- variables --- */
+:root {
+    --sidebar-width: 260px;
+    --bg-page: #f7f9fb;
+    --card-bg: #fff;
+    --border: #e5e7eb;
+    --muted: #6b7280;
+    --header-height: 72px;
+}
+
+/* --- layout --- */
+.dashboard.app-with-sidebar {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: #111827;
+}
+
+/* main content sits to the right of the sidebar */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: var(--sidebar-width); /* must match SidebarAdmin width */
+    transition: margin-left 220ms ease;
+    min-height: 100vh;
+}
+
+/* header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    height: var(--header-height);
+    gap: 12px;
+    box-shadow: 0 1px 0 rgba(16,24,40,0.02);
+}
+
+/* header action area (bell, refresh, etc) */
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* main container where page content goes */
+.admin-main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* --- User Layout Styles --- */
+.user-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f6fa;
+}
+
+.user-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.notification-bell-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.user-header {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: white;
+}
+
+.user-header h1 {
+    font-size: 2rem;
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.user-header p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* small utilities */
+.hidden-on-mobile {
+    display: inline-flex;
+}
+
+/* --- Responsive: make sidebar overlay on small screens --- */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: calc(var(--sidebar-width) * 0.8);
+    }
+}
+
+@media (max-width: 768px) {
+    /* assume sidebar becomes overlay; main content full width */
+    .main-content {
+        margin-left: 0;
+    }
+
+    /* If you offer a collapsed/overlay sidebar class, allow space to be toggled */
+    .dashboard.sidebar-open .main-content {
+        filter: blur(0.5px);
+    }
+
+    /* hide secondary header elements if needed */
+    .hidden-on-mobile {
+        display: none;
+    }
+}
+
+/* User Layout Mobile Responsive */
+@media screen and (max-width: 468px) {
+    .user-layout {
+        flex-direction: column;
+    }
+
+    .notification-bell-container {
+        top: 10px;
+        right: 10px;
+    }
+
+    .user-header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* --- accessibility / focus rings --- */
+.refresh-btn:focus {
+    outline: 2px solid rgba(59,130,246,0.25);
+    outline-offset: 2px;
+}
+
+/* --- small visual helpers for content cards (optional) --- */
+.admin-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.03);
+}
+
+/* --- Error page styling (replaces inline styles for 403/404 pages) --- */
+.error-page {
+    text-align: center;
+    padding: 50px;
+}

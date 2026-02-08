@@ -1,0 +1,24 @@
+%% 7. Ambtenaar voegt Media voor een gedaan report.
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'#39FF14',
+  'primaryColor':'#3182CE','primaryTextColor':'#fff','primaryBorderColor':'#2B6CB0',
+  'textColor':'#1A202C','mainBkg':'#FFFFFF',
+  'actorBkg':'#EBF8FF','actorBorder':'#2B6CB0','actorTextColor':'#1A202C',
+  'signalColor':'#39FF14','signalTextColor':'#1A202C'
+}}}%%
+sequenceDiagram
+    actor Citizen
+    participant Frontend
+    participant Backend
+    participant MediaService
+    participant Database
+
+    Citizen->>+Frontend: Uploadt extra foto/video bij report #123
+    Frontend->>+Backend: POST /api/reports/123/media (file)
+    Backend->>+MediaService: addMediaToReport(123, file)
+    MediaService->>+Database: INSERT report_media_entity (report_id=123, url, video)
+    Database-->>-MediaService: Media entity created
+    MediaService-->>-Backend: Media entity
+    Backend-->>-Frontend: 201 Created
+    Frontend-->>-Citizen: Bevestiging upload

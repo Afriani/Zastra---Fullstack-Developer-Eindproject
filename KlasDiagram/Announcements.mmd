@@ -1,0 +1,32 @@
+%% Announcement domain
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'#39FF14',
+  'primaryColor':'#D69E2E','primaryTextColor':'#1A202C','primaryBorderColor':'#B7791F',
+  'textColor':'#1A202C','mainBkg':'#FFFFFF'
+}}}%%
+classDiagram
+    class User
+    class Announcement {
+        -AnnouncementVisibility visibility
+        -Boolean isPinned
+        -Boolean isUrgent
+    }
+    class AnnouncementReadStatus {
+        -boolean read
+    }
+    class AnnouncementVisibility {
+        <<enumeration>>
+        OFFICERS
+        ALL
+    }
+    class VerificationToken {
+        -String token
+        -LocalDateTime expiryDate
+        +isExpired() boolean
+    }
+    User "1" --> "0..*" Announcement : creates
+    AnnouncementReadStatus "*" --> "1" Announcement : for
+    AnnouncementReadStatus "*" --> "1" User : officer
+    Announcement --> AnnouncementVisibility : has
+    VerificationToken "1" --> "1" User : for

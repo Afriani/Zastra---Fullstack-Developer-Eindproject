@@ -1,0 +1,318 @@
+{
+  "info": {
+    "name": "Zastra API",
+    "_postman_id": "c8b2b9b6-0000-4000-8000-000000000000",
+    "description": "Postman collection for Zastra (login, profile, reports, media, files). Set environment variable baseUrl (e.g. http://localhost:8080) and authToken.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"demo@zastra.local\",\n  \"password\": \"Password123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status is 200', function() { pm.response.to.have.status(200); });",
+              "try {",
+              "  var json = pm.response.json();",
+              "  // Common token locations: json.data.token, json.token, json.data.accessToken, json.data",
+              "  if (json && json.data && (json.data.token || json.data.accessToken)) {",
+              "    pm.environment.set('authToken', json.data.token || json.data.accessToken);",
+              "  } else if (json && (json.token || json.accessToken)) {",
+              "    pm.environment.set('authToken', json.token || json.accessToken);",
+              "  } else if (json && json.data && typeof json.data === 'string') {",
+              "    // sometimes token is returned as data string",
+              "    pm.environment.set('authToken', json.data);",
+              "  }",
+              "} catch (e) {",
+              "  // ignore parsing errors",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users - Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/users/me",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "me"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Users - Get User By ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/users/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            ":id"
+          ]
+        },
+        "description": "Replace :id in the URL (or set path variable in Postman)."
+      }
+    },
+    {
+      "name": "Reports - Create Report (multipart)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "report",
+              "value": "{\"title\":\"Pothole near school\",\"description\":\"Large pothole\",\"category\":\"POTHOLE\",\"latitude\":1.234,\"longitude\":5.678,\"address\":{\"streetName\":\"Demo St\",\"houseNumber\":\"1\",\"postalCode\":\"00000\",\"city\":\"DemoCity\",\"province\":\"DemoProvince\"}}",
+              "type": "text"
+            },
+            {
+              "key": "images",
+              "type": "file",
+              "src": ""
+            },
+            {
+              "key": "video",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/reports",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports"
+          ]
+        }
+      },
+      "description": "Provide one or more images via the file field (Postman will let you choose files). The 'report' field must be JSON (application/json)."
+    },
+    {
+      "name": "Reports - Get Reports (paged)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/reports?page=0&size=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Reports - Update Status (query param)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/reports/:id/status?status=RESOLVED&note=Fixed",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports",
+            ":id",
+            "status"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "RESOLVED"
+            },
+            {
+              "key": "note",
+              "value": "Fixed"
+            }
+          ]
+        },
+        "description": "Replace :id with the report id or use path variables in Postman."
+      }
+    },
+    {
+      "name": "Media - Upload Avatar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/media/avatar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "media",
+            "avatar"
+          ]
+        }
+      },
+      "description": "Select a file for the avatar field."
+    },
+    {
+      "name": "Media - Get Media (public)",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/media/:id",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "media",
+            ":id"
+          ]
+        },
+        "description": "Public endpoint returning binary data. Replace :id."
+      }
+    },
+    {
+      "name": "Files - Upload Generic",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/files/upload",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "files",
+            "upload"
+          ]
+        }
+      }
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "authToken",
+      "value": ""
+    }
+  ]
+}

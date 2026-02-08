@@ -1,0 +1,466 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Dashboard Layout */
+.dashboard {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    color: #222;
+    position: relative;
+}
+
+.inbox-container {
+    flex: 1;
+    padding: 2rem;
+    background-color: #f4f6f8;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+.office-inbox-header {
+    margin-bottom: 1rem;
+    background-color: peachpuff;
+    padding: 0.1rem;
+    border-radius: 10px;
+}
+
+.office-inbox-header h2 {
+    font-size: 2.5rem;
+    color: forestgreen;
+    font-weight: 600;
+}
+
+/* New conversation button container */
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    gap: 8px; /* Replaces inline style gap: 8px */
+}
+
+.btn-new-message {
+    background-color: #0078d4;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 120, 212, 0.2);
+}
+
+.btn-new-message:hover {
+    background-color: #005fa1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 120, 212, 0.3);
+}
+
+/* Conversations table */
+.folder-table {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.folder-icon {
+    font-size: 1.25rem;
+    margin-right: 1rem;
+    color: #005fa3;
+    min-width: 30px;
+}
+
+.btn-sort {
+    align-self: flex-end;
+    margin: 1rem 1rem 0 0;
+    background: #005fa3;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-sort:hover {
+    background-color: #003e73;
+}
+
+/* Conversation rows */
+.folder-row {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer; /* Replaces inline style cursor: pointer */
+}
+
+.folder-row:hover {
+    background-color: #f8f9ff;
+}
+
+.folder-row.unread {
+    background-color: #f0f8ff;
+    border-left: 4px solid #0078d4;
+}
+
+.folder-row:last-child {
+    border-bottom: none;
+}
+
+.folder-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    color: #005fa3;
+    min-width: 30px;
+}
+
+.folder-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.folder-subject {
+    font-weight: 600;
+    color: #212b36;
+    font-size: 1rem;
+}
+
+.folder-snippet {
+    color: #637381;
+    font-size: 0.9rem;
+}
+
+.folder-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #637381;
+    flex-wrap: wrap;
+}
+
+.folder-date,
+.folder-status {
+    white-space: nowrap;
+}
+
+/* Thread container */
+.thread-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 600px;
+    margin-top: 16px; /* Replaces inline style marginTop: 16px */
+}
+
+.thread-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.thread-header h3 {
+    font-size: 1.25rem;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.btn-close:hover {
+    color: #dc3545;
+}
+
+/* Messages list */
+.messages-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    background: #fafafa;
+}
+
+.message-item {
+    margin-bottom: 1rem;
+    background: #ffffff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid #f0f0f0;
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.message-content strong {
+    color: #1f2937;
+    font-size: 0.95rem;
+}
+
+.message-time {
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+.message-text {
+    margin-top: 0.5rem;
+    color: #374151;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+/* Composer */
+.composer {
+    display: flex;
+    gap: 10px;
+    padding: 1rem 1.5rem;
+    align-items: flex-end;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+}
+
+.composer textarea {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    resize: vertical;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+    background: #fff;
+    font-family: inherit;
+}
+
+.composer textarea:focus {
+    outline: none;
+    border-color: #0078d4;
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+}
+
+.send-btn {
+    padding: 10px 20px;
+    background: #0078d4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.send-btn:hover {
+    background: #005fa1;
+    transform: translateY(-1px);
+}
+
+/* Loading and error states */
+.loading,
+.error-message,
+.no-messages {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+    font-size: 1.1rem;
+}
+
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+    font-size: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0078d4;
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.btn-send,
+.btn-cancel {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-send {
+    background-color: #0078d4;
+    color: white;
+}
+
+.btn-send:hover {
+    background-color: #005fa1;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .inbox-container {
+        padding: 1rem;
+    }
+
+    .office-inbox-header h2 {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .btn-container {
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .folder-details {
+        gap: 0.25rem;
+    }
+
+    .folder-meta {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .btn-sort {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .thread-container {
+        max-height: 500px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .inbox-container {
+        padding: 0.5rem;
+    }
+
+    .office-inbox-header h2 {
+        font-size: 1.75rem;
+    }
+
+    .folder-row {
+        padding: 0.75rem;
+    }
+
+    .folder-subject {
+        font-size: 0.9rem;
+    }
+
+    .folder-snippet {
+        font-size: 0.85rem;
+    }
+
+    .folder-meta {
+        font-size: 0.8rem;
+    }
+}

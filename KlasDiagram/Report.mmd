@@ -1,0 +1,51 @@
+%% Report Domain
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'#39FF14',
+  'primaryColor':'#2B6CB0','primaryTextColor':'#fff','primaryBorderColor':'#2B6CB0',
+  'textColor':'#1A202C','mainBkg':'#FFFFFF'
+}}}%%
+classDiagram
+    class User
+    class Report
+    class ReportImage
+    class ReportMediaEntity
+    class ReportStatusHistory
+    class StatusUpdate
+    class InboxItem
+    class ReportCategory {
+        <<enumeration>>
+        ROAD_DAMAGE
+        LITTER
+        BROKEN_STREETLIGHT
+        GRAFFITI
+        DAMAGED_SIGN
+        FALLEN_TREE
+        POTHOLE
+        BROKEN_BENCH
+        DAMAGED_PLAYGROUND
+        ILLEGAL_DUMPING
+        OTHER
+    }
+    class ReportStatus {
+        <<enumeration>>
+        SUBMITTED
+        IN_REVIEW
+        IN_PROGRESS
+        RESOLVED
+        REJECTED
+        CANCELLED
+    }
+    User "1" --> "0..*" Report : submits/assigned
+    Report "1" --> "0..*" ReportImage : has
+    Report "1" --> "0..*" ReportMediaEntity : has
+    Report "1" --> "0..*" ReportStatusHistory : tracks
+    ReportStatusHistory "*" --> "1" Report : belongs to
+    StatusUpdate "*" --> "1" Report : updates
+    StatusUpdate "*" --> "1" User : updatedBy
+    InboxItem "*" --> "1" Report : about
+    InboxItem "*" --> "1" User : notifies
+    Report --> ReportCategory : has
+    Report --> ReportStatus : has
+    StatusUpdate --> ReportStatus : transitions
+    ReportStatusHistory --> ReportStatus : records

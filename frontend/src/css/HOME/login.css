@@ -1,0 +1,248 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+.login {
+    margin: auto;
+}
+
+h2 {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 50px;
+    margin: 30px auto;
+    text-align: center;
+    justify-content: center;
+}
+
+.Login-subtext {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
+
+.login-container {
+    margin: auto;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    gap:  10px;
+}
+
+.login-container h2 {
+    margin-bottom: 24px;
+    font-size: 28px;
+    text-align: center;
+    color: #1d1d1d;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+.login-form input {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.forgot-link {
+    align-items: center;
+    text-decoration: none;
+    color: #0078d7;
+}
+.forgot-link:hover {
+    align-items: center;
+    color: #005fa3;
+}
+
+button[type="submit"] {
+    padding: 12px;
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+button[type="submit"]:hover {
+    background-color: #005fa3;
+}
+
+/* Divider */
+.login-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 30px 0;
+}
+
+.login-divider-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0;
+}
+
+.line-vertical {
+    width: 1px;
+    height: 100px;
+    background-color: #ccc;
+}
+
+.login-divider-vertical span {
+    font-size: 14px;
+    color: #999;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+
+/* Social media buttons */
+.social-login button {
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+}
+
+.google-btn {
+    background-color: #db4437;
+}
+
+.google-btn:hover {
+    background-color: #c5382c;
+}
+
+.facebook-btn {
+    background-color: #4267B2;
+}
+
+.facebook-btn:hover {
+    background-color: #3656a3;
+}
+
+/* Ensure the login wrapper stacks gracefully */
+.login-container {
+    flex-wrap: wrap;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-form,
+.social-login,
+.login-divider-vertical {
+    /*flex: 1 1 300px;*/
+    max-width: 400px;
+}
+
+/* Adjust heading font size for smaller screens */
+@media screen and (max-width: 768px) {
+    h2 {
+        font-size: 36px;
+    }
+
+    .Login-subtext {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .login-container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 20px;
+    }
+
+    .login-form,
+    .social-login,
+    .login-divider-vertical {
+        width: 100%;
+        max-width: 90%;
+    }
+
+    .login-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .login-options .form {
+        margin-left: 200px;
+    }
+
+    /* 🆕 Hide the OR divider on mobile */
+    .login-divider-vertical {
+        display: none;
+    }
+
+    button[type="submit"],
+    .social-login button {
+        font-size: 15px;
+    }
+}
+
+/* Even tighter on very small devices */
+@media screen and (max-width: 480px) {
+    h2 {
+        font-size: 28px;
+    }
+
+    .Login-subtext {
+        font-size: 14px;
+    }
+
+    .login-form input {
+        font-size: 14px;
+    }
+
+    .login-options {
+        font-size: 12px;
+    }
+
+    .social-login button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* 🆕 Ensure OR divider stays hidden on very small screens too */
+    .login-divider-vertical {
+        display: none;
+    }
+
+}
+
+

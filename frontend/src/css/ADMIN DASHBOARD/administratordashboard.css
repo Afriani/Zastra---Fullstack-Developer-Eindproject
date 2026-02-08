@@ -1,0 +1,221 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Dashboard Layout */
+.admin-dashboard {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    color: #222;
+}
+
+/* Main Layout */
+.admin-main {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+.main-content {
+    max-width: 100%;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 150;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease;
+}
+
+.mobile-menu-toggle:hover {
+    background-color: #005fa1;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    width: 260px;
+    background-color: #1f2937;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 50;
+}
+
+.admin-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-sidebar-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.sidebar-close {
+    display: none;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.admin-welcome-mobile {
+    display: none;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.95rem;
+    color: #d1d5db;
+}
+
+.admin-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    flex: 1;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+.sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-item.active {
+    background-color: rgba(0, 120, 212, 0.3);
+    border-left-color: #0078d4;
+    font-weight: 600;
+}
+
+.sidebar-item.logout {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ff6b6b;
+}
+
+.sidebar-item.logout:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+}
+
+.sidebar-icon {
+    font-size: 1.25rem;
+}
+
+/* Main Content */
+.admin-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.admin-content-section {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-content-section h2 {
+    font-size: 2rem;
+    color: #1f2937;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    background-color: lightskyblue;
+    text-align: center;
+    margin-top: 0;
+    border-radius: 10px;
+}
+
+.admin-content-section p {
+    color: #6b7280;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 100px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+        z-index: 200;
+    }
+
+    .admin-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-close {
+        display: block;
+    }
+
+    .admin-welcome-mobile {
+        display: block;
+    }
+
+    .admin-content {
+        padding: 1rem;
+        margin-top: 60px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .admin-content-section {
+        padding: 1.5rem;
+    }
+
+    .admin-content-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .sidebar-item {
+        padding: 0.875rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+

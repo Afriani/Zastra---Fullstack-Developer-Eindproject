@@ -1,0 +1,168 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Sidebar (fixed overlay) */
+.sidebar-final {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: auto;
+    background: #243042;
+    color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
+    z-index: 1600;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Open state */
+.sidebar-final.open {
+    transform: translateX(0);
+}
+
+/* Header */
+.sidebar-header-final h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 2.5rem;
+    border-bottom: 1px solid #34495e;
+    padding: 1.5rem 1rem;
+    position: relative;
+}
+
+/* Nav area: scrollable */
+.sidebar-nav-final {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;   /* allows long lists to scroll inside sidebar */
+    flex: 1;            /* Occupy available vertical space above logout */
+    padding-right: 6px; /* room for scrollbar */
+}
+
+/* Icon + label layout for nav items (ensure this comes after .nav-item-final definitions) */
+.nav-item-final {
+    display: flex;
+    align-items: center;
+    gap: 10px;        /* space between icon and label */
+    padding: 12px 14px;
+    text-decoration: none;
+    color: #e6eef8;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* Icon sizing */
+.nav-icon-final {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.nav-item-final:hover,
+.nav-item-final:focus {
+    background: rgba(255,255,255,0.06);
+}
+
+/* Active state (reuses your color scheme) */
+.nav-item-final.active {
+    background: rgba(255,255,255,0.08);
+    color: #ffffff;
+}
+
+/* Logout button INSIDE sidebar, uses sticky to sit above bottom edge */
+.logout-container-officer {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 6px;
+    background: transparent;
+    color: #ffdddd;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: left;
+    bottom: 16px;
+    align-self: stretch;
+    position: sticky;
+    left: 1rem;
+    right: 1rem;
+}
+
+.logout-container-officer:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.logout-btn-officer {
+    background-color: lightskyblue;
+    padding: 12px 63px;
+    border-radius:25px;
+    cursor: pointer;
+    margin: 0 28px;
+    text-align: center;
+}
+
+/* Hamburger Toggle */
+.sidebar-toggle-final {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    /*z-index: 1650;      !* below sidebar (1600) or above? choose to hide when open *!*/
+    background: #0f1724;
+    color: #fff;
+    border: none;
+    font-size: 22px;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+
+.hamburger-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Hide hamburger button when sidebar open (to avoid blocking) */
+.sidebar-toggle-final.hidden {
+    display: none;
+}
+
+/* Overlay sits between content and sidebar (below sidebar) */
+.sidebar-overlay-final {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1500; /* less than sidebar (1600), greater than page content */
+    cursor: pointer;
+}
+
+/* Desktop: always show sidebar (no transforms), hide overlay and toggle */
+@media (min-width: 768px) {
+    .sidebar-final {
+        transform: none;
+        position: relative;
+    }
+    .sidebar-toggle-final,
+    .sidebar-overlay-final {
+        display: none;
+    }
+
+}
+
+/* Responsive: reduce icon size slightly on small screens */
+@media (max-width: 480px) {
+    .nav-icon-final { width: 18px; height: 18px; }
+    .nav-item-final { gap: 8px; padding: 10px 12px; }
+}
+
+

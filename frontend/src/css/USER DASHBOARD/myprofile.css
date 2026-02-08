@@ -1,0 +1,435 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Dashboard Layout */
+.dashboard {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    color: #222;
+    position: relative;
+}
+
+/* Main content area */
+.main-content {
+    flex: 1;
+    background-color: #f9fafb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 80px;
+}
+
+/* Profile header title */
+.profile-page h2 {
+    font-size: 2.5rem;
+    text-align: left;
+    margin: 0 0 8px 0;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.profile-page, .cards-container {
+    color: #222;
+}
+
+/* Main cards container (vertical stacking by default) */
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    max-width: 100%;
+    padding: 0 1rem;
+    margin: 0 auto;
+    align-items: center;
+}
+
+/* Individual cards and picture block */
+.profile-card, .user-picture {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    transition: box-shadow 0.3s ease;
+    max-width: 100vw;
+    margin: 0;
+}
+
+.profile-card:hover, .user-picture:hover {
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.1);
+}
+
+/* Edit button - enhanced styling */
+.edit-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 150px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.edit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+/* Save button styling */
+.save-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+    width: 100%;
+}
+
+.save-btn:hover:not(:disabled) {
+    background-color: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.save-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* User picture block */
+.user-picture {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #3498db;
+    transition: border-color 0.3s ease;
+}
+
+/* Avatar container for positioning */
+.avatar-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Floating upload button */
+.upload-user-avatar-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.upload-user-avatar-btn:hover {
+    background-color: #0056b3;
+}
+
+.avatar:hover {
+    border-color: #2980b9;
+}
+
+/* Greeting text */
+.user-picture div h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.25rem;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.user-picture div p {
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+/* Avatar upload button styling */
+.user-picture button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease;
+}
+
+.user-picture button:hover:not(:disabled) {
+    background-color: #218838;
+}
+
+.user-picture button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Form fields common */
+.profile-card h3 {
+    margin-bottom: 12px;
+    font-size: 1.05rem;
+    color: #111827;
+    font-weight: 600;
+}
+
+/* Label styling */
+.profile-card label {
+    display: block;
+    font-size: 0.90rem;
+    color: #374151;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+/* Inputs (read-only and editable states) */
+.account-info input,
+.residential-address input {
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: transparent;
+    padding: 8px 2px;
+    width: 100%;
+    font-size: 1rem;
+    margin: 6px 0 10px 0;
+    color: #111827;
+    transition: all 0.3s ease;
+}
+
+/* Read-only state styling */
+.account-info input[readonly],
+.residential-address input[readonly] {
+    color: #6b7280;
+    background-color: #f9fafb;
+    cursor: default;
+}
+
+/* Editable state styling */
+.account-info input.editable,
+.residential-address input.editable {
+    background-color: #fff;
+    border-bottom: 2px solid #007bff;
+    color: #111827;
+    cursor: text;
+    padding: 10px 8px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus states for editable inputs */
+.account-info input.editable:focus,
+.residential-address input.editable:focus {
+    outline: none;
+    border-bottom-color: #0056b3;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+}
+
+/* Residential address grid */
+.residential-address {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 18px;
+    align-items: start;
+}
+
+/* Make street span full width */
+.residential-address .street-name {
+    grid-column: 1 / -1;
+}
+
+/* House number styling */
+.residential-address .house-number input {
+    max-width: 240px;
+}
+
+/* ===== NEW CLASSES FOR INLINE STYLE REMOVAL ===== */
+
+/* Replaces style={{ display: 'none' }} */
+.avatar-file-input {
+    display: none;
+}
+
+/* Replaces style={{ marginTop: '10px' }} */
+.avatar-preview-actions {
+    margin-top: 10px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 468px) {
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+        flex: 1;
+    }
+
+    .profile-page h2 {
+        font-size: 2.5rem;
+        margin-top: 60px;
+    }
+
+    .edit-btn {
+        width: 120px;
+        font-size: 0.8rem;
+        padding: 8px 12px;
+        top: 8px;
+        right: 8px;
+    }
+
+    .user-picture {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+        margin: 1rem 0;
+    }
+
+    .user-picture div {
+        order: 2;
+    }
+
+    .user-picture div:first-child {
+        order: 1;
+    }
+
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .residential-address {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .profile-card, .user-picture {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 15px;
+    }
+
+    .cards-container {
+        gap: 12px;
+    }
+
+    .save-btn {
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-card {
+        padding: 0.75rem;
+    }
+
+    .main-content h2, .profile-page h2 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+}
+
+/* Footer styles */
+footer {
+    background: #f5f5f5;
+    padding: 16px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    flex-shrink: 0;
+}
+
+/* Error message */
+.error {
+    color: #b91c1c;
+    margin-top: 12px;
+    padding: 8px;
+    background-color: #fef2f2;
+    border-radius: 4px;
+    border: 1px solid #fecaca;
+}
+
+/* Success message */
+.success {
+    color: #065f46;
+    margin-top: 12px;
+    padding: 8px;
+    background-color: #ecfdf5;
+    border-radius: 4px;
+    border: 1px solid #a7f3d0;
+}
+
+/* Consistent spacing between cards */
+.profile-card + .profile-card {
+    margin-top: 6px;
+}
+
+/* Loading state */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #6b7280;
+    font-size: 1.1rem;
+}
+
+/* Smooth transitions for interactive elements */
+.profile-card,
+.edit-btn,
+.save-btn,
+.avatar {
+    transition: all 0.3s ease;
+}
+
+/* Visual feedback for editing mode */
+.profile-card:has(.editable) {
+    border-left: 4px solid #007bff;
+    background-color: #f8f9ff;
+}

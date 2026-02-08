@@ -1,0 +1,29 @@
+%% 1. Ambtenaar opent inbox en bekijkt report
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'blue','primaryColor':'blue','primaryTextColor':'green','textColor':'green','mainBkg':'#FFFFFF'
+}}}%%
+
+sequenceDiagram
+    actor Officer
+    participant Frontend
+    participant Backend
+    participant InboxService
+    participant Database
+
+    Note over Officer: Ambtenaar controleert inbox
+
+    Officer->>+Frontend: Open Inbox
+    Frontend->>+Backend: GET /api/inbox?officerId=456
+    Backend->>+InboxService: fetchUnreadInbox(officerId)
+    InboxService->>+Database: SELECT * FROM inbox_items WHERE officer_id=456 AND read=false
+    Database-->>-InboxService: List<InboxItem>
+    InboxService-->>-Backend: InboxItemDTO[]
+    Backend-->>-Frontend: InboxItemDTO[]
+    Frontend-->>-Officer: Toont lijst met meldingen
+    Officer->>+Frontend: Klikt op InboxItem (reportId=123)
+    Frontend->>+Backend: GET /api/reports/123
+    Backend->>+Database: SELECT report + images + history WHERE id=123
+    Database-->>-Backend: ReportDetail
+    Backend-->>-Frontend: ReportDetailDTO
+    Frontend-->>-Officer: Toont report details

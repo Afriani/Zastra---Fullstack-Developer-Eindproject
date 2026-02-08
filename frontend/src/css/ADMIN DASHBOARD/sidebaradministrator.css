@@ -1,0 +1,240 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Sidebar (fixed overlay on mobile, static on desktop) */
+.sidebar-final {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: #243042;
+    color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
+    z-index: 1600;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Open state (mobile) */
+.sidebar-final.open {
+    transform: translateX(0);
+}
+
+/* Header */
+.sidebar-header-final {
+    margin-bottom: 1rem;
+}
+
+.sidebar-header-final h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 2.5rem;
+    border-bottom: 1px solid #34495e;
+    padding: 1.5rem 1rem;
+}
+
+/* Nav area: scrollable */
+.sidebar-nav-final {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+/* Nav items */
+.nav-item-final {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: #e6eef8;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s ease;
+}
+
+/* Icon sizing */
+.nav-icon-final {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.nav-item-final:hover,
+.nav-item-final:focus {
+    background: rgba(255,255,255,0.06);
+}
+
+/* Active state */
+.nav-item-final.active {
+    background: rgba(255,255,255,0.12);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Logout container */
+.logout-container-administrator {
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+/* Logout button */
+.logout-btn-final {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: left;
+    width: 100%;
+    transition: background 0.2s ease;
+}
+
+.logout-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.logout-btn-final:hover {
+    background: #c0392b;
+}
+
+/* Hamburger Toggle (mobile only) */
+.sidebar-toggle-final {
+    position: fixed;
+    top: 120px;
+    left: 16px;
+    z-index: 1650;
+    background: #243042;
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: opacity 0.2s ease;
+}
+
+.sidebar-toggle-final:hover {
+    background: #34495e;
+}
+
+/* Hide hamburger when sidebar is open */
+.sidebar-toggle-final.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hamburger-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Overlay (mobile only) */
+.sidebar-overlay-final {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1500;
+    cursor: pointer;
+}
+
+/* ===================== */
+/*      RESPONSIVE       */
+/* ===================== */
+
+/* Tablet and Desktop: sidebar always visible, no overlay */
+@media (min-width: 768px) {
+    .sidebar-final {
+        position: sticky;
+        top: 0;
+        transform: none;
+        height: 100vh;
+        width: 280px;
+    }
+
+    .sidebar-toggle-final,
+    .sidebar-overlay-final {
+        display: none;
+    }
+}
+
+/* Large Desktop: slightly wider sidebar */
+@media (min-width: 1200px) {
+    .sidebar-final {
+        width: 300px;
+    }
+
+    .sidebar-header-final h2 {
+        font-size: 2.75rem;
+    }
+}
+
+/* Small screens: adjust spacing and font sizes */
+@media (max-width: 480px) {
+    .sidebar-final {
+        width: 260px;
+    }
+
+    .sidebar-header-final h2 {
+        font-size: 2rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .nav-icon-final,
+    .logout-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .nav-item-final,
+    .logout-btn-final {
+        gap: 10px;
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+
+    .sidebar-toggle-final {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+        margin-top: 89px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+    .sidebar-final {
+        width: 240px;
+    }
+
+    .sidebar-header-final h2 {
+        font-size: 1.75rem;
+    }
+}

@@ -1,0 +1,486 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+:root {
+    --sidebar-width: 275px;
+    --bg-page: #f5f7fa;
+    --card-bg: #ffffff;
+    --border: #e0e6ed;
+    --muted: #7f8c8d;
+    --header-height: 72px;
+    --page-padding-small: 12px;
+    --page-padding-large: 30px;
+}
+
+.dashboard.app-with-sidebar {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-page);
+    color: #111827;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #243042;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+    z-index: 200;
+    top: 0;
+    left: 0;
+    height: auto;
+}
+
+.main-content {
+    flex: 1;
+    /*margin-left: var(--sidebar-width);*/
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    position: relative;
+    padding-top: 20px;
+    /*padding-left: var(--page-padding-large);*/
+    /*padding-right: var(--page-padding-large);*/
+    padding-bottom: 30px;
+    overflow-y: auto;
+    background: transparent;
+    /*margin: auto;*/
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    height: var(--header-height);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.03);
+    margin-bottom: 30px;
+}
+
+.notification-bell-container {
+    position: absolute;
+    top: 18px;
+    right: 28px;
+    z-index: 120;
+}
+
+.officer-main-content {
+    padding-top: 18px;
+    min-width: 100%;
+}
+
+@media (max-width: 1000px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.22s ease;
+        z-index: 300;
+    }
+    .sidebar.open,
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding-left: var(--page-padding-small);
+        padding-right: var(--page-padding-small);
+    }
+
+    .notification-bell-container {
+        top: 12px;
+        right: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Notification bell */
+    .notification-bell-container {
+        top: 12px;
+        right: 16px;
+    }
+
+    /* Header: stack vertically but keep larger font sizes */
+    .dashboard-header {
+        height: auto;
+        padding: 14px 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        border-radius: 8px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 22px;
+    }
+
+    .dashboard-header .header-subtitle {
+        font-size: 14px;
+    }
+
+    /* Main content adjustments */
+    .main-content {
+        margin-left: 0;
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .officer-main-content {
+        padding-top: 16px;
+    }
+
+    /* ========== STATS GRID: 2 columns ========== */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        width: 100%;
+    }
+
+    .stat-card {
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .stat-icon {
+        font-size: 28px;
+        margin-right: 14px;
+    }
+
+    .stat-content h3 {
+        font-size: 24px;
+    }
+
+    .stat-content p {
+        font-size: 13px;
+    }
+
+    /* ========== ACTIONS GRID: 2 columns ========== */
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .action-card {
+        padding: 20px 18px;
+        border-radius: 12px;
+    }
+
+    .action-icon {
+        font-size: 38px;
+        margin-bottom: 12px;
+    }
+
+    .action-card h4 {
+        font-size: 16px;
+    }
+
+    .action-card p {
+        font-size: 13px;
+    }
+
+    /* Recent reports adjustments */
+    .reports-list {
+        gap: 14px;
+    }
+
+    .report-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .report-header h4 {
+        font-size: 16px;
+    }
+
+    .report-description {
+        font-size: 14px;
+    }
+
+    .report-meta {
+        font-size: 13px;
+        gap: 10px;
+    }
+
+    .report-actions .btn-view {
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+
+    /* Sidebar becomes overlay drawer on smaller tablets */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-105%);
+        transition: transform 260ms ease;
+        z-index: 350;
+        width: 70%;
+        max-width: 300px;
+        box-shadow: 0 10px 30px rgba(2,6,23,0.3);
+        background-color: #243042;
+    }
+
+    .sidebar.open,
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .mobile-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        z-index: 300;
+        opacity: 0;
+        transition: opacity 200ms ease;
+        pointer-events: none;
+    }
+
+    .mobile-overlay.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Footer / logout inside sidebar */
+    .sidebar .sidebar-footer {
+        margin-top: auto;
+        padding: 14px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Toasts */
+    .toast {
+        right: 16px;
+        left: 16px;
+        bottom: 20px;
+        padding: 12px 16px;
+        border-radius: 8px;
+    }
+
+    /* Buttons */
+    .refresh-btn, .logout-inline-btn, .btn-view {
+        min-height: 42px;
+        padding: 8px 14px;
+    }
+}
+
+@media (max-width: 468px) {
+    /* Notification bell */
+    .notification-bell-container {
+        top: 12px;
+        left: 186px;
+        transform: translateZ(0);
+        z-index: 140;
+    }
+
+    /* Header: stack content vertically and reduce font sizes */
+    .dashboard-header {
+        height: auto;
+        padding: 10px 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        border-radius: 6px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .dashboard-header .header-subtitle {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    /* Sidebar toggle button (JS toggles visibility) */
+    .sidebar-toggle-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        background: transparent;
+        border-radius: 8px;
+        border: 1px solid rgba(0,0,0,0.06);
+        cursor: pointer;
+        margin-bottom: 4px;
+    }
+
+    /* Main content adjustments for mobile: use full width */
+    .main-content {
+        margin-left: 0;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .officer-main-content {
+        padding-top: 12px;
+        padding-left: 0;
+        padding-right: 0;
+        margin: 0;
+    }
+
+    .officer-page-container {
+        padding: 0;
+    }
+
+    /* ========== STATS GRID: single column for all stat cards ========== */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        width: 100%;
+    }
+
+    /* Smaller stat card sizes & typography */
+    .stat-card {
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .stat-icon {
+        font-size: 22px;
+        margin-right: 10px;
+    }
+
+    .stat-content h3 {
+        font-size: 20px;
+    }
+
+    .stat-content p {
+        font-size: 12px;
+    }
+
+    /* ========== ACTIONS GRID: single column on mobile ========== */
+    .actions-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .action-card {
+        padding: 16px;
+        border-radius: 10px;
+    }
+
+    .action-icon {
+        font-size: 34px;
+        margin-bottom: 10px;
+    }
+
+    .action-card h4 {
+        font-size: 16px;
+    }
+
+    .action-card p {
+        font-size: 13px;
+    }
+
+    /* Recent reports adjustments */
+    .reports-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .report-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .report-header h4 {
+        font-size: 15px;
+    }
+
+    .report-description {
+        font-size: 13px;
+    }
+
+    .report-meta {
+        font-size: 12px;
+        gap: 8px;
+    }
+
+    .report-actions .btn-view {
+        width: 100%;
+        text-align: center;
+        padding: 8px 12px;
+    }
+
+    /* Sidebar becomes overlay drawer on mobile */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-105%);
+        transition: transform 240ms ease;
+        z-index: 350;
+        width: 80%;
+        max-width: 320px;
+        box-shadow: 0 10px 30px rgba(2,6,23,0.35);
+        background-color: #243042;
+    }
+
+    .sidebar.open,
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .mobile-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 300;
+        opacity: 0;
+        transition: opacity 180ms ease;
+        pointer-events: none;
+    }
+
+    .mobile-overlay.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Small tweaks */
+    .header-actions-placeholder { display: none; }
+    .notification-bell-container { right: 18px; }
+
+    .sidebar .sidebar-footer {
+        margin-top: auto;
+        padding: 12px;
+        border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .header-content p, .header-subtitle { font-size: 13px; }
+
+    .toast {
+        right: 12px;
+        left: 12px;
+        bottom: 16px;
+        padding: 10px 12px;
+        border-radius: 8px;
+    }
+
+    .refresh-btn, .logout-inline-btn, .btn-view {
+        min-height: 40px;
+        padding: 8px 12px;
+    }
+
+}
+
+

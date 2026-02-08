@@ -1,0 +1,21 @@
+%% 6. Burger ontvangt antwoord op bericht (chat)
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'yellow','primaryColor':'green','primaryTextColor':'blue','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Citizen
+    participant Frontend
+    participant Backend
+    participant Database
+    participant NotificationService
+
+    Note over Citizen: Burger ontvangt antwoord op chatbericht
+
+    NotificationService->>+Frontend: Pushbericht: "Nieuw antwoord op melding #123"
+    Frontend->>+Backend: GET /api/reports/123/messages
+    Backend->>+Database: SELECT * FROM messages WHERE report_id=123 ORDER BY createdAt
+    Database-->>-Backend: List<Message>
+    Backend-->>-Frontend: MessageDTO[]
+    Frontend-->>-Citizen: Toont chatgeschiedenis met nieuw antwoord

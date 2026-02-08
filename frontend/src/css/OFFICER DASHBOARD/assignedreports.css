@@ -1,0 +1,550 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* ---------- Base / Layout ---------- */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: 0;
+    padding: 30px;
+    transition: margin-left 0.3s ease;
+}
+
+/* ========== Header ========== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e6ed;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 28px;
+    color: forestgreen;
+}
+
+.header-content p {
+    margin: 5px 0 0;
+    color: forestgreen;
+    font-size: 16px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* filter select + refresh */
+.filter-select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d9df;
+    background: white;
+    font-weight: 600;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: border-color 0.18s ease, box-shadow 0.12s ease;
+    min-width: 160px;
+}
+
+.filter-select:hover {
+    border-color: #3498db;
+}
+
+.filter-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(52,152,219,0.08);
+    border-color: #3498db;
+}
+
+.refresh-btn {
+    background: rosybrown;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.06s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.refresh-btn:hover {
+    background: #2980b9;
+}
+
+.refresh-btn:active {
+    transform: translateY(1px);
+}
+
+/* NEW: Universal class for all assigned report icons */
+.assigned-report {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+/* Specific sizing for error icon in h3 */
+.error-message h3 .assigned-report {
+    width: 24px;
+    height: 24px;
+}
+
+/* Specific sizing for empty state mailbox icon */
+.empty-icon .assigned-report {
+    width: 64px;
+    height: 64px;
+}
+
+/* ========== Reports Section ========== */
+.reports-section {
+    width: 100%;
+    max-width: none;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Each report card */
+.report-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 18px;
+    border: 1px solid #e9eef3;
+    border-radius: 10px;
+    transition: all 0.22s cubic-bezier(.2,.9,.2,1);
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+}
+
+.report-item:hover {
+    box-shadow: 0 10px 28px rgba(18, 52, 86, 0.06);
+    transform: translateY(-4px);
+    border-color: #d0e7ff;
+}
+
+.report-item:focus {
+    box-shadow: 0 0 0 4px rgba(52,152,219,0.08), 0 10px 28px rgba(18,52,86,0.06);
+    border-color: #3498db;
+}
+
+/* left media column */
+.report-media {
+    flex: 0 0 120px;
+    min-width: 0;
+    height: 90px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7fafc;
+    border: 1px dashed #eef4f8;
+}
+
+.report-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+    transition: transform 0.28s ease;
+    display: block;
+}
+
+.report-item:hover .report-thumb {
+    transform: scale(1.04);
+}
+
+/* better video thumbnail handling */
+.report-media video.report-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* placeholder when no media */
+.no-media {
+    font-size: 12px;
+    color: #7f8c8d;
+    text-align: center;
+    padding: 6px;
+}
+
+/* right content column */
+.report-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.report-header-assigned {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    gap: 12px;
+}
+
+.report-header-assigned h4 {
+    margin: 0;
+    color: #112233;
+    font-size: 18px;
+    transition: color 0.18s ease;
+    line-height: 1.2;
+}
+
+.report-item:hover .report-header-assigned h4 {
+    color: #2a6fbe;
+}
+
+/* status badge */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    background-color: #6c757d; /* default */
+}
+
+.status-badge.status-submitted {
+    background-color: #ffc107;
+}
+
+.status-badge.status-in-review {
+    background-color: #17a2b8;
+}
+
+.status-badge.status-in-progress {
+    background-color: #007bff;
+}
+
+.status-badge.status-resolved {
+    background-color: #28a745;
+}
+
+.status-badge.status-rejected {
+    background-color: #dc3545;
+}
+
+.status-badge.status-cancelled {
+    background-color: #9b9b9b;
+}
+
+/* description */
+.report-description {
+    margin: 6px 0;
+    color: #6f7a85;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+/* meta row and actions */
+.report-meta {
+    display: flex;
+    gap: 14px;
+    font-size: 13px;
+    color: #95a5a6;
+    margin-bottom: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* NEW: Ensure meta items (category, date, location) display icons inline */
+.report-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.report-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.report-actions .btn-view {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background 0.18s ease, transform 0.06s ease;
+    display: inline-block;
+}
+
+.report-actions .btn-view:hover {
+    background: #2b6fb0;
+}
+
+/* subtle divider between items for long lists */
+.reports-list > .report-item + .report-item {
+    border-top-width: 1px;
+}
+
+/* ========== Empty State ========== */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #7f8c8d;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-state h3 {
+    margin: 0 0 10px;
+    color: #2c3e50;
+}
+
+.empty-state p {
+    margin: 0;
+    color: #7f8c8d;
+}
+
+/* ========== Loading & Error ========== */
+.loading-spinner,
+.error-message {
+    text-align: center;
+    padding: 50px 20px;
+    font-size: 18px;
+    color: #7f8c8d;
+}
+
+.error-message h3 {
+    color: #e74c3c;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 1000px) {
+    .main-content {
+        padding: 25px;
+    }
+
+    .reports-section {
+        padding: 18px;
+    }
+
+    .report-media {
+        flex: 0 0 100px;
+        height: 75px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header-content h1 {
+        font-size: 19px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .filter-select {
+        flex: 1;
+        max-width: 220px;
+    }
+
+    .reports-section {
+        padding: 16px;
+    }
+
+    .report-item {
+        gap: 15px;
+        padding: 16px;
+    }
+
+    .report-media {
+        flex: 0 0 100px;
+        min-width: 100px;
+        height: 75px;
+    }
+
+    .report-thumb {
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .report-header-assigned {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .report-header-assigned h4 {
+        font-size: 16px;
+    }
+
+    .report-meta {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* Scale down icons on tablet */
+    .assigned-report {
+        width: 16px;
+        height: 16px;
+    }
+
+    .error-message h3 .assigned-report {
+        width: 22px;
+        height: 22px;
+    }
+
+    .empty-icon .assigned-report {
+        width: 56px;
+        height: 56px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 15px;
+    }
+
+    .page-header {
+        margin-bottom: 20px;
+    }
+
+    .header-content h1 {
+        font-size: 20px;
+    }
+
+    .header-content p {
+        font-size: 14px;
+    }
+
+    .header-actions {
+        flex-direction: row;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .filter-select {
+        width: 100%;
+        max-width: none;
+    }
+
+    .reports-section {
+        padding: 14px;
+    }
+
+    .report-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .report-media {
+        width: 100%;
+        flex: none;
+        height: 180px;
+    }
+
+    .report-header-assigned {
+        width: 100%;
+    }
+
+    .report-header-assigned h4 {
+        font-size: 16px;
+    }
+
+    .report-description {
+        font-size: 13px;
+    }
+
+    .report-meta {
+        font-size: 12px;
+        gap: 8px;
+    }
+
+    .report-actions .btn-view {
+        width: 100%;
+        text-align: center;
+        padding: 10px 16px;
+    }
+
+    /* Scale down icons on mobile */
+    .assigned-report {
+        width: 14px;
+        height: 14px;
+    }
+
+    .error-message h3 .assigned-report {
+        width: 20px;
+        height: 20px;
+    }
+
+    .empty-icon .assigned-report {
+        width: 48px;
+        height: 48px;
+    }
+}

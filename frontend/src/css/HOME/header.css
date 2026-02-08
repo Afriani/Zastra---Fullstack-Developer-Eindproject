@@ -1,0 +1,111 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* === HEADER CONTAINER === */
+.header {
+    display: flex;
+    justify-content: space-between; /* Logo/Naam links, Menu rechts */
+    align-items: center;
+    padding: 10px 30px;
+    background-color: lightskyblue;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Linker sectie: Logo + Welkom bericht */
+.header-left-section {
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Ruimte tussen logo en naam */
+}
+
+.header-logo {
+    cursor: pointer;
+}
+
+.header-logo img {
+    height: 80px; /* Iets compacter voor een strakke lijn */
+    width: auto;
+    border-radius: 50%;
+}
+
+/* === WELKOM BERICHT NAAST LOGO === */
+.user-welcome-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.2); /* Subtiel kader */
+    padding: 8px 15px;
+    border-radius: 30px;
+}
+
+.user-welcome {
+    font-size: 1rem;
+    color: white;
+    font-weight: 600;
+    white-space: nowrap; /* Voorkomt dat naam verspringt naar nieuwe regel */
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
+
+/* === RECHTER SECTIE: NAV MENU === */
+header .nav-menu ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    font-size: 1.2rem;
+    color: white;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+header .nav-menu ul li a {
+    text-decoration: none !important;
+    color: white;
+    font-weight: 500;
+}
+
+.dashboard-link {
+    background-color: #2ecc71;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* RESPONSIVE */
+/* === RESPONSIVE VOOR 468PX === */
+@media (max-width: 468px) {
+    .header {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .header-left-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .user-welcome-row {
+        padding: 5px 12px;
+    }
+
+    header .nav-menu ul {
+        gap: 15px;
+        font-size: 1rem;
+    }
+}

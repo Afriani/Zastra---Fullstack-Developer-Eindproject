@@ -1,0 +1,173 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+.register {
+    margin: auto;
+    text-align: center;
+}
+
+.register h2 {
+    font-size: 42px;
+    margin: 20px auto;
+}
+
+.register-subtext {
+    font-size: 18px;
+    color: #555;
+}
+
+.register-container {
+    max-width: 100%;
+    margin: 50px 40px 0 40px;
+    padding: 40px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 100%;
+}
+.register-form input,
+.register-form select {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+.register-form input.error,
+.register-form select.error {
+    border-color: #dc3545;
+    background: #fff6f6;
+}
+
+.error-text {
+    color: #dc3545;
+    font-size: 0.85em;
+}
+
+/* ==== GROUPED INPUTS ==== */
+.name-group,
+.dob-group,
+.address-group,
+.city-province-group {
+    display: flex;
+    gap: 12px;
+}
+.name-group input,
+.dob-group input,
+.address-group input,
+.city-province-group input {
+    flex: 1;
+}
+
+/* ==== AVATAR UPLOAD ==== */
+.avatar-upload-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    background: #fafafa;
+}
+.avatar-preview {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.preview-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #0078d7;
+}
+.remove-avatar-btn {
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.remove-avatar-btn:hover {
+    background: #c62828;
+}
+
+/* ==== SUBMIT BUTTON ==== */
+button[type="submit"] {
+    padding: 14px;
+    background: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button[type="submit"]:hover:not(:disabled) {
+    background: #005fa3;
+}
+button[type="submit"]:disabled {
+    background: #b5d3f0;
+}
+
+/* ==== SPINNER ==== */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+/* ==== RESPONSIVE ADJUSTMENTS ==== */
+@media screen and (max-width: 768px) {
+    .register-container {
+        padding: 20px;
+        margin: 30px auto;
+        max-width: 95%;
+    }
+
+    .register h2 {
+        font-size: 28px;
+    }
+
+    .register-form {
+        gap: 14px;
+    }
+
+    /* collapse grouped inputs into vertical stack */
+    .name-group,
+    .dob-group,
+    .address-group,
+    .city-province-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .register-form input,
+    .register-form select {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    button[type="submit"] {
+        font-size: 15px;
+        padding: 12px;
+    }
+
+    .preview-image {
+        width: 60px;
+        height: 60px;
+    }
+}

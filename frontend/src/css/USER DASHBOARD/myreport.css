@@ -1,0 +1,453 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #f4f6f8;
+}
+
+.reports-container {
+    flex: 1;
+    padding: 2rem;
+}
+
+/* ===== Header ===== */
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    align-items: flex-end;
+}
+
+.report-header h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+p.report-count {
+    padding: 12px 20px;
+    font-size: 1rem;
+    color: #6b7280;
+}
+
+/* ===== Card grid ===== */
+
+.cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.report-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.report-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+/* ===== Card header ===== */
+
+.card-header {
+    margin-bottom: 1rem;
+}
+
+/* Fix sidebar z-index to appear above Leaflet maps */
+.sidebar {
+    z-index: 2000 !important;
+}
+
+/* Ensure sidebar overlay appears above maps on mobile */
+.sidebar-overlay {
+    z-index: 1999 !important;
+}
+
+/* Leaflet map container - lower z-index */
+.leaflet-container {
+    z-index: 1 !important;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+
+.status-badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status.submitted { background: #e5f2ff; color: #0078d4; }
+.status.in-review { background: #fff8e1; color: #f9a825; }
+.status.in-progress { background: #e3f2fd; color: #0288d1; }
+.status.resolved { background: #e8f5e9; color: #388e3c; }
+.status.rejected { background: #ffebee; color: #c62828; }
+.status.cancelled { background: #f3e5f5; color: #6a1b9a; }
+
+.report-id {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* Category & title */
+
+.report-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #111;
+}
+
+.category {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* ===== Media grid ===== */
+
+.images-grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.report-image {
+    flex: 1;
+    min-width: 0;
+    max-width: 435px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.more-images {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 70px;
+    border-radius: 6px;
+    background: #f3f4f6;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Video */
+
+.report-video {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+}
+
+/* ===== Description ===== */
+
+.description-section {
+    margin-top: 0.75rem;
+}
+
+.description {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* ===== Location ===== */
+
+.location-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.location-info {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.location-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* NEW: shared icon styling for MyReport */
+.my-report-icons {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.address {
+    display: inline-block;
+}
+
+/* Coordinates text under address */
+.coordinates {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* ===== Map wrapper & small map (for inline-style removal) ===== */
+
+/* Map wrapper spacing */
+.map-wrapper {
+    margin-top: 12px;
+}
+
+/* Report map container */
+.report-map {
+    height: 200px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* Popup content spacing + layout (icon + text) */
+.popup-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+/* Google Maps directions link */
+
+.gmaps-directions-link {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 8px 10px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.gmaps-directions-link:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+/* ===== Officer ===== */
+
+.officer-section {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.officer-label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.officer-name {
+    color: #111827;
+}
+
+/* ===== Dates ===== */
+
+.dates-section {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.date-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.date-label {
+    font-weight: 600;
+}
+
+.date-value {
+    color: #374151;
+}
+
+/* ===== History timeline ===== */
+
+.history-section {
+    margin-top: 1rem;
+}
+
+.history-toggle {
+    background: none;
+    border: none;
+    color: #0078d4;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.arrow {
+    transition: transform 0.2s ease;
+}
+
+.arrow.expanded {
+    transform: rotate(180deg);
+}
+
+.history-timeline {
+    border-left: 2px solid #e5e7eb;
+    margin-left: 1rem;
+    padding-left: 1rem;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.timeline-dot {
+    position: absolute;
+    top: 0.3rem;
+    left: -1.2rem;
+    width: 8px;
+    height: 8px;
+    background: #0078d4;
+    border-radius: 50%;
+}
+
+.timeline-content {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.timeline-status {
+    color: #111827;
+}
+
+.timeline-date {
+    color: #888;
+    font-weight: normal;
+}
+
+.timeline-details {
+    margin-top: 0.3rem;
+}
+
+.timeline-user {
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.timeline-notes {
+    font-size: 0.85rem;
+    color: #444;
+    margin-top: 0.25rem;
+}
+
+/* Resolved photo in timeline */
+.timeline-photo {
+    margin-top: 0.4rem;
+}
+
+/* This matches how you're using <img className="resolved-photo" ...> */
+.resolved-photo {
+    max-width: 250px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    display: block;
+}
+
+/* ===== Empty, Loading, Error states ===== */
+
+.empty-state,
+.loading-state,
+.error-state {
+    text-align: center;
+    margin-top: 3rem;
+    color: #555;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Simple spinner */
+.spinner {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 3px solid #e5e7eb;
+    border-top-color: #3b82f6;
+    margin: 0 auto 0.5rem;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== Light responsiveness (layout only, no size/color changes) ===== */
+
+/* Allow header text to wrap neatly on smaller screens */
+@media (max-width: 768px) {
+    .report-header {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .location-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .dates-section {
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+    }
+
+    .status-row {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+/* Stack layout vertically if sidebar and content get tight */
+@media (max-width: 600px) {
+    .dashboard {
+        flex-direction: column;
+    }
+}

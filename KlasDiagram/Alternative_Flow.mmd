@@ -1,0 +1,65 @@
+%% Alternative flow - Citizen stuurt bericht naar Officer over Report
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'#39FF14',
+  'primaryColor':'#805AD5',
+  'primaryTextColor':'#fff',
+  'primaryBorderColor':'#805AD5',
+  'textColor':'#1A202C',
+  'mainBkg':'#FFFFFF'
+}}}%%
+
+sequenceDiagram
+    actor Citizen
+    participant Frontend
+    participant Backend
+    participant MessageService
+    participant Database
+    actor Officer
+
+    Note over Citizen,Officer: Flow: Citizen stuurt bericht over Report
+
+    Citizen->>+Frontend: Opent Report detail (id=123)
+    Frontend->>+Backend: GET /api/reports/123
+    Backend->>+Database: SELECT * FROM reports WHERE id=123
+    Database-->>-Backend: Report (officer_id=456)
+    Backend-->>-Frontend: ReportDTO
+    Frontend-->>-Citizen: Toont report + chat sectie
+
+    Citizen->>+Frontend: Typt bericht: "Wanneer wordt dit opgelost?"
+    Frontend->>+Backend: POST /api/reports/123/messages (content="Wanneer wordt dit opgelost?")
+    Backend->>+MessageService: sendMessage(reportId=123, senderId=citizen_id, recipientId=456, content)
+
+    MessageService->>+Database: INSERT INTO messages (sender_id=citizen_id, recipient_id=456, report_id=123, content="...", read=false)
+    Database-->>-MessageService: Message created (id=789)
+
+    MessageService->>+Database: UPDATE inbox_items SET read=false WHERE officer_id=456 AND report_id=123
+    Database-->>-MessageService: InboxItem updated (unread badge)
+
+    MessageService->>Backend: notifyOfficer(officerId=456, "Nieuw bericht op melding #123")
+    MessageService-->>-Backend: Message entity
+
+    Backend-->>-Frontend: 201 Created (MessageDTO)
+    Frontend-->>-Citizen: Bericht verzonden
+
+    Note over Officer: Officer ontvangt notificatie
+
+    Officer->>+Frontend: Opent Report #123
+    Frontend->>+Backend: GET /api/reports/123/messages
+    Backend->>+Database: SELECT * FROM messages WHERE report_id=123 ORDER BY createdAt
+    Database-->>-Backend: List<Message>
+    Backend->>+Database: UPDATE messages SET read=true WHERE recipient_id=456 AND report_id=123
+    Database-->>-Backend: Messages marked as read
+    Backend-->>-Frontend: MessageDTO[]
+    Frontend-->>-Officer: Toont chat geschiedenis
+
+    Officer->>+Frontend: Antwoordt: "We komen morgen"
+    Frontend->>+Backend: POST /api/reports/123/messages (content="We komen morgen")
+    Backend->>+MessageService: sendMessage(reportId=123, senderId=456, recipientId=citizen_id, content)
+    MessageService->>+Database: INSERT INTO messages (...)
+    Database-->>-MessageService: Message created
+    MessageService-->>-Backend: Message entity
+    Backend-->>-Frontend: 201 Created
+    Frontend-->>-Officer: Bericht verzonden
+
+    Note over Citizen: Citizen ontvangt notificatie + kan antwoord lezen

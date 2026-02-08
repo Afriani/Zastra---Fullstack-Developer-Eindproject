@@ -1,0 +1,39 @@
+%% 3. Admin beheert gebruiker — aanmaken & blokkeren
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'orange','primaryColor':'lightyellow','primaryTextColor':'black','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Admin
+    participant Frontend
+    participant Backend
+    participant UserService
+    participant AuthService
+    participant Database
+    participant EmailService
+
+    Admin->>+Frontend: Open "Beheer gebruikers" -> klik "Maak gebruiker"
+    Frontend->>+Backend: POST /api/admin/users {email, name, role}
+    Backend->>+UserService: createUser(userDTO)
+    UserService->>+AuthService: createAuthUser(email, passwordGenerated)
+    AuthService->>+Database: INSERT INTO users (...)
+    Database-->>-AuthService: User(id=5002)
+    AuthService->>+EmailService: sendWelcomeEmail(email, tempPassword)
+    EmailService-->>-AuthService: OK
+    AuthService-->>-UserService: UserEntity
+    UserService-->>-Backend: CreatedUserDTO
+    Backend-->>-Frontend: 201 Created
+    Frontend-->>-Admin: Bevestiging: "Gebruiker aangemaakt"
+
+%% Block user flow
+    Admin->>+Frontend: Selecteer gebruiker -> klik "Blokkeer"
+    Frontend->>+Backend: PATCH /api/admin/users/5002/block
+    Backend->>+UserService: blockUser(5002)
+    UserService->>+Database: UPDATE users SET enabled=false WHERE id=5002
+    Database-->>-UserService: OK
+    UserService->>+EmailService: sendAccountBlockedEmail(email)
+    EmailService-->>-UserService: OK
+    UserService-->>-Backend: 200 OK
+    Backend-->>-Frontend: 200 OK
+    Frontend-->>-Admin: Bevestiging: "Gebruiker geblokkeerd"

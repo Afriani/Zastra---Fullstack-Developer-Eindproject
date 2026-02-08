@@ -1,0 +1,25 @@
+%% 4. Ambtenaar beantwoordt bericht van burger (chat reply)
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'blue','primaryColor':'blue','primaryTextColor':'green','textColor':'green','mainBkg':'#FFFFFF'
+}}}%%
+sequenceDiagram
+    actor Officer
+    participant Frontend
+    participant Backend
+    participant MessageService
+    participant Database
+    participant NotificationService
+
+    Note over Officer: Ambtenaar antwoordt op chatbericht in report #123
+
+    Officer->>+Frontend: Typt antwoord en klikt "Verzenden"
+    Frontend->>+Backend: POST /api/reports/123/messages {content}
+    Backend->>+MessageService: sendMessage(reportId=123, senderId=456, recipientId=citizenId, content)
+    MessageService->>+Database: INSERT INTO messages (report_id, sender_id=456, recipient_id=citizenId, content, read=false)
+    Database-->>-MessageService: Message created
+    MessageService->>+NotificationService: notifyUser(citizenId, "Nieuw bericht op melding #123")
+    NotificationService-->>-MessageService: OK
+    MessageService-->>-Backend: MessageDTO
+    Backend-->>-Frontend: 201 Created
+    Frontend-->>-Officer: Bericht verzonden

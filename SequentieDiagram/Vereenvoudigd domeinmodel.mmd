@@ -1,0 +1,55 @@
+classDiagram
+title Class Diagram - ZASTRA Domain Model
+
+class User {
++Long id
++String name
++String email
++String passwordHash
++String role
++Boolean emailVerified
++Date lastLogin
+}
+
+class Report {
++Long id
++String title
++String description
++String category
++String status
++Date createdAt
++Date updatedAt
++String location
+}
+
+class Media {
++Long id
++Long reportId
++String url
++String mimeType
++Date uploadedAt
+  }
+
+class Message {
++Long id
++Long reportId
++Long senderId
++Long receiverId
++String content
++Date createdAt
+}
+
+class Notification {
++Long id
++Long userId
++String type
++String payload
++Boolean isRead
++Date createdAt
+}
+
+User "1" --> "0..*" Report : creates
+Report "1" --> "0..*" Media : has
+Report "1" --> "0..*" Message : related
+User "1" --> "0..*" Message : sends/receives
+User "1" --> "0..*" Notification : receives

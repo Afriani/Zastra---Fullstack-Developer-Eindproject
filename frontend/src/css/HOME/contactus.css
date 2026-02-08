@@ -1,0 +1,209 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Container and typography */
+.contact-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 20px 80px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #1d1d1d;
+    text-align: center;
+    min-height: calc(100vh - 200px); /* Ensures footer stays at bottom */
+}
+
+.contact-container h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.intro-text {
+    font-size: 18px;
+    margin-bottom: 40px;
+    color: #555;
+}
+
+/* Grid layout for contact cards */
+.contact-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+/* Individual contact card box */
+.contact-box {
+    background-color: #f6e2bb;
+    border-radius: 12px;
+    padding: 30px;
+    width: 280px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+    text-align: left;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.contact-box:hover {
+    transform: translateY(-4px);
+}
+
+.contact-box h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Icon styling for contact-us icons */
+.contact-us-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+/* Paragraph styling */
+.contact-box p {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #666;
+}
+
+/* Button styling */
+.contact-button {
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    max-width: 250px;
+    margin-top: 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    align-content: center;
+}
+
+.contact-button:hover {
+    background-color: #005fa3;
+}
+
+/* Detail box that appears when button is clicked */
+.detail-box {
+    background-color: #eef6ff;
+    padding: 16px;
+    margin-top: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    color: #333;
+    font-size: 15px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.detail-box p {
+    font-weight: bold;
+}
+
+/* Subtle fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 40px 20px 60px;
+        min-height: calc(100vh - 150px);
+    }
+
+    .contact-container h1 {
+        font-size: 28px;
+        margin-bottom: 16px;
+    }
+
+    .intro-text {
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    .contact-grid {
+        gap: 20px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact-box {
+        width: 100%;
+        max-width: 400px;
+        padding: 24px;
+    }
+
+    .contact-box h3 {
+        font-size: 20px;
+    }
+
+    .contact-box p {
+        font-size: 15px;
+    }
+
+    .contact-button {
+        max-width: 100%;
+        font-size: 15px;
+    }
+
+    .detail-box {
+        font-size: 14px;
+        padding: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-container {
+        padding: 30px 15px 50px;
+        min-height: calc(100vh - 120px);
+    }
+
+    .contact-container h1 {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    .intro-text {
+        font-size: 15px;
+        margin-bottom: 24px;
+    }
+
+    .contact-grid {
+        gap: 16px;
+    }
+
+    .contact-box {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .contact-box h3 {
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .contact-box p {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+
+    .contact-button {
+        padding: 10px 16px;
+        font-size: 14px;
+        margin-top: 16px;
+    }
+
+    .detail-box {
+        font-size: 13px;
+        padding: 12px;
+    }
+}

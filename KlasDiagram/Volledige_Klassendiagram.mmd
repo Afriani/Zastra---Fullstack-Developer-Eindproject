@@ -1,0 +1,241 @@
+%% Full Class Diagram
+
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'lineColor': '#39FF14',
+    'primaryColor': '#2B6CB0',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#2B6CB0',
+    'secondaryColor': '#EDF2F7',
+    'tertiaryColor': '#F7FAFC',
+    'noteBkgColor': '#EBF8FF',
+    'noteTextColor': '#1A365D',
+    'textColor': '#1A202C',
+    'mainBkg': '#FFFFFF',
+    'edgeLabelBackground': '#FFFFFF',
+    'classText': '#1A202C',
+    'classLabel': '#2B6CB0',
+    'labelTextColor': '#1A202C'
+  }
+}}%%
+classDiagram
+    class User {
+        -Long id
+        -String firstName
+        -String lastName
+        -String email
+        -String password
+        -UserRole userRole
+        -String phoneNumber
+        -Address address
+        -String gender
+        -LocalDate dateOfBirth
+        -String nationalId
+        -Instant createdAt
+        -Instant updatedAt
+        -String avatarUrl
+        -LocalDateTime lastLogin
+        -boolean enabled
+        -boolean accountNonExpired
+        -boolean accountNonLocked
+        -boolean credentialsNonExpired
+        -boolean emailVerified
+        +getAuthorities() Collection
+        +getUsername() String
+        +isAccountNonExpired() boolean
+        +isAccountNonLocked() boolean
+        +isCredentialsNonExpired() boolean
+        +isEnabled() boolean
+    }
+
+    class Report {
+        -Long id
+        -String title
+        -String description
+        -ReportCategory category
+        -ReportStatus status
+        -Double latitude
+        -Double longitude
+        -Address address
+        -LocalDateTime createdAt
+        -LocalDateTime updatedAt
+        -LocalDateTime resolvedAt
+        +addImage(ReportImage) void
+        +removeImage(ReportImage) void
+        +addStatusHistory(ReportStatusHistory) void
+    }
+
+    class Message {
+        -Long id
+        -String content
+        -LocalDateTime createdAt
+        -boolean read
+        -boolean deletedByRecipient
+        -boolean deletedByAdmin
+    }
+
+    class Conversation {
+        -Long id
+        -String subject
+        -Instant createdAt
+        -Instant updatedAt
+    }
+
+    class ConversationMessage {
+        -Long id
+        -String content
+        -Instant createdAt
+        -boolean read
+    }
+
+    class Announcement {
+        -Long id
+        -String title
+        -String content
+        -Boolean isUrgent
+        -Boolean isActive
+        -LocalDateTime createdAt
+        -LocalDateTime updatedAt
+        -AnnouncementVisibility visibility
+        -Boolean isPinned
+        -LocalDateTime startAt
+        -LocalDateTime endAt
+    }
+
+    class AnnouncementReadStatus {
+        -Long id
+        -boolean read
+        -LocalDateTime createdAt
+        -LocalDateTime updatedAt
+    }
+
+    class InboxItem {
+        -Long id
+        -boolean read
+        -LocalDateTime createdAt
+        -String message
+    }
+
+    class StatusUpdate {
+        -Long id
+        -ReportStatus previousStatus
+        -ReportStatus newStatus
+        -String comment
+        -LocalDateTime createdAt
+    }
+
+    class ReportImage {
+        -Long id
+        -String fileName
+        -String filePath
+        -Long fileSize
+        -String fileType
+        -String imageUrl
+        -Integer videoDuration
+        -String videoUrl
+    }
+
+    class ReportMediaEntity {
+        -Long id
+        -String url
+        -boolean video
+    }
+
+    class ReportStatusHistory {
+        -Long id
+        -ReportStatus status
+        -String notes
+        -LocalDateTime timestamp
+        -String updatedBy
+        -String resolvedPhotoUrl
+        +prePersist() void
+    }
+
+    class VerificationToken {
+        -Long id
+        -String token
+        -LocalDateTime expiryDate
+        -LocalDateTime createdAt
+        +isExpired() boolean
+    }
+
+    class Address {
+        <<embeddable>>
+        -String postalCode
+        -String streetName
+        -String houseNumber
+        -String city
+        -String province
+    }
+
+    class UserRole {
+        <<enumeration>>
+        CITIZEN
+        OFFICER
+        ADMIN
+    }
+
+    class ReportCategory {
+        <<enumeration>>
+        ROAD_DAMAGE
+        LITTER
+        BROKEN_STREETLIGHT
+        GRAFFITI
+        DAMAGED_SIGN
+        FALLEN_TREE
+        POTHOLE
+        BROKEN_BENCH
+        DAMAGED_PLAYGROUND
+        ILLEGAL_DUMPING
+        OTHER
+    }
+
+    class ReportStatus {
+        <<enumeration>>
+        SUBMITTED
+        IN_REVIEW
+        IN_PROGRESS
+        RESOLVED
+        REJECTED
+        CANCELLED
+    }
+
+    class AnnouncementVisibility {
+        <<enumeration>>
+        OFFICERS
+        ALL
+    }
+
+    User "1" --> "0..*" Report : submits (user)
+    User "1" --> "0..*" Report : assigned (officer)
+    Report "1" --> "0..*" Message : contains
+    Message "*" --> "1" User : sender
+    Message "*" --> "1" User : recipient
+    Message "*" --> "1" Report : about
+    Conversation "1" --> "0..*" ConversationMessage : contains
+    User "0..*" --> "0..*" Conversation : participants
+    ConversationMessage "*" --> "1" User : sender
+    ConversationMessage "*" --> "1" Conversation : in
+    User "1" --> "0..*" Announcement : creates
+    AnnouncementReadStatus "*" --> "1" Announcement : for
+    AnnouncementReadStatus "*" --> "1" User : officer
+    InboxItem "*" --> "1" User : notifies (officer)
+    InboxItem "*" --> "1" Report : about
+    StatusUpdate "*" --> "1" Report : updates
+    StatusUpdate "*" --> "1" User : updatedBy
+    Report "1" --> "0..*" ReportStatusHistory : tracks
+    ReportStatusHistory "*" --> "1" Report : belongs to
+    Report "1" --> "0..*" ReportImage : has
+    ReportImage "*" --> "1" Report : belongs to
+    Report "1" --> "0..*" ReportMediaEntity : has
+    ReportMediaEntity "*" --> "1" Report : belongs to
+    VerificationToken "1" --> "1" User : for
+    User --> UserRole : has
+    User --> Address : embeds
+    Report --> ReportCategory : has
+    Report --> ReportStatus : has
+    Report --> Address : has
+    Announcement --> AnnouncementVisibility : has
+    StatusUpdate --> ReportStatus : transitions
+    ReportStatusHistory --> ReportStatus : records

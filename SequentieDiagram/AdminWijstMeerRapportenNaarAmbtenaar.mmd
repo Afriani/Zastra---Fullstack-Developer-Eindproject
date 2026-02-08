@@ -1,0 +1,30 @@
+sequenceDiagram
+    title Sequence Diagram - Admin Bulk Assign Reports
+
+    participant Admin as "Administrator (User)"
+    participant Frontend
+    participant AdminController
+    participant AdminService
+    participant ReportRepository
+    participant SchedulerService
+    participant NotificationService
+
+    Admin->>Frontend: 1) Select multiple reports and choose "Bulk assign" to officer X
+    Frontend->>AdminController: 2) POST /api/admin/reports/bulk-assign { reportIds[], officerId }
+    AdminController->>AdminService: 3) bulkAssign(reportIds, officerId, adminId)
+
+    AdminService->>ReportRepository: 4) findByIds(reportIds)
+    ReportRepository-->>AdminService: 5) List<Report>
+    AdminService->>ReportRepository: 6) updateMany(assign officerId, reportIds)
+    ReportRepository-->>AdminService: 7) updatedCount
+
+    alt if assignment triggers scheduled follow-ups or tasks
+        AdminService->>SchedulerService: 8) scheduleFollowUpJobs(reportIds, officerId)
+        SchedulerService-->>AdminService: 9) scheduled
+    end
+
+    AdminService->>NotificationService: 10) notifyAssignedOfficer(officerId, reportIds) [async]
+    NotificationService-->>AdminService: 11) queued
+    AdminService-->>AdminController: 12) 200 OK (assignedCount)
+    AdminController-->>Frontend: 13) 200 OK
+    Frontend-->>Admin: 14) Show confirmation "N reports assigned to Officer X"

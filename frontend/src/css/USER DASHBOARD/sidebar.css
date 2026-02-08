@@ -1,0 +1,338 @@
+@import url('https://fonts.cdnfonts.com/css/helvetica-neue-5');
+
+/* Sidebar base */
+.sidebar {
+    width: 250px;
+    height: 100vh; /* Full viewport height */
+    background: #2c3e50;
+    color: #ecf0f1;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column; /* Stack header, nav, logout */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Header */
+.sidebar-header {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid #34495e;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.sidebar-header h2 {
+    color: #ecf0f1;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    text-align: center;
+}
+
+/* Scrollable nav area */
+.sidebar nav {
+    flex: 1; /* Take up remaining space */
+    overflow-y: auto; /* Scroll if content overflows */
+    padding: 1rem 0;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 42px;
+    text-align: left;
+}
+
+.sidebar nav li {
+    margin: 0.25rem 0;
+}
+
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* space between icon and text */
+    padding: 0.75rem 1.5rem;
+    color: #bdc3c7;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 0 25px 25px 0;
+    margin-right: 1rem;
+}
+
+/* Nav icon size */
+.sidebar nav .nav-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.sidebar nav a:hover {
+    background: #34495e;
+    color: #3498db;
+    transform: translateX(5px);
+}
+
+.sidebar nav a.active {
+    background: #3498db;
+    color: #ffffff;
+}
+
+/* Sticky Logout Button */
+.logout-container-user {
+    position: sticky;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    padding: 12px 14px;
+    border-radius: 6px;
+    background: transparent;
+    color: #ffdddd;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: left;
+    z-index: 10;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.logout-container-user:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.logout-btn-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    background-color: lightskyblue;
+    padding: 10px 16px; /* reduced horizontal padding to fit icon */
+    border-radius: 25px;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    font-weight: 600;
+    color: #fff;
+    transition: background 0.3s ease;
+}
+
+/* small icon inside the logout button */
+.logout-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+.logout-btn-user:hover {
+    background-color: #3498db;
+}
+
+/* Burger Menu Button (Hidden on Desktop) */
+.menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 9999;
+    background: #3498db;
+    color: white;
+    font-size: 1.5rem;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    transition: all 0.3s ease;
+    margin-top: 6.6rem;
+}
+
+.hamburger-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.menu-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+/* Close Button (Hidden on Desktop) */
+.close-btn {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #bdc3c7;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #e74c3c;
+}
+
+/* Sidebar Overlay (Hidden on Desktop) */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 15;
+    backdrop-filter: blur(2px);
+}
+
+/* Desktop: always show sidebar (no transforms), hide overlay and toggle */
+@media (min-width: 769px) {
+    .sidebar {
+        transform: none;
+        position: relative;
+    }
+    .menu-btn,
+    .close-btn,
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
+
+/* Desktop: always show sidebar (no transforms), hide overlay and toggle */
+@media (min-width: 769px) {
+    .sidebar {
+        transform: none;
+        position: relative;
+    }
+    .menu-btn,
+    .close-btn,
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
+
+/* Mobile/Tablet Responsive Styles - 768px and below */
+@media (max-width: 768px) {
+    .menu-btn {
+        display: flex;
+    }
+
+    .close-btn {
+        display: block;
+    }
+
+    .sidebar-overlay {
+        display: block;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+        height: 100vh;
+        z-index: 20;
+        position: fixed;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .sidebar-header {
+        padding: 2rem 1rem 1.5rem 1rem;
+    }
+
+    .sidebar nav a {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .logout-container-user {
+        bottom: 1rem;
+    }
+
+    .logout-btn-user {
+        padding: 1rem 4rem;
+        font-size: 1rem;
+        margin: 0 15px;
+        max-width: 250px;
+        max-height: 65px;
+    }
+
+    .hamburger-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .user-header {
+        margin-left: 75px;
+    }
+}
+
+/* Extra Small Screens */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .menu-btn {
+        top: 0.01rem;
+        left: 0.75rem;
+        padding: 0.4rem 0.6rem;
+        font-size: 1rem;
+        margin-top: 223px;
+    }
+
+    .sidebar-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .sidebar nav a {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+    }
+
+    .hamburger-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .user-header {
+        margin-left: 65px;
+    }
+}
+
+/* Smooth animations */
+.sidebar,
+.menu-btn,
+.logout-btn-user,
+.sidebar nav a,
+.close-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus states */
+.menu-btn:focus,
+.close-btn:focus,
+.logout-btn-user:focus,
+.sidebar nav a:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+.menu-btn:active {
+    transform: scale(0.95);
+}
+
+.logout-btn-user:active {
+    transform: translateY(0);
+}

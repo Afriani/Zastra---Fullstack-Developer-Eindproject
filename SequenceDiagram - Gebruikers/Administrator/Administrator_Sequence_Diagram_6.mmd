@@ -1,0 +1,39 @@
+%% 6. Admin reviewt geëscaleerde melding en onderneemt actie
+
+%%{init: {'theme':'base','themeVariables':{
+  'lineColor':'orange','primaryColor':'lightyellow','primaryTextColor':'black','textColor':'green','mainBkg':'yellow'
+}}}%%
+
+sequenceDiagram
+    actor Admin
+    participant Frontend
+    participant Backend
+    participant EscalationService
+    participant Database
+    participant ExternalAgencyService
+    participant NotificationService
+
+    Note over Admin: Officer 456 escaleert report #123 -> Admin ontvangt alert
+
+    EscalationService->>+NotificationService: notifyAdmin("Escalation: report #123")
+    NotificationService-->>-EscalationService: OK
+
+    Admin->>+Frontend: Open escalations -> kies report #123
+    Frontend->>+Backend: GET /api/admin/escalations/123
+    Backend->>+EscalationService: getEscalation(123)
+    EscalationService->>+Database: SELECT escalation + report WHERE id=123
+    Database-->>-EscalationService: escalationDetail
+    EscalationService-->>-Backend: escalationDetail
+    Backend-->>-Frontend: escalationDTO
+    Frontend-->>-Admin: Toont details
+
+    Admin->>+Frontend: Klik "Forward to External Agency"
+    Frontend->>+Backend: POST /api/admin/escalations/123/forward {agencyId:999}
+    Backend->>+ExternalAgencyService: forwardReport(agencyId=999, reportPayload)
+    ExternalAgencyService-->>-Backend: accepted (caseRef=EXT-456)
+    Backend->>+Database: UPDATE escalations SET forwarded=true, externalRef='EXT-456' WHERE id=123
+    Database-->>-Backend: OK
+    Backend->>+NotificationService: notifyOfficerAndCitizen("Report forwarded to external agency")
+    NotificationService-->>-Backend: OK
+    Backend-->>-Frontend: 200 OK
+    Frontend-->>-Admin: Bevestiging: "Doorgevoerd naar agency (EXT-456)"

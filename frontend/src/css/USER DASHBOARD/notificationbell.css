@@ -1,0 +1,217 @@
+/* Positioning: use relative so the dropdown is positioned relative to this container.
+   If you want the bell fixed to viewport top-right, change to `position: fixed;`. */
+.notification-bell-container {
+    position: relative; /* <-- required for absolute dropdown to align */
+    top: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+/* Bell button */
+.notification-bell-button {
+    position: relative;
+    background: white;
+    border: 2px solid #e5e7eb;
+    cursor: pointer;
+    padding: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 50px;
+    height: 50px;
+    outline: none;
+}
+
+/* Focus visible for keyboard users */
+.notification-bell-button:focus-visible {
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+    border-color: #3b82f6;
+}
+
+/* Hover / active */
+.notification-bell-button:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge */
+.notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 7px;
+    border-radius: 50%;
+    min-width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+    line-height: 1;
+    transform-origin: center;
+}
+
+/* Pulse animation: runs while the badge exists. Prefer adding a class from JS (e.g. .pulse) if you want to control it */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%     { transform: scale(1.08); }
+}
+
+/* Only apply animation if there are unread notifications (you can toggle .has-unread on the container from JS) */
+.notification-bell-container.has-unread .notification-badge {
+    animation: pulse 1.8s ease-in-out infinite;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .notification-bell-button,
+    .notification-badge {
+        transition: none;
+        animation: none !important;
+    }
+}
+
+/* Dropdown */
+.notification-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 380px;
+    max-height: 500px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e7eb;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Header */
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+}
+
+.notification-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Mark all button */
+.mark-all-read-btn {
+    background: none;
+    border: none;
+    color: #3b82f6;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    font-weight: 500;
+}
+.mark-all-read-btn:focus-visible { box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+.mark-all-read-btn:hover { background-color: #dbeafe; }
+
+/* List */
+.notification-list {
+    overflow-y: auto;
+    max-height: 420px;
+}
+
+/* Item */
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f3f4f6;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    position: relative;
+    gap: 12px;
+}
+.notification-item:hover { background-color: #f9fafb; }
+.notification-item.unread { background-color: #eff6ff; }
+.notification-item.unread:hover { background-color: #dbeafe; }
+
+/* Content */
+.notification-content { flex: 1; }
+.notification-content h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+}
+.notification-content p {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.4;
+    word-break: break-word; /* ensures long text wraps */
+}
+
+/* Time */
+.notification-time {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* Dot */
+.notification-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    margin-left: 12px;
+    margin-top: 6px;
+    flex-shrink: 0;
+}
+
+/* Empty / Loading */
+.notification-loading,
+.notification-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #9ca3af;
+}
+.notification-empty svg { margin-bottom: 12px; opacity: 0.3; }
+.notification-empty p { margin: 0; font-size: 14px; }
+
+/* Scrollbar */
+.notification-list::-webkit-scrollbar { width: 6px; }
+.notification-list::-webkit-scrollbar-track { background: #f3f4f6; }
+.notification-list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+.notification-list::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .notification-bell-container {
+        top: 20px;
+        right: 20px;
+    }
+    .notification-dropdown {
+        width: 320px;
+        right: -10px;
+    }
+}
