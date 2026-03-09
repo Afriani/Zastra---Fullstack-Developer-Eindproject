@@ -84,8 +84,8 @@ file:
 # Google Authenticator
 google:
   client:
-    id: ${GOOGLE_CLIENT_ID}
-    secret: ${GOOGLE_CLIENT_SECRET}
+    id: ${GOOGLE_CLIENT_ID:dummy}
+    secret: ${GOOGLE_CLIENT_SECRET:dummy}
 
 
 # Application URLs
@@ -108,7 +108,7 @@ logging:
 
 facebook:
   client:
-    id: ${FACEBOOK_CLIENT_ID}
-    secret: ${FACEBOOK_CLIENT_SECRET}
+    id: ${FACEBOOK_CLIENT_ID:dummy}
+    secret: ${FACEBOOK_CLIENT_SECRET:dummy}
 
 
