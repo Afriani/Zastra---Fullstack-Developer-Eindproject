@@ -7,6 +7,7 @@ import com.zastra.zastra.infra.dto.ResetPasswordRequest;
 import com.zastra.zastra.infra.repository.UserRepository;
 import com.zastra.zastra.infra.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,25 +19,27 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"${app.frontend-url}"})
 public class AuthController {
 
     private final AuthService authService;
     private final UserRepository userRepository;
+
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
         try {
             String token = authService.login(request);
 
-            // Update lastLogin for the user (best-effort; non-fatal if it fails)
             try {
                 userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
                     user.setLastLogin(LocalDateTime.now());
                     userRepository.save(user);
                 });
             } catch (Exception ex) {
-                // swallow update errors so login still succeeds; consider logging here
+                // ignore DB update issues
             }
 
             return ResponseEntity.ok(new ApiResponse(true, "Login successful", Map.of("token", token)));
@@ -72,7 +75,7 @@ public class AuthController {
                             "<div class='container'>" +
                             "<div class='success'>Email Verified Successfully!</div>" +
                             "<p>Your account has been activated. You can now login to the Damage Reporting App.</p>" +
-                            "<a href='http://localhost:3000/login' class='button'>Go to Login</a>" +
+                            "<a href='" + frontendUrl + "/login' class='button'>Go to Login</a>" +
                             "</div></body></html>"
             );
         } catch (Exception e) {
@@ -88,7 +91,7 @@ public class AuthController {
                                     "<div class='container'>" +
                                     "<div class='error'> Verification Failed</div>" +
                                     "<p>" + e.getMessage() + "</p>" +
-                                    "<a href='http://localhost:3000/register' class='button'>Back to Register</a>" +
+                                    "<a href='" + frontendUrl + "/register' class='button'>Back to Register</a>" +
                                     "</div></body></html>"
                     );
         }
