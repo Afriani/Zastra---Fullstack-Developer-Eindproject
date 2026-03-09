@@ -220,9 +220,15 @@ function MyInbox() {
                             >
                                 <div className="folder-icon">
                                     {item.unread && activeTab === "received" ? (
-                                        <img src={unreadIcon} alt="Unread" className="my-inbox-icons" />
+                                        <img
+                                            src={unreadIcon}
+                                            alt="Unread"
+                                            className="my-inbox-icons" />
                                     ) : (
-                                        <img src={readIcon} alt="Read" className="my-inbox-icons" />
+                                        <img
+                                            src={readIcon}
+                                            alt="Read"
+                                            className="my-inbox-icons" />
                                     )}
                                 </div>
                                 <div className="folder-details">
