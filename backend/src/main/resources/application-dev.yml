@@ -34,24 +34,24 @@ spring:
         jdbc:
           time-zone: UTC
 
-  mail:
-    host: smtp.mailtrap.io
-    port: 2525
-    username: ${MAILTRAP_USERNAME}
-    password: ${MAILTRAP_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
-          ssl:
-            trust: smtp.mailtrap.io
-      debug: true                     # enable detailed mail debug logs (temporary)
+#  mail:
+#    host: smtp.mailtrap.io
+#    port: 2525
+#    username: ${MAILTRAP_USERNAME:dummy_password}
+#    password: ${MAILTRAP_PASSWORD:dummy_password}
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+#          connectiontimeout: 5000
+#          timeout: 5000
+#          writetimeout: 5000
+#          ssl:
+#            trust: smtp.mailtrap.io
+#      debug: true                     # enable detailed mail debug logs (temporary)
 
   # Facebook OAuth Configuration
   facebook:
