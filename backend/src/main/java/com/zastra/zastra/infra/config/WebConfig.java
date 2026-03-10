@@ -16,10 +16,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(
+                .allowedOriginPatterns(
                         frontendUrl,
                         "http://localhost:3000",
                         "http://localhost:5173",
+                        "https://zastra-fullstack-developer-eindproject-*.vercel.app",
                         "https://zastra-fullstack-developer-eindproj.vercel.app"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
