@@ -41,9 +41,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                // ✅ 1. CORS MUST be first before anything else
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                // ✅ 2. Disable CSRF
+                .csrf(AbstractHttpConfigurer::disable)
+
                 .authorizeHttpRequests(auth -> auth
+                        // ✅ 3. OPTIONS preflight MUST be first in the list
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         // static resources
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 
@@ -61,9 +68,6 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/oauth2/**"
                         ).permitAll()
-
-                        // explicitly allow CORS preflight
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // admin only
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
