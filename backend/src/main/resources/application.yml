@@ -3,7 +3,9 @@ spring:
     name: Zastra
 
   profiles:
-    active: dev
+    # ✅ This tells Spring: "Use the SPRING_PROFILES_ACTIVE variable from Render,
+    # but if it's missing (like on my laptop), use 'dev' as a fallback."
+    active: ${SPRING_PROFILES_ACTIVE:dev}
 
   # Disable Spring Boot default DataSource autoconfig (kills postgres fallback)
   autoconfigure:
@@ -12,19 +14,21 @@ spring:
 
   datasource:
     zastra:
-      url: jdbc:postgresql://localhost:5432/zastra_db
-      username: ${ZASTRA_DB_USERNAME}
-      password: ${ZASTRA_DB_PASSWORD}
+      # ✅ Uses Render's built-in variables with localhost fallbacks
+      url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/zastra_db}
+      username: ${SPRING_DATASOURCE_USERNAME:postgres}
+      password: ${SPRING_DATASOURCE_PASSWORD:password}
       driver-class-name: org.postgresql.Driver
       hikari:
-        maximum-pool-size: 20
-        minimum-idle: 5
+        maximum-pool-size: 10
+        minimum-idle: 2
         connection-timeout: 30000
 
     media:
-      url: jdbc:postgresql://localhost:5432/media_db
-      username: ${MEDIA_DB_USERNAME}
-      password: ${MEDIA_DB_PASSWORD}
+      # ✅ Points to the same database on Render
+      url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/media_db}
+      username: ${SPRING_DATASOURCE_USERNAME:postgres}
+      password: ${SPRING_DATASOURCE_PASSWORD:password}
       driver-class-name: org.postgresql.Driver
 
   servlet:
