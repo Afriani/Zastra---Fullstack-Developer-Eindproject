@@ -96,17 +96,28 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // ✅ Use AllowedOriginPatterns to support Vercel's dynamic preview URLs
-        configuration.setAllowedOriginPatterns(List.of(
-                frontendUrl,
+        // ✅ Explicitly list every possible version of your frontend URL
+        configuration.setAllowedOrigins(List.of(
+                "https://zastra-fullstack-developer-eindproj.vercel.app",
+                "https://zastra-fullstack-developer-eindproject.vercel.app",
                 "http://localhost:3000",
-                "http://localhost:5173",
-                "https://zastra-fullstack-developer-eindproject-*.vercel.app", // Matches all Vercel previews
-                "https://zastra-fullstack-developer-eindproj.vercel.app"
+                "http://localhost:5173"
         ));
 
+        // ✅ Allow all standard methods
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(List.of("*")); // Allow all headers for easier debugging
+
+        // ✅ Be very specific with headers to satisfy the browser
+        configuration.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
+        ));
+
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);

@@ -13,21 +13,21 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${app.frontend-url:http://localhost:3000}")
     private String frontendUrl;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOriginPatterns(
-                        frontendUrl,
-                        "http://localhost:3000",
-                        "http://localhost:5173",
-                        "https://zastra-fullstack-developer-eindproject-*.vercel.app",
-                        "https://zastra-fullstack-developer-eindproj.vercel.app"
-                )
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(3600);
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOriginPatterns(
+//                        frontendUrl,
+//                        "http://localhost:3000",
+//                        "http://localhost:5173",
+//                        "https://zastra-fullstack-developer-eindproject-*.vercel.app",
+//                        "https://zastra-fullstack-developer-eindproj.vercel.app"
+//                )
+//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+//                .allowedHeaders("*")
+//                .allowCredentials(true)
+//                .maxAge(3600);
+//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
