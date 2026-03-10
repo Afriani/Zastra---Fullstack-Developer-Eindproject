@@ -100,10 +100,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // ✅ Explicitly list every possible version of your frontend URL
-        configuration.setAllowedOrigins(List.of(
+        // ✅ Use setAllowedOriginPatterns (REQUIRED for wildcards like *)
+        configuration.setAllowedOriginPatterns(List.of(
                 "https://zastra-fullstack-developer-eindproj.vercel.app",
                 "https://zastra-fullstack-developer-eindproject.vercel.app",
+                "https://zastra-fullstack-developer-*.vercel.app",
                 "http://localhost:3000",
                 "http://localhost:5173"
         ));
@@ -111,16 +112,8 @@ public class SecurityConfig {
         // ✅ Allow all standard methods
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
-        // ✅ Be very specific with headers to satisfy the browser
-        configuration.setAllowedHeaders(List.of(
-                "Authorization",
-                "Content-Type",
-                "X-Requested-With",
-                "Accept",
-                "Origin",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"
-        ));
+        // ✅ Use "*" to allow all headers for maximum compatibility
+        configuration.setAllowedHeaders(List.of("*"));
 
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
