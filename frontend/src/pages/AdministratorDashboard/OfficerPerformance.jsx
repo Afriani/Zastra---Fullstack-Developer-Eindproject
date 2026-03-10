@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import axiosInstance from "../../api/axiosInstance"; // ✅ replaced axios
 import {
     ResponsiveContainer,
     LineChart,
@@ -16,9 +16,6 @@ import OfficerPerformanceTrendTable from "./OfficerPerformanceTrendTable";
 import "../../css/ADMIN DASHBOARD/officerperformance.css";
 
 function OfficerPerformance() {
-    const token = localStorage.getItem("token");
-    const authHeaders = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
-
     const [officers, setOfficers] = useState([{ id: null, name: "All Officers" }]);
     const [filters, setFilters] = useState({
         officerId: null,
@@ -41,7 +38,7 @@ function OfficerPerformance() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    // Listen to the custom event from Overview widget to preselect officer
+    // Listen to the custom event from Overview widget
     useEffect(() => {
         const handler = (e) => {
             const id = e.detail?.officerId ?? null;
@@ -51,32 +48,34 @@ function OfficerPerformance() {
         return () => window.removeEventListener("navigate-admin-performance", handler);
     }, []);
 
+    // Load officers list
     useEffect(() => {
         const loadMeta = async () => {
             try {
-                const offs = await axios.get(
-                    "http://localhost:8080/api/admin/performance/officers",
-                    { headers: authHeaders }
-                );
-                setOfficers([{ id: null, name: "All Officers" }, ...(offs.data || [])]);
+                const res = await axiosInstance.get("/api/admin/performance/officers");
+                setOfficers([{ id: null, name: "All Officers" }, ...(res.data || [])]);
             } catch {
-                // ignore
+                // ignore metadata failure
             }
         };
         loadMeta();
-    }, [authHeaders]);
+    }, []);
 
     const resolveDates = () => {
         if (filters.range === "custom" && filters.from && filters.to) {
             return { from: filters.from, to: filters.to };
         }
+
         const now = new Date();
         let days = 30;
+
         if (filters.range === "7d") days = 7;
         if (filters.range === "90d") days = 90;
+
         const to = now.toISOString().slice(0, 10);
         const fromDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
         const from = fromDate.toISOString().slice(0, 10);
+
         return { from, to };
     };
 
@@ -85,36 +84,31 @@ function OfficerPerformance() {
         setError("");
         try {
             const { from, to } = resolveDates();
-            const params = new URLSearchParams();
-            if (filters.officerId) params.append("officerId", filters.officerId);
-            params.append("from", from);
-            params.append("to", to);
+            const params = {
+                from,
+                to,
+            };
+            if (filters.officerId) params.officerId = filters.officerId;
 
             const [sum, tr, byCat, outs] = await Promise.all([
-                axios.get(
-                    `http://localhost:8080/api/admin/performance/summary?${params.toString()}`,
-                    { headers: authHeaders }
-                ),
-                axios.get(
-                    `http://localhost:8080/api/admin/performance/trend?${params.toString()}&interval=week`,
-                    { headers: authHeaders }
-                ),
-                axios.get(
-                    `http://localhost:8080/api/admin/performance/by-category?${params.toString()}`,
-                    { headers: authHeaders }
-                ),
-                axios.get(
-                    `http://localhost:8080/api/admin/performance/outliers?${params.toString()}&limit=10`,
-                    { headers: authHeaders }
-                ),
+                axiosInstance.get("/api/admin/performance/summary", { params }),
+                axiosInstance.get("/api/admin/performance/trend", {
+                    params: { ...params, interval: "week" },
+                }),
+                axiosInstance.get("/api/admin/performance/by-category", { params }),
+                axiosInstance.get("/api/admin/performance/outliers", {
+                    params: { ...params, limit: 10 },
+                }),
             ]);
 
             setSummary(sum.data || null);
+
             setTrend({
                 resolutionTrend: tr.data?.resolutionTrend || [],
                 firstResponseTrend: tr.data?.firstResponseTrend || [],
                 volume: tr.data?.volume || [],
             });
+
             setByCategory(byCat.data || []);
             setOutliers(outs.data || { slowestResolutions: [], oldestOpen: [] });
         } catch (e) {
@@ -128,21 +122,17 @@ function OfficerPerformance() {
     const handleExportCSV = async () => {
         try {
             const { from, to } = resolveDates();
-            const params = new URLSearchParams();
-            if (filters.officerId) params.append("officerId", filters.officerId);
-            params.append("from", from);
-            params.append("to", to);
+            const params = {};
+            if (filters.officerId) params.officerId = filters.officerId;
 
-            const res = await axios.get(
-                `http://localhost:8080/api/admin/performance/export.csv?${params.toString()}`,
-                {
-                    headers: authHeaders,
-                    responseType: "blob",
-                }
-            );
+            const res = await axiosInstance.get("/api/admin/performance/export.csv", {
+                params: { ...params, from, to },
+                responseType: "blob",
+            });
 
             const blob = new Blob([res.data], { type: "text/csv;charset=utf-8" });
             const url = window.URL.createObjectURL(blob);
+
             const link = document.createElement("a");
             link.href = url;
             link.download = `performance-report-${from}-to-${to}.csv`;
@@ -166,11 +156,9 @@ function OfficerPerformance() {
         const days =
             filters.range === "7d"
                 ? 7
-                : filters.range === "30d"
-                    ? 30
-                    : filters.range === "90d"
-                        ? 90
-                        : 30;
+                : filters.range === "90d"
+                    ? 90
+                    : 30;
 
         if (days <= 14)
             return d.toLocaleDateString(undefined, { day: "numeric", month: "short" });
@@ -243,9 +231,7 @@ function OfficerPerformance() {
                         {loading ? "Refreshing..." : "Refresh"}
                     </button>
 
-                    <button className="btn" onClick={handleExportCSV}>
-                        Export CSV
-                    </button>
+                    <button className="btn" onClick={handleExportCSV}>Export CSV</button>
                 </div>
             </div>
 
@@ -292,13 +278,7 @@ function OfficerPerformance() {
                                 <XAxis dataKey="period" tickFormatter={formatTick} />
                                 <YAxis />
                                 <Tooltip />
-                                <Line
-                                    type="monotone"
-                                    dataKey="avgDays"
-                                    stroke="#6366f1"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
+                                <Line type="monotone" dataKey="avgDays" stroke="#6366f1" strokeWidth={2} dot={false} />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
@@ -314,18 +294,8 @@ function OfficerPerformance() {
                                 <YAxis allowDecimals={false} />
                                 <Tooltip />
                                 <Legend />
-                                <Bar
-                                    dataKey="opened"
-                                    name="Opened"
-                                    fill="#f59e0b"
-                                    radius={[4, 4, 0, 0]}
-                                />
-                                <Bar
-                                    dataKey="resolved"
-                                    name="Resolved"
-                                    fill="#10b981"
-                                    radius={[4, 4, 0, 0]}
-                                />
+                                <Bar dataKey="opened" name="Opened" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="resolved" name="Resolved" fill="#10b981" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -342,9 +312,7 @@ function OfficerPerformance() {
                                 ? 7
                                 : filters.range === "90d"
                                     ? 90
-                                    : filters.range === "30d"
-                                        ? 30
-                                        : 30
+                                    : 30
                         }
                         officerId={filters.officerId}
                     />
@@ -363,21 +331,12 @@ function OfficerPerformance() {
                                 <div className="list-title">{row.category}</div>
                                 <div className="list-meta">
                                     <span className="badge">Count: {row.count}</span>
+                                    <span className="badge">Avg Days: {row.avgResolutionDays?.toFixed?.(1) ?? "-"}</span>
                                     <span className="badge">
-                                        Avg Days:{" "}
-                                        {row.avgResolutionDays?.toFixed?.(1) ?? "-"}
+                                        SLA: {row.slaCompliancePct != null ? `${row.slaCompliancePct.toFixed(0)}%` : "-"}
                                     </span>
                                     <span className="badge">
-                                        SLA:{" "}
-                                        {row.slaCompliancePct != null
-                                            ? `${row.slaCompliancePct.toFixed(0)}%`
-                                            : "-"}
-                                    </span>
-                                    <span className="badge">
-                                        Reopen:{" "}
-                                        {row.reopenRatePct != null
-                                            ? `${row.reopenRatePct.toFixed(0)}%`
-                                            : "-"}
+                                        Reopen: {row.reopenRatePct != null ? `${row.reopenRatePct.toFixed(0)}%` : "-"}
                                     </span>
                                 </div>
                             </div>
@@ -400,17 +359,14 @@ function OfficerPerformance() {
                                     <div className="list-title">Report #{o.reportId}</div>
                                     <div className="list-meta">
                                         <span className="badge">{o.category}</span>
-                                        <span className="badge">
-                                            Days: {o.days?.toFixed?.(1) ?? "-"}
-                                        </span>
-                                        <span className="date">
-                                            {new Date(o.createdAt).toLocaleDateString()}
-                                        </span>
+                                        <span className="badge">Days: {o.days?.toFixed?.(1) ?? "-"}</span>
+                                        <span className="date">{new Date(o.createdAt).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             ))
                         )}
                     </div>
+
                     <div className="list">
                         <h4>Oldest Open</h4>
                         {outliers.oldestOpen.length === 0 ? (
@@ -421,12 +377,8 @@ function OfficerPerformance() {
                                     <div className="list-title">Report #{o.reportId}</div>
                                     <div className="list-meta">
                                         <span className="badge">{o.category}</span>
-                                        <span className="badge">
-                                            Age: {o.ageDays?.toFixed?.(1) ?? "-"}
-                                        </span>
-                                        <span className="date">
-                                            {new Date(o.createdAt).toLocaleDateString()}
-                                        </span>
+                                        <span className="badge">Age: {o.ageDays?.toFixed?.(1) ?? "-"}</span>
+                                        <span className="date">{new Date(o.createdAt).toLocaleDateString()}</span>
                                     </div>
                                 </div>
                             ))
@@ -435,12 +387,8 @@ function OfficerPerformance() {
                 </div>
             </div>
 
-            {loading && (
-                <div className="admin-content-section">Loading...</div>
-            )}
-            {error && (
-                <div className="admin-content-section error-message">{error}</div>
-            )}
+            {loading && <div className="admin-content-section">Loading...</div>}
+            {error && <div className="admin-content-section error-message">{error}</div>}
         </div>
     );
 }

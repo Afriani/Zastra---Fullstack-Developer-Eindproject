@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";   // ✅ replaced axios
 import {
     MapContainer,
     TileLayer,
@@ -12,25 +12,25 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "../../css/USER DASHBOARD/newreport.css";
 
-// Fix marker issue in Leaflet + React
+// Fix Leaflet markers
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconUrl: "https://unpkg.com/leaflet/dist/images/marker-icon.png",
     shadowUrl: "https://unpkg.com/leaflet/dist/images/marker-shadow.png",
 });
 
-// Component: listens for map clicks to set coords (and disables follow)
+// Map click sets coords
 function LocationPicker({ setCoords, disableFollow }) {
     useMapEvents({
         click(e) {
-            disableFollow(); // stop following when user manually clicks
+            disableFollow();
             setCoords(e.latlng);
         }
     });
     return null;
 }
 
-// Component: recenters map when coords change and follow===true
+// Recenter if follow==true
 function Recenter({ coords, follow }) {
     const map = useMap();
     useEffect(() => {
@@ -56,71 +56,51 @@ function NewReport() {
         province: "",
     });
 
-    // DEFAULT CENTER: Bekasi (Indonesia)
     const [coords, setCoords] = useState({ lat: -6.2383, lng: 106.9756 });
     const [images, setImages] = useState([]);
     const [video, setVideo] = useState(null);
 
-    // Follow user's device location - start as FALSE (Option B)
     const [follow, setFollow] = useState(false);
     const watchIdRef = useRef(null);
 
-    // categories
     const [categories, setCategories] = useState([]);
     const [categoriesLoading, setCategoriesLoading] = useState(true);
 
-    // reverse geocode debounce
     const reverseTimeoutRef = useRef(null);
 
-    // Option B: Only watch position when 'follow' is true
+    // Watch GPS only when enabled
     useEffect(() => {
         if (!navigator.geolocation) return;
 
         if (follow) {
-            // Start watching only when user checks the box
             watchIdRef.current = navigator.geolocation.watchPosition(
-                (pos) => {
-                    setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-                },
+                (pos) => setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
                 (err) => {
-                    console.warn("watchPosition error", err);
-                    // Optional: alert user if they denied permission
+                    console.warn("GPS error", err);
                     if (err.code === 1) {
-                        alert("Location access denied. Please enable it in your browser.");
+                        alert("Location permission denied.");
                         setFollow(false);
                     }
                 },
-                {
-                    enableHighAccuracy: true,
-                    maximumAge: 5000,
-                    timeout: 10000,
-                }
+                { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
             );
-        } else {
-            // Stop watching when unchecked
-            if (watchIdRef.current !== null) {
-                navigator.geolocation.clearWatch(watchIdRef.current);
-                watchIdRef.current = null;
-            }
+        } else if (watchIdRef.current !== null) {
+            navigator.geolocation.clearWatch(watchIdRef.current);
+            watchIdRef.current = null;
         }
 
-        // cleanup on unmount
         return () => {
             if (watchIdRef.current !== null) {
                 navigator.geolocation.clearWatch(watchIdRef.current);
-                watchIdRef.current = null;
             }
         };
     }, [follow]);
 
-    // Fetch categories
+    // Fetch categories (no localhost, no token manually)
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const token = localStorage.getItem("token");
-                const res = await axios.get("http://localhost:8080/api/reports/categories", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
+                const res = await axiosInstance.get("/api/reports/categories");
                 setCategories(res.data);
             } catch (err) {
                 console.error("Failed to load categories:", err);
@@ -136,70 +116,45 @@ function NewReport() {
         fetchCategories();
     }, []);
 
-    // Debounced reverse-geocode whenever coords change
+    // Reverse geocode with debounce
     useEffect(() => {
-        // clear pending timeout
-        if (reverseTimeoutRef.current) {
-            clearTimeout(reverseTimeoutRef.current);
-        }
+        if (reverseTimeoutRef.current) clearTimeout(reverseTimeoutRef.current);
 
-        // schedule reverse geocode after a short delay
         reverseTimeoutRef.current = setTimeout(() => {
             reverseGeocode(coords.lat, coords.lng);
-        }, 600); // 600ms debounce
+        }, 600);
 
-        return () => {
-            if (reverseTimeoutRef.current) {
-                clearTimeout(reverseTimeoutRef.current);
-            }
-        };
+        return () => clearTimeout(reverseTimeoutRef.current);
     }, [coords]);
 
-    // Reverse geocoding using OpenStreetMap Nominatim (public service).
-    // Note: Nominatim is rate-limited for heavy usage. Consider adding server-side proxy or paid service for production.
     const reverseGeocode = async (lat, lon) => {
         try {
             const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&addressdetails=1`;
-            const res = await fetch(url, {
-                headers: {
-                    "Accept": "application/json"
-                }
-            });
-            if (!res.ok) {
-                console.warn("Reverse geocode failed:", res.status);
-                return;
-            }
+            const res = await fetch(url, { headers: { Accept: "application/json" } });
+            if (!res.ok) return;
+
             const data = await res.json();
             const addr = data.address || {};
 
-            // Map nominatim fields to our AddressDto
-            setAddress((prev) => ({
-                postalCode: addr.postcode || prev.postalCode || "",
-                streetName: addr.road || addr.pedestrian || addr.cycleway || addr.path || addr.neighbourhood || addr.suburb || "",
-                houseNumber: addr.house_number || prev.houseNumber || "",
-                city: addr.city || addr.town || addr.village || addr.county || "",
-                province: addr.state || addr.region || "",
-            }));
+            setAddress({
+                postalCode: addr.postcode || "",
+                streetName: addr.road || addr.neighbourhood || "",
+                houseNumber: addr.house_number || "",
+                city: addr.city || addr.town || addr.village || "",
+                province: addr.state || "",
+            });
         } catch (err) {
             console.error("Reverse geocode error:", err);
         }
     };
 
-    // Helpers
-    const formatCategoryName = (category) => {
-        return category
-            .replace(/_/g, " ")
-            .toLowerCase()
-            .replace(/\b\w/g, (letter) => letter.toUpperCase());
-    };
+    const formatCategoryName = (cat) =>
+        cat.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
-    };
+    const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
     const handleAddressChange = (e) => {
         setAddress({ ...address, [e.target.name]: e.target.value });
-        // If user manually edits address, stop following to avoid overwriting
         if (follow) setFollow(false);
     };
 
@@ -221,9 +176,9 @@ function NewReport() {
 
     const disableFollow = () => setFollow(false);
 
+    // Submit report
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const token = localStorage.getItem("token");
 
         const reportData = {
             title: form.title,
@@ -231,80 +186,47 @@ function NewReport() {
             category: form.category,
             latitude: coords.lat,
             longitude: coords.lng,
-            address: {
-                postalCode: address.postalCode,
-                streetName: address.streetName,
-                houseNumber: address.houseNumber,
-                city: address.city,
-                province: address.province,
-            },
+            address: { ...address },
         };
 
         const formData = new FormData();
         formData.append("report", new Blob([JSON.stringify(reportData)], { type: "application/json" }));
         images.forEach((img) => formData.append("images", img));
-        if (video) {
-            formData.append("video", video);
-        }
+        if (video) formData.append("video", video);
 
         try {
-            const res = await axios.post("http://localhost:8080/api/reports", formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
+            // ✅ No localhost, no headers: axiosInstance handles token + base URL
+            const res = await axiosInstance.post("/api/reports", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
             });
-            alert("Report submitted successfully!");
-            console.log(res.data);
 
-            // Reset form after successful submission
-            setForm({
-                title: "",
-                description: "",
-                category: "OTHER",
-            });
-            setAddress({
-                postalCode: "",
-                streetName: "",
-                houseNumber: "",
-                city: "",
-                province: "",
-            });
+            alert("Report submitted successfully!");
+
+            // Reset fields
+            setForm({ title: "", description: "", category: "OTHER" });
+            setAddress({ postalCode: "", streetName: "", houseNumber: "", city: "", province: "" });
             setImages([]);
             setVideo(null);
-            // Reset to Bekasi after submission
             setCoords({ lat: -6.2383, lng: 106.9756 });
             setFollow(false);
+
         } catch (err) {
-            console.error("Error submitting report:", err);
+            console.error("Submit error:", err);
             alert("Failed to submit report.");
         }
     };
 
     return (
         <div className="dashboard">
-
             <div className="main-content">
                 <h2>Submit New Report</h2>
 
                 <form onSubmit={handleSubmit} className="report-form">
                     <label>Title</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={form.title}
-                        onChange={handleChange}
-                        required
-                    />
+                    <input type="text" name="title" value={form.title} onChange={handleChange} required />
 
                     <label>Description</label>
-                    <textarea
-                        name="description"
-                        rows="4"
-                        value={form.description}
-                        onChange={handleChange}
-                        required
-                    ></textarea>
+                    <textarea name="description" rows="4" value={form.description} onChange={handleChange} required />
 
                     <label>Category</label>
                     <select
@@ -314,85 +236,52 @@ function NewReport() {
                         disabled={categoriesLoading}
                         required
                     >
-                        {categoriesLoading ? (
-                            <option>Loading categories...</option>
-                        ) : (
-                            categories.map((category) => (
-                                <option key={category} value={category}>
-                                    {formatCategoryName(category)}
-                                </option>
-                            ))
-                        )}
+                        {categoriesLoading
+                            ? <option>Loading...</option>
+                            : categories.map((c) => (
+                                <option key={c} value={c}>{formatCategoryName(c)}</option>
+                            ))}
                     </select>
 
-                    {/* Address fields (auto-filled from reverse geocode) */}
-                    <h3>Address (auto-filled from map)</h3>
+                    <h3>Address (Auto-filled)</h3>
                     <div className="address-group">
                         <div className="form-row">
                             <div className="form-group">
                                 <label>Postal Code</label>
-                                <input
-                                    type="text"
-                                    name="postalCode"
-                                    value={address.postalCode}
-                                    onChange={handleAddressChange}
-                                />
+                                <input type="text" name="postalCode" value={address.postalCode} onChange={handleAddressChange} />
                             </div>
                             <div className="form-group">
                                 <label>House Number</label>
-                                <input
-                                    type="text"
-                                    name="houseNumber"
-                                    value={address.houseNumber}
-                                    onChange={handleAddressChange}
-                                />
+                                <input type="text" name="houseNumber" value={address.houseNumber} onChange={handleAddressChange} />
                             </div>
                         </div>
+
                         <div className="form-row">
                             <div className="form-group">
                                 <label>Street Name</label>
-                                <input
-                                    type="text"
-                                    name="streetName"
-                                    value={address.streetName}
-                                    onChange={handleAddressChange}
-                                />
+                                <input type="text" name="streetName" value={address.streetName} onChange={handleAddressChange} />
                             </div>
                             <div className="form-group">
                                 <label>City</label>
-                                <input
-                                    type="text"
-                                    name="city"
-                                    value={address.city}
-                                    onChange={handleAddressChange}
-                                />
+                                <input type="text" name="city" value={address.city} onChange={handleAddressChange} />
                             </div>
                         </div>
+
                         <div className="form-row">
                             <div className="form-group full-width">
-                                <label>Province / State</label>
-                                <input
-                                    type="text"
-                                    name="province"
-                                    value={address.province}
-                                    onChange={handleAddressChange}
-                                />
+                                <label>Province</label>
+                                <input type="text" name="province" value={address.province} onChange={handleAddressChange} />
                             </div>
                         </div>
                     </div>
 
                     <div className="map-control-row">
                         <h3 className="map-title">Pick Location on Map</h3>
-                        <div className="map-control-right">
-                            <label className="follow-toggle">
-                                <input
-                                    type="checkbox"
-                                    checked={follow}
-                                    onChange={(e) => setFollow(e.target.checked)}
-                                />{" "}
-                                Follow my location
-                            </label>
-                        </div>
+
+                        <label className="follow-toggle">
+                            <input type="checkbox" checked={follow} onChange={(e) => setFollow(e.target.checked)} />
+                            Follow my location
+                        </label>
                     </div>
 
                     <MapContainer center={[coords.lat, coords.lng]} zoom={15}>
@@ -406,15 +295,9 @@ function NewReport() {
 
                     <label>Upload Images (max 3)</label>
                     <input type="file" accept="image/*" multiple onChange={handleImageUpload} />
-                    {images.length > 0 && (
-                        <p className="file-info">{images.length} image(s) selected</p>
-                    )}
 
-                    <label>Upload Video (max 1, ≤ 90min)</label>
+                    <label>Upload Video (max 1)</label>
                     <input type="file" accept="video/*" onChange={handleVideoUpload} />
-                    {video && (
-                        <p className="file-info">Video selected: {video.name}</p>
-                    )}
 
                     <button type="submit" className="btn-submit" disabled={categoriesLoading}>
                         {categoriesLoading ? "Loading..." : "Submit Report"}

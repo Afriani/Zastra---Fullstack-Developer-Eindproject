@@ -1,11 +1,11 @@
 // src/pages/OfficerDashboard/ReportDetails.jsx
 
-import React, {useEffect, useState} from "react";
-import {useParams, useNavigate} from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance"; // ✅ replaced axios
 
 // Leaflet imports
-import {MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -49,7 +49,7 @@ import rejectedIcon from "../../assets/pictures/reject.gif";
 import cancelledIcon from "../../assets/pictures/cancel.gif";
 
 export default function ReportDetails() {
-    const {id} = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
     const [report, setReport] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -60,10 +60,8 @@ export default function ReportDetails() {
     const [statusNote, setStatusNote] = useState("");
     const [userRole, setUserRole] = useState(null);
     const [resolvedPhoto, setResolvedPhoto] = useState(null);
-
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    // Map status to icon
     const statusIcons = {
         'SUBMITTED': submittedIcon,
         'IN_REVIEW': inReviewIcon,
@@ -73,7 +71,6 @@ export default function ReportDetails() {
         'CANCELLED': cancelledIcon
     };
 
-    // Map status to display text
     const statusLabels = {
         'SUBMITTED': 'Submitted',
         'IN_REVIEW': 'In Review',
@@ -83,14 +80,10 @@ export default function ReportDetails() {
         'CANCELLED': 'Cancelled'
     };
 
-    // Clear resolvedPhoto if status changes away from RESOLVED
     useEffect(() => {
-        if (selectedStatus !== "RESOLVED") {
-            setResolvedPhoto(null);
-        }
+        if (selectedStatus !== "RESOLVED") setResolvedPhoto(null);
     }, [selectedStatus]);
 
-    // Officer transition rules
     const getValidOfficerTransitions = (currentStatus) => {
         const transitions = {
             'SUBMITTED': ['IN_REVIEW'],
@@ -103,7 +96,6 @@ export default function ReportDetails() {
         return transitions[currentStatus] || [];
     };
 
-    // All status options for admins
     const getAllStatusOptions = () => [
         'SUBMITTED', 'IN_REVIEW', 'IN_PROGRESS', 'RESOLVED', 'REJECTED', 'CANCELLED'
     ];
@@ -115,7 +107,6 @@ export default function ReportDetails() {
             return;
         }
 
-        // Get user role from token
         const token = localStorage.getItem("token");
         if (token) {
             try {
@@ -131,10 +122,7 @@ export default function ReportDetails() {
     }, [id]);
 
     useEffect(() => {
-        // Set initial selected status when report loads
-        if (report && !selectedStatus) {
-            setSelectedStatus(report.status);
-        }
+        if (report && !selectedStatus) setSelectedStatus(report.status);
     }, [report, selectedStatus]);
 
     const fetchReport = async () => {
@@ -142,29 +130,20 @@ export default function ReportDetails() {
         setError(null);
         try {
             const token = localStorage.getItem("token");
-            if (!token) {
-                navigate("/login");
-                return;
-            }
+            if (!token) { navigate("/login"); return; }
 
-            const resp = await axios.get(`http://localhost:8080/api/reports/${id}`, {
-                headers: {Authorization: `Bearer ${token}`}
-            });
-
+            // ✅ No localhost, no manual auth header
+            const resp = await axiosInstance.get(`/api/reports/${id}`);
             setReport(resp.data);
             setSelectedStatus(resp.data.status);
         } catch (err) {
             console.error("Failed to load report details:", err);
-            if (err.response?.status === 404) {
-                setError("Report not found");
-            } else if (err.response?.status === 401) {
+            if (err.response?.status === 404) setError("Report not found");
+            else if (err.response?.status === 401) {
                 localStorage.removeItem("token");
                 navigate("/login");
-            } else if (err.response?.status === 403) {
-                setError("Access denied");
-            } else {
-                setError("Failed to load report details");
-            }
+            } else if (err.response?.status === 403) setError("Access denied");
+            else setError("Failed to load report details");
         } finally {
             setLoading(false);
         }
@@ -175,7 +154,6 @@ export default function ReportDetails() {
             alert("Please attach a resolution photo before resolving.");
             return;
         }
-
         if (selectedStatus === report.status && !statusNote.trim() && !resolvedPhoto) {
             alert("No changes to save");
             return;
@@ -183,13 +161,8 @@ export default function ReportDetails() {
 
         setIsUpdating(true);
         try {
-            const token = localStorage.getItem("token");
-
-            // Log reportId before API call
             console.log("reportId before API call:", id);
 
-            // Use officer-specific endpoint for officers
-            const endpoint = `/api/reports/officer/reports/${id}/status-with-photo`;
             const formData = new FormData();
             formData.append("status", selectedStatus);
             formData.append("notes", statusNote.trim());
@@ -197,26 +170,17 @@ export default function ReportDetails() {
                 formData.append("resolvedPhoto", resolvedPhoto);
             }
 
-            const resp = await axios.put(endpoint, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    // Do NOT set Content-Type; axios sets it automatically
-                }
-            });
+            // ✅ No localhost, no manual auth header
+            const resp = await axiosInstance.put(
+                `/api/reports/officer/reports/${id}/status-with-photo`,
+                formData,
+                { headers: { 'Content-Type': 'multipart/form-data' } }
+            );
 
-            if (resp.data && resp.data.message) {
-                alert(`${resp.data.message}`);
-                await fetchReport(); // Refresh the report details
-                setStatusNote("");
-                setResolvedPhoto(null);
-            } else {
-                alert("Status updated successfully!");
-                await fetchReport();
-                setStatusNote("");
-                setResolvedPhoto(null);
-            }
-
-
+            alert(resp.data?.message || "Status updated successfully!");
+            await fetchReport();
+            setStatusNote("");
+            setResolvedPhoto(null);
         } catch (err) {
             console.error("Status update failed:", err);
             const errorMsg = err.response?.data?.message ||
@@ -236,10 +200,7 @@ export default function ReportDetails() {
     if (loading) {
         return (
             <div className="dashboard">
-                <SidebarOfficer onLogout={() => {
-                    localStorage.removeItem("token");
-                    navigate("/login");
-                }}/>
+                <SidebarOfficer onLogout={() => { localStorage.removeItem("token"); navigate("/login"); }} />
                 <div className="main-content">
                     <div className="loading-container">
                         <div className="loading-spinner"></div>
@@ -253,10 +214,7 @@ export default function ReportDetails() {
     if (error) {
         return (
             <div className="dashboard">
-                <SidebarOfficer onLogout={() => {
-                    localStorage.removeItem("token");
-                    navigate("/login");
-                }}/>
+                <SidebarOfficer onLogout={() => { localStorage.removeItem("token"); navigate("/login"); }} />
                 <div className="main-content">
                     <div className="error-container">
                         <div className="error-icon">
@@ -270,32 +228,24 @@ export default function ReportDetails() {
         );
     }
 
-    if (!report) {
-        return null;
-    }
+    if (!report) return null;
 
-    // Map center (fallback to Jakarta if no coordinates)
     const latNum = Number(report.latitude);
     const lngNum = Number(report.longitude);
     const hasValidCoords = Number.isFinite(latNum) && Number.isFinite(lngNum);
-    const position = hasValidCoords
-        ? [latNum, lngNum]
-        : [-6.2088, 106.8456]; // Default to Jakarta
+    const position = hasValidCoords ? [latNum, lngNum] : [-6.2088, 106.8456];
 
-    // Get available status options based on user role
     const getAvailableStatusOptions = () => {
         if (userRole === 'ROLE_OFFICER') {
-            const validTransitions = getValidOfficerTransitions(report.status);
-            return [report.status, ...validTransitions]; // Include current status + valid transitions
+            return [report.status, ...getValidOfficerTransitions(report.status)];
         }
-        return getAllStatusOptions(); // Admins can select any status
+        return getAllStatusOptions();
     };
 
     const availableStatuses = getAvailableStatusOptions();
 
     return (
         <div className="dashboard">
-
             <div className="main-content report-details-container">
                 <div className="report-header-detail">
                     <button onClick={handleBack} className="btn-back">
@@ -340,12 +290,8 @@ export default function ReportDetails() {
                                     {report.imageUrls && report.imageUrls.length > 0 ? (
                                         <div className="images-grid">
                                             {report.imageUrls.map((url, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className="image-container"
-                                                    onClick={() => openLightbox(url)}
-                                                >
-                                                    <img src={url} alt={`Report evidence ${idx + 1}`}/>
+                                                <div key={idx} className="image-container" onClick={() => openLightbox(url)}>
+                                                    <img src={url} alt={`Report evidence ${idx + 1}`} />
                                                     <div className="image-overlay">
                                                         <span>
                                                             <img src={searchIcon} alt="search-icon" className="officer-report-detail" />
@@ -357,9 +303,7 @@ export default function ReportDetails() {
                                         </div>
                                     ) : (
                                         <div className="no-media">
-                                            <span>
-                                                <img src={cameraIcon} alt="camera-icon" className="officer-report-detail" />
-                                            </span>
+                                            <span><img src={cameraIcon} alt="camera-icon" className="officer-report-detail" /></span>
                                             <p>No images attached</p>
                                         </div>
                                     )}
@@ -369,13 +313,11 @@ export default function ReportDetails() {
                                     <h4>Video</h4>
                                     {report.videoUrl ? (
                                         <div className="video-wrapper">
-                                            <video controls width="100%" src={report.videoUrl}/>
+                                            <video controls width="100%" src={report.videoUrl} />
                                         </div>
                                     ) : (
                                         <div className="no-media">
-                                            <span>
-                                                <img src={videoIcon} alt="video-icon" className="officer-report-detail" />
-                                            </span>
+                                            <span><img src={videoIcon} alt="video-icon" className="officer-report-detail" /></span>
                                             <p>No video attached</p>
                                         </div>
                                     )}
@@ -390,7 +332,6 @@ export default function ReportDetails() {
                                     Status History
                                 </h3>
                             </div>
-
                             <div className="card-body">
                                 {report.statusHistory && report.statusHistory.length > 0 ? (
                                     <div className="status-timeline">
@@ -431,9 +372,7 @@ export default function ReportDetails() {
                                     </div>
                                 ) : (
                                     <div className="no-history">
-                                        <span>
-                                            <img src={historyIcon} alt="status-history-icon" className="officer-report-detail" />
-                                        </span>
+                                        <span><img src={historyIcon} alt="status-history-icon" className="officer-report-detail" /></span>
                                         <p>No status updates yet</p>
                                     </div>
                                 )}
@@ -456,22 +395,16 @@ export default function ReportDetails() {
                                 </div>
                                 <div className="detail-item">
                                     <span className="detail-label">Current Status:</span>
-                                    <span className={`detail-value status-${report.status?.toLowerCase()}`}>
-                                        {report.status}
-                                    </span>
+                                    <span className={`detail-value status-${report.status?.toLowerCase()}`}>{report.status}</span>
                                 </div>
                                 <div className="detail-item">
                                     <span className="detail-label">Created:</span>
-                                    <span className="detail-value">
-                                        {new Date(report.createdAt).toLocaleString()}
-                                    </span>
+                                    <span className="detail-value">{new Date(report.createdAt).toLocaleString()}</span>
                                 </div>
                                 {report.updatedAt && (
                                     <div className="detail-item">
                                         <span className="detail-label">Last Updated:</span>
-                                        <span className="detail-value">
-                                            {new Date(report.updatedAt).toLocaleString()}
-                                        </span>
+                                        <span className="detail-value">{new Date(report.updatedAt).toLocaleString()}</span>
                                     </div>
                                 )}
                                 <div className="detail-item">
@@ -480,9 +413,7 @@ export default function ReportDetails() {
                                 </div>
                                 <div className="detail-item">
                                     <span className="detail-label">Assigned Officer:</span>
-                                    <span className="detail-value">
-                                        {report.officerName || "Unassigned"}
-                                    </span>
+                                    <span className="detail-value">{report.officerName || "Unassigned"}</span>
                                 </div>
                                 {userRole === 'ROLE_OFFICER' && (
                                     <div className="detail-item">
@@ -493,7 +424,6 @@ export default function ReportDetails() {
                                         </span>
                                     </div>
                                 )}
-
                             </div>
                         </section>
 
@@ -522,16 +452,13 @@ export default function ReportDetails() {
                                     </div>
                                 ) : (
                                     <div className="no-location">
-                                        <span>
-                                            <img src={locationIcon} alt="location-icon" className="officer-report-detail" />
-                                        </span>
+                                        <span><img src={locationIcon} alt="location-icon" className="officer-report-detail" /></span>
                                         <p>No location information</p>
                                     </div>
                                 )}
                             </div>
                         </section>
 
-                        {/* Always render Map Card; Map will use numeric coords when available, otherwise fallback */}
                         <section className="card map-card">
                             <div className="card-header">
                                 <h4>
@@ -547,12 +474,9 @@ export default function ReportDetails() {
                                         zoom={15}
                                         className="report-map"
                                         whenCreated={(map) => {
-                                            // invalidate size after layout settle
                                             setTimeout(() => map.invalidateSize(), 200);
-                                            // single resize listener (avoid adding many)
                                             const onResize = () => map.invalidateSize();
                                             window.addEventListener('resize', onResize);
-                                            // remove listener when map is removed
                                             map.on('unload', () => window.removeEventListener('resize', onResize));
                                         }}
                                     >
@@ -564,13 +488,11 @@ export default function ReportDetails() {
                                             <Popup>
                                                 <div className="popup-location-header">
                                                     <img src={locationIcon} alt="location-icon" className="officer-report-detail" />
-                                                    <strong>Report Location</strong><br/>
+                                                    <strong>Report Location</strong><br />
                                                     {report.address?.streetName ? `${report.address.streetName} ${report.address.houseNumber || ''}, ` : ''}
                                                     {report.address?.city ? `${report.address.city}, ` : ''}
                                                     {report.address?.province || ''}
                                                 </div>
-
-                                                {/* Google Maps directions link (opens in new tab / Google Maps app on mobile) */}
                                                 <a
                                                     href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(latNum)},${encodeURIComponent(lngNum)}&travelmode=driving`}
                                                     target="_blank"
@@ -606,17 +528,9 @@ export default function ReportDetails() {
                                 <div className="status-update-section">
                                     <label htmlFor="status-select">Update Status:</label>
 
-                                    {/* Custom Dropdown with Images */}
                                     <div className="custom-select-wrapper">
-                                        <div
-                                            className="custom-select-trigger"
-                                            onClick={() => setDropdownOpen(!dropdownOpen)}
-                                        >
-                                            <img
-                                                src={statusIcons[selectedStatus]}
-                                                alt={statusLabels[selectedStatus]}
-                                                className="status-icon-dropdown"
-                                            />
+                                        <div className="custom-select-trigger" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                                            <img src={statusIcons[selectedStatus]} alt={statusLabels[selectedStatus]} className="status-icon-dropdown" />
                                             <span>{statusLabels[selectedStatus]}</span>
                                             <span className="dropdown-arrow">{dropdownOpen ? '▲' : '▼'}</span>
                                         </div>
@@ -626,16 +540,9 @@ export default function ReportDetails() {
                                                     <div
                                                         key={status}
                                                         className={`custom-option ${selectedStatus === status ? 'selected' : ''}`}
-                                                        onClick={() => {
-                                                            setSelectedStatus(status);
-                                                            setDropdownOpen(false);
-                                                        }}
+                                                        onClick={() => { setSelectedStatus(status); setDropdownOpen(false); }}
                                                     >
-                                                        <img
-                                                            src={statusIcons[status]}
-                                                            alt={statusLabels[status]}
-                                                            className="status-icon-dropdown"
-                                                        />
+                                                        <img src={statusIcons[status]} alt={statusLabels[status]} className="status-icon-dropdown" />
                                                         <span>{statusLabels[status]}</span>
                                                     </div>
                                                 ))}
@@ -673,15 +580,9 @@ export default function ReportDetails() {
                                         disabled={isUpdating}
                                     >
                                         {isUpdating ? (
-                                            <>
-                                                <span className="spinner"></span>
-                                                Updating...
-                                            </>
+                                            <><span className="spinner"></span>Updating...</>
                                         ) : (
-                                            <>
-                                                <img src={saveIcon} alt="save-icon" className="officer-report-detail" />
-                                                Save Status
-                                            </>
+                                            <><img src={saveIcon} alt="save-icon" className="officer-report-detail" />Save Status</>
                                         )}
                                     </button>
                                 </div>
@@ -701,19 +602,16 @@ export default function ReportDetails() {
                 </div>
             </div>
 
-            {/* Lightbox */}
             {lightboxImage && (
                 <div className="lightbox-overlay" onClick={closeLightbox}>
                     <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
                         <button className="lightbox-close" onClick={closeLightbox}>
                             <img src={closeIcon} alt="close-icon" className="officer-report-detail" />
                         </button>
-                        <img src={lightboxImage} alt="Full size preview" className="lightbox-image"/>
+                        <img src={lightboxImage} alt="Full size preview" className="lightbox-image" />
                     </div>
                 </div>
             )}
         </div>
     );
 }
-
-

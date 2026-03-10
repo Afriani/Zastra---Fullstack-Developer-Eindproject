@@ -2,36 +2,36 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../../api/axiosInstance'; // ✅ replaced axios
 
-// Leaflet imports for map
+// Leaflet imports
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// All User Report Detail images
-import assignedOfficer from "../../assets/pictures/user-report-detail/asigned-officer.png"
-import category from "../../assets/pictures/user-report-detail/category.png"
-import description from "../../assets/pictures/user-report-detail/description.png"
-import images from "../../assets/pictures/user-report-detail/images.png"
-import mapViews from "../../assets/pictures/user-report-detail/map-view.png"
-import timestamp from "../../assets/pictures/user-report-detail/timestamp.png"
-import video from "../../assets/pictures/user-report-detail/video.png"
-import view from "../../assets/pictures/user-report-detail/view.png"
-import warning from "../../assets/pictures/user-report-detail/warning.png"
-import location from "../../assets/pictures/user-report-detail/location.png"
-import statusHistory from "../../assets/pictures/email-service/report-status-update.png"
-import updatedBy from "../../assets/pictures/profile.png"
+// Icons
+import assignedOfficer from "../../assets/pictures/user-report-detail/asigned-officer.png";
+import category from "../../assets/pictures/user-report-detail/category.png";
+import description from "../../assets/pictures/user-report-detail/description.png";
+import images from "../../assets/pictures/user-report-detail/images.png";
+import mapViews from "../../assets/pictures/user-report-detail/map-view.png";
+import timestamp from "../../assets/pictures/user-report-detail/timestamp.png";
+import video from "../../assets/pictures/user-report-detail/video.png";
+import view from "../../assets/pictures/user-report-detail/view.png";
+import warning from "../../assets/pictures/user-report-detail/warning.png";
+import location from "../../assets/pictures/user-report-detail/location.png";
+import statusHistory from "../../assets/pictures/email-service/report-status-update.png";
+import updatedBy from "../../assets/pictures/profile.png";
 
-// Fix for default marker icons in Leaflet
+import '../../css/USER DASHBOARD/userreportdetail.css';
+
+// Fix Leaflet default marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
-
-import '../../css/USER DASHBOARD/userreportdetail.css';
 
 const UserReportDetail = () => {
     const { id } = useParams();
@@ -41,11 +41,9 @@ const UserReportDetail = () => {
     const [error, setError] = useState(null);
     const [lightboxImage, setLightboxImage] = useState(null);
 
-    // normalize "IN_REVIEW" => "in-review", "RESOLVED" => "resolved"
     const normalizeStatus = (s) => (s ? String(s).toLowerCase().replace(/_/g, '-') : '');
 
     useEffect(() => {
-        console.log('[URD] mounted, useParams id=', id, 'location=', window.location.pathname + window.location.search);
         if (!id) {
             setError("No report id provided");
             setLoading(false);
@@ -56,31 +54,20 @@ const UserReportDetail = () => {
     }, [id]);
 
     const fetchReportDetails = async () => {
-        console.log('[URD] fetchReportDetails id=', id);
         setLoading(true);
         setError(null);
         try {
-            const token = localStorage.getItem('token');
-            console.log('[URD] token present?', !!token);
-            if (!token) {
-                navigate('/login');
-                return;
-            }
-
-            const response = await axios.get(`http://localhost:8080/api/reports/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            console.log('[URD] got response', response.status, response.data);
+            // ✅ No localhost, no manual token/headers
+            const response = await axiosInstance.get(`/api/reports/${id}`);
             setReport(response.data);
         } catch (err) {
-            console.error('[URD] fetch error', err?.response?.status, err?.response?.data);
-
-            if (err.response?.status === 404) {
+            const status = err.response?.status;
+            if (status === 404) {
                 setError('Report not found');
-            } else if (err.response?.status === 401) {
+            } else if (status === 401) {
                 localStorage.removeItem('token');
                 navigate('/login');
-            } else if (err.response?.status === 403) {
+            } else if (status === 403) {
                 setError('Access denied. You do not have permission to view this report.');
             } else {
                 setError('Failed to load report details');
@@ -110,7 +97,7 @@ const UserReportDetail = () => {
             <div className="main-content">
                 <div className="error-container">
                     <div className="error-icon">
-                        <img src={warning} alt="warning-icon" className="user-report-detail-icons" />️
+                        <img src={warning} alt="warning-icon" className="user-report-detail-icons" />
                     </div>
                     <h3>{error}</h3>
                     <button onClick={handleBack} className="btn-primary">Go Back</button>
@@ -119,16 +106,12 @@ const UserReportDetail = () => {
         );
     }
 
-    if (!report) {
-        return null;
-    }
+    if (!report) return null;
 
-    // Map center (fallback to Jakarta if no coordinates)
     const latNum = Number(report.latitude);
     const lngNum = Number(report.longitude);
     const hasValidCoords = Number.isFinite(latNum) && Number.isFinite(lngNum);
     const position = hasValidCoords ? [latNum, lngNum] : [-6.2088, 106.8456];
-
     const statusClass = normalizeStatus(report.status || '');
 
     return (
@@ -142,9 +125,7 @@ const UserReportDetail = () => {
                 <h2>{report.title}</h2>
 
                 <div className="report-meta">
-                    <span className={`status-badge ${statusClass}`}>
-                        {report.status}
-                    </span>
+                    <span className={`status-badge ${statusClass}`}>{report.status}</span>
                     <span className="report-date">
                         Created: {new Date(report.createdAt).toLocaleDateString()}
                     </span>
@@ -155,6 +136,7 @@ const UserReportDetail = () => {
                     )}
                 </div>
 
+                {/* Description */}
                 <div className="report-section">
                     <h3>
                         <img src={description} alt="description-icon" className="user-report-detail-icons" />
@@ -163,16 +145,18 @@ const UserReportDetail = () => {
                     <p>{report.description}</p>
                 </div>
 
+                {/* Category */}
                 {report.category && (
                     <div className="report-section">
                         <h3>
-                            <img src={category} alt="category-icon" className="user-report-detail-icons" />️
+                            <img src={category} alt="category-icon" className="user-report-detail-icons" />
                             Category
                         </h3>
                         <p>{report.category}</p>
                     </div>
                 )}
 
+                {/* Assigned Officer */}
                 {report.officerName && (
                     <div className="report-section">
                         <h3>
@@ -183,7 +167,7 @@ const UserReportDetail = () => {
                     </div>
                 )}
 
-                {/* Media Section - Images */}
+                {/* Images */}
                 {report.imageUrls && report.imageUrls.length > 0 && (
                     <div className="report-section media-section">
                         <h3>
@@ -192,11 +176,7 @@ const UserReportDetail = () => {
                         </h3>
                         <div className="media-grid">
                             {report.imageUrls.map((url, idx) => (
-                                <div
-                                    key={idx}
-                                    className="media-item"
-                                    onClick={() => openLightbox(url)}
-                                >
+                                <div key={idx} className="media-item" onClick={() => openLightbox(url)}>
                                     <img src={url} alt={`Report evidence ${idx + 1}`} />
                                     <div className="media-overlay">
                                         <span>
@@ -210,7 +190,7 @@ const UserReportDetail = () => {
                     </div>
                 )}
 
-                {/* Media Section - Video */}
+                {/* Video */}
                 {report.videoUrl && (
                     <div className="report-section media-section">
                         <h3>
@@ -223,10 +203,10 @@ const UserReportDetail = () => {
                     </div>
                 )}
 
-                {/* Location Section */}
+                {/* Location */}
                 <div className="report-section">
                     <h3>
-                        <img src={location} alt="ocation-icon" className="user-report-detail-icons" />
+                        <img src={location} alt="location-icon" className="user-report-detail-icons" />
                         Location
                     </h3>
                     {report.address ? (
@@ -239,7 +219,7 @@ const UserReportDetail = () => {
                             </p>
                             {hasValidCoords && (
                                 <p className="coordinates">
-                                    <img src={location} alt="ocation-icon" className="user-report-detail-icons" />
+                                    <img src={location} alt="location-icon" className="user-report-detail-icons" />
                                     {latNum.toFixed(6)}, {lngNum.toFixed(6)}
                                 </p>
                             )}
@@ -249,11 +229,12 @@ const UserReportDetail = () => {
                     )}
                 </div>
 
-                {/* Map Section */}
+                {/* Map */}
                 <div className="report-section map-section">
                     <h3>
                         <img src={mapViews} alt="map-view-icon" className="user-report-detail-icons" />
-                        Map View</h3>
+                        Map View
+                    </h3>
                     <div className="map-container">
                         <MapContainer
                             key={`${position[0]}-${position[1]}`}
@@ -286,7 +267,7 @@ const UserReportDetail = () => {
                     </div>
                 </div>
 
-                {/* Status History Section */}
+                {/* Status History */}
                 {report.statusHistory && report.statusHistory.length > 0 && (
                     <div className="report-section status-history">
                         <h3>
@@ -300,9 +281,7 @@ const UserReportDetail = () => {
                                     <div key={i} className="timeline-item">
                                         <div className="timeline-marker" />
                                         <div className="timeline-content">
-                                            <span className={`status-label ${sClass}`}>
-                                                {s.status}
-                                            </span>
+                                            <span className={`status-label ${sClass}`}>{s.status}</span>
                                             {s.notes && <p className="status-notes">{s.notes}</p>}
                                             {s.resolvedPhotoUrl && (
                                                 <div className="resolution-photo-container">
@@ -334,7 +313,7 @@ const UserReportDetail = () => {
                 )}
             </div>
 
-            {/* Lightbox for images */}
+            {/* Lightbox */}
             {lightboxImage && (
                 <div className="lightbox-overlay" onClick={closeLightbox}>
                     <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>

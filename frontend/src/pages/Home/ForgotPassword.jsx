@@ -1,7 +1,7 @@
-import '../../css/HOME/forgotpassword.css'
+import '../../css/HOME/forgotpassword.css';
 
 import { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../api/axiosInstance'; // ✅ replaced axios
 
 function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -16,9 +16,14 @@ function ForgotPassword() {
         setLoading(true);
 
         try {
-            await axios.post('http://localhost:8080/api/auth/forgot-password', { email });
-            setMessage('If this email is registered, a password reset link has been sent.');
-        } catch {
+            // ✅ No localhost, no raw axios
+            await axiosInstance.post('/api/auth/forgot-password', { email });
+
+            setMessage(
+                'If this email is registered, a password reset link has been sent.'
+            );
+        } catch (err) {
+            console.error(err);
             setError('Failed to send reset email. Please try again later.');
         } finally {
             setLoading(false);
@@ -28,17 +33,20 @@ function ForgotPassword() {
     return (
         <div className="forgot-password-container">
             <h2 className="forgot-password-title">Forgot Password</h2>
+
             {message && <p className="success-message">{message}</p>}
             {error && <p className="error-message">{error}</p>}
+
             <form onSubmit={handleSubmit}>
                 <label>Email:</label>
                 <input
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                     disabled={loading}
                 />
+
                 <button type="submit" disabled={loading}>
                     {loading ? 'Sending...' : 'Send Reset Link'}
                 </button>

@@ -1,7 +1,7 @@
 // src/pages/OfficerDashboard/CommunityReports.jsx
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance"; // ✅ replaced axios
 
 import "../../css/OFFICER DASHBOARD/communityreports.css";
 
@@ -23,11 +23,9 @@ function CommunityReports() {
     const [errorReports, setErrorReports] = useState(null);
     const [errorAnnouncements, setErrorAnnouncements] = useState(null);
 
-    // State for filters
     const [reportFilter, setReportFilter] = useState("ALL");
     const [reportSearch, setReportSearch] = useState("");
 
-    // Pagination state
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
@@ -47,42 +45,24 @@ function CommunityReports() {
         setErrorReports(null);
         try {
             const token = localStorage.getItem("token");
-            if (!token) {
-                navigate("/login");
-                return;
-            }
+            if (!token) { navigate("/login"); return; }
 
-            // Build query parameters - don't send status if it's "ALL"
-            let url = `http://localhost:8080/api/reports/all-submitted?page=${page}&size=5`;
+            // ✅ No localhost, no manual auth header
+            let url = `/api/reports/all-submitted?page=${page}&size=5`;
+            if (reportFilter !== "ALL") url += `&status=${reportFilter}`;
+            if (reportSearch.trim()) url += `&search=${encodeURIComponent(reportSearch)}`;
 
-            // Only add status filter if it's not "ALL"
-            if (reportFilter !== "ALL") {
-                url += `&status=${reportFilter}`;
-            }
+            const response = await axiosInstance.get(url);
 
-            // Add search parameter if provided
-            if (reportSearch.trim()) {
-                url += `&search=${encodeURIComponent(reportSearch)}`;
-            }
-
-            const response = await axios.get(url, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-
-            // Check if response is paginated
             if (response.data.content) {
                 setAllReports(response.data.content);
                 setTotalPages(response.data.totalPages || 0);
                 setTotalElements(response.data.totalElements || 0);
                 setCurrentPage(page);
             } else {
-                // Fallback for non-paginated response - manually paginate
                 const allData = response.data;
                 const startIndex = page * 5;
-                const endIndex = startIndex + 5;
-                const paginatedData = allData.slice(startIndex, endIndex);
-
-                setAllReports(paginatedData);
+                setAllReports(allData.slice(startIndex, startIndex + 5));
                 setTotalPages(Math.ceil(allData.length / 5));
                 setTotalElements(allData.length);
                 setCurrentPage(page);
@@ -100,14 +80,10 @@ function CommunityReports() {
         setErrorAnnouncements(null);
         try {
             const token = localStorage.getItem("token");
-            if (!token) {
-                navigate("/login");
-                return;
-            }
-            const response = await axios.get(
-                "http://localhost:8080/api/announcements",
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            if (!token) { navigate("/login"); return; }
+
+            // ✅ No localhost, no manual auth header
+            const response = await axiosInstance.get("/api/announcements");
             setAnnouncements(response.data);
         } catch (err) {
             console.error("Failed to load announcements:", err);
@@ -120,15 +96,10 @@ function CommunityReports() {
     const markAsRead = async (id) => {
         try {
             const token = localStorage.getItem("token");
-            if (!token) {
-                navigate("/login");
-                return;
-            }
-            await axios.post(
-                `http://localhost:8080/api/announcements/${id}/read`,
-                {},
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+            if (!token) { navigate("/login"); return; }
+
+            // ✅ No localhost, no manual auth header
+            await axiosInstance.post(`/api/announcements/${id}/read`, {});
             fetchAdminAnnouncements();
         } catch (error) {
             console.error("Error marking announcement as read:", error);
@@ -144,38 +115,13 @@ function CommunityReports() {
             minute: "2-digit"
         });
 
-    // Pagination handlers
-    const handlePreviousPage = () => {
-        if (currentPage > 0) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
+    const handlePreviousPage = () => { if (currentPage > 0) setCurrentPage(currentPage - 1); };
+    const handleNextPage = () => { if (currentPage < totalPages - 1) setCurrentPage(currentPage + 1); };
+    const handlePageClick = (pageNum) => setCurrentPage(pageNum);
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages - 1) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handlePageClick = (pageNum) => {
-        setCurrentPage(pageNum);
-    };
-
-    // Reset to page 0 when filters change
-    const handleFilterChange = (newFilter) => {
-        setReportFilter(newFilter);
-        setCurrentPage(0);
-    };
-
-    const handleSearchChange = (newSearch) => {
-        setReportSearch(newSearch);
-        setCurrentPage(0);
-    };
-
-    const handleRefreshAll = () => {
-        fetchAllSubmittedReports(currentPage);
-        fetchAdminAnnouncements();
-    };
+    const handleFilterChange = (newFilter) => { setReportFilter(newFilter); setCurrentPage(0); };
+    const handleSearchChange = (newSearch) => { setReportSearch(newSearch); setCurrentPage(0); };
+    const handleRefreshAll = () => { fetchAllSubmittedReports(currentPage); fetchAdminAnnouncements(); };
 
     if (loadingReports && loadingAnnouncements) {
         return (
@@ -239,7 +185,6 @@ function CommunityReports() {
                                         </span>
                                     </div>
                                     <p>{announcement.content}</p>
-
                                     <div className="announcement-actions">
                                         {announcement.read ? (
                                             <span className="read-indicator">✓ Read</span>
@@ -311,9 +256,7 @@ function CommunityReports() {
                                         </div>
                                         <div className="report-main">
                                             <div className="report-header-community">
-                                                <h4>
-                                                    #{report.id} - {report.title}
-                                                </h4>
+                                                <h4>#{report.id} - {report.title}</h4>
                                                 <span className={`status-badge status-${report.status?.toLowerCase().replace(/_/g, "-")}`}>
                                                     {report.status?.replace(/_/g, " ")}
                                                 </span>
@@ -357,16 +300,10 @@ function CommunityReports() {
                                         >
                                             ← Previous
                                         </button>
-
                                         <div className="pagination-info">
-                                            <span>
-                                                Page {currentPage + 1} of {totalPages}
-                                            </span>
-                                            <span className="pagination-total">
-                                                ({totalElements} total reports)
-                                            </span>
+                                            <span>Page {currentPage + 1} of {totalPages}</span>
+                                            <span className="pagination-total">({totalElements} total reports)</span>
                                         </div>
-
                                         <button
                                             className="pagination-btn"
                                             onClick={handleNextPage}
@@ -377,7 +314,6 @@ function CommunityReports() {
                                         </button>
                                     </div>
 
-                                    {/* Page Numbers */}
                                     <div className="pagination-numbers">
                                         {Array.from({ length: totalPages }, (_, i) => (
                                             <button

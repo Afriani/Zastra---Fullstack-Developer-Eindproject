@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 import '../css/USER DASHBOARD/announcementdetail.css';
+import axiosInstance from '../api/axiosInstance';
 
 const AnnouncementDetail = () => {
     const { id } = useParams();
@@ -13,15 +15,8 @@ const AnnouncementDetail = () => {
     useEffect(() => {
         const fetchAnnouncement = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(
-                    `http://localhost:8080/api/announcements/${id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                );
+                // const token = localStorage.getItem('token');
+                const response = await axiosInstance.get(`/api/announcements/${id}`);
                 setAnnouncement(response.data);
             } catch (error) {
                 if (error.response?.status === 404) {

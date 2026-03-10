@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from "../../api/axiosInstance"; // ✅ replaced axios
 import '../../css/USER DASHBOARD/myprofile.css';
 
 function MyProfile() {
@@ -12,45 +12,32 @@ function MyProfile() {
     const [isEditing, setIsEditing] = useState(false);
     const [saving, setSaving] = useState(false);
 
+    const fetchProfile = async () => {
+        try {
+            const res = await axiosInstance.get("/api/users/profile"); // ✅ backend auto-handles token
+            setUser(res.data);
+            setCacheBustedAvatarUrl(null);
+        } catch (err) {
+            console.error('Profile fetch error:', err);
+            setError('Failed to load profile. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    setError('No token found. Please log in.');
-                    setLoading(false);
-                    return;
-                }
-
-                const res = await axios.get('http://localhost:8080/api/users/profile', {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                setUser(res.data);
-                setCacheBustedAvatarUrl(null); // Clear cache buster on fresh load
-                console.log("✅ Profile loaded:", res.data);
-
-            } catch (err) {
-                console.error('Profile fetch error:', err);
-                setError('Failed to load profile. Please try again.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchProfile();
     }, []);
 
     // Greeting logic
     const hour = new Date().getHours();
-    let greeting;
-    if (hour < 12) greeting = 'Good morning';
-    else if (hour < 18) greeting = 'Good afternoon';
-    else greeting = 'Good evening';
+    const greeting =
+        hour < 12 ? "Good morning" :
+            hour < 18 ? "Good afternoon" :
+                "Good evening";
 
-    const displayValue = (value) => value || 'Not provided';
+    const displayValue = (value) => value || "Not provided";
 
-    // Use cache-busted avatar URL state for stable image URL
     const getAvatarSrc = () => {
         if (avatarPreview) return avatarPreview;
         if (cacheBustedAvatarUrl) return cacheBustedAvatarUrl;
@@ -58,12 +45,9 @@ function MyProfile() {
         return "https://placehold.co/120x120?text=No+Img";
     };
 
-    // Cleanup of object URLs to avoid memory leaks
     useEffect(() => {
         return () => {
-            if (avatarPreview) {
-                URL.revokeObjectURL(avatarPreview);
-            }
+            if (avatarPreview) URL.revokeObjectURL(avatarPreview);
         };
     }, [avatarPreview]);
 
@@ -89,60 +73,46 @@ function MyProfile() {
         const file = fileInput?.files[0];
         if (!file) return;
 
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('You must be logged in to upload.');
-            return;
-        }
-
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append("file", file);
 
         setUploading(true);
         try {
-            const res = await axios.post('http://localhost:8080/api/media/avatar', formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            const res = await axiosInstance.post(
+                "/api/media/avatar",
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
 
-            // Update user avatarUrl and set cache-busted URL for immediate refresh
             setUser((prev) => ({ ...prev, avatarUrl: res.data.url }));
-            setCacheBustedAvatarUrl(res.data.url + '?t=' + new Date().getTime());
+            setCacheBustedAvatarUrl(res.data.url + "?t=" + Date.now());
             setAvatarPreview(null);
-            fileInput.value = ''; // reset input
+            fileInput.value = "";
         } catch (err) {
-            console.error('Avatar upload error:', err);
-            alert('Failed to upload avatar.');
+            console.error("Avatar upload error:", err);
+            alert("Failed to upload avatar.");
         } finally {
             setUploading(false);
         }
     };
 
-    // Handle input changes during editing
     const handleInputChange = (e) => {
         const { name, value } = e.target;
 
-        if (name.startsWith('address.')) {
-            const addressField = name.split('.')[1];
-            setUser(prev => ({
+        if (name.startsWith("address.")) {
+            const addressField = name.split(".")[1];
+            setUser((prev) => ({
                 ...prev,
-                address: {
-                    ...prev.address,
-                    [addressField]: value
-                }
+                address: { ...prev.address, [addressField]: value },
             }));
         } else {
-            setUser(prev => ({ ...prev, [name]: value }));
+            setUser((prev) => ({ ...prev, [name]: value }));
         }
     };
 
-    // Save changes to backend
     const handleSave = async () => {
         setSaving(true);
         try {
-            const token = localStorage.getItem('token');
             const payload = {
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -152,53 +122,31 @@ function MyProfile() {
                 streetName: user.address?.streetName,
                 houseNumber: user.address?.houseNumber,
                 city: user.address?.city,
-                province: user.address?.province
+                province: user.address?.province,
             };
 
-            await axios.put('http://localhost:8080/api/users/profile', payload, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            await axiosInstance.put("/api/users/profile", payload); // ✅ auto-token
 
-            alert('✅ Profile updated successfully!');
+            alert("✅ Profile updated successfully!");
             setIsEditing(false);
         } catch (err) {
-            console.error('Save error:', err);
-            alert('❌ Failed to save changes. Please try again.');
+            console.error("Save error:", err);
+            alert("❌ Failed to save changes.");
         } finally {
             setSaving(false);
         }
     };
 
-    // Toggle edit mode
     const handleEditToggle = () => {
         if (isEditing) {
-            // Cancel editing - reload original data and clear cache buster
-            const fetchProfile = async () => {
-                try {
-                    const token = localStorage.getItem('token');
-                    const res = await axios.get('http://localhost:8080/api/users/profile', {
-                        headers: { Authorization: `Bearer ${token}` },
-                    });
-                    setUser(res.data);
-                    setCacheBustedAvatarUrl(null);
-                } catch (err) {
-                    console.error('Reload error:', err);
-                }
-            };
-            fetchProfile();
+            fetchProfile(); // Reset unsaved edits
         }
         setIsEditing(!isEditing);
     };
 
-    if (loading) {
-        return <div className="dashboard"><h2>Loading profile...</h2></div>;
-    }
-    if (error) {
-        return <div className="dashboard"><h2>Profile</h2><p>{error}</p></div>;
-    }
-    if (!user) {
-        return <div className="dashboard"><h2>Profile</h2><p>No profile found.</p></div>;
-    }
+    if (loading) return <div className="dashboard"><h2>Loading profile...</h2></div>;
+    if (error) return <div className="dashboard"><h2>Profile</h2><p>{error}</p></div>;
+    if (!user) return <div className="dashboard"><h2>Profile</h2><p>No profile found.</p></div>;
 
     return (
         <div className="dashboard">
@@ -210,7 +158,7 @@ function MyProfile() {
 
                 <div className="cards-container">
                     <button className="edit-btn" onClick={handleEditToggle}>
-                        {isEditing ? 'Cancel' : 'Edit Profile'}
+                        {isEditing ? "Cancel" : "Edit Profile"}
                     </button>
 
                     <div className="user-picture">
@@ -220,45 +168,37 @@ function MyProfile() {
                                 src={getAvatarSrc()}
                                 alt="Profile"
                                 className="avatar"
-                                onLoad={() => console.log("Avatar loaded:", getAvatarSrc())}
-                                onError={(e) => {
-                                    console.warn("Avatar failed, fallback to placeholder:", e.target.src);
-                                    e.target.src = "https://placehold.co/120x120?text=No+Img";
-                                }}
                             />
 
-                            {/* Visible Upload Button */}
                             <button
                                 className="upload-user-avatar-btn"
                                 onClick={() => document.querySelector('input[type="file"]').click()}
-                                aria-label="Upload new avatar"
                             >
                                 📷
                             </button>
 
-                            {/* Hidden file input */}
                             <input
                                 type="file"
                                 accept="image/*"
-                                onChange={handleAvatarChange}
                                 className="avatar-file-input"
+                                onChange={handleAvatarChange}
                             />
                         </div>
 
                         <div>
-                            <h3>{greeting}, {user.firstName || user.name}</h3>
+                            <h3>{greeting}, {user.firstName}</h3>
                             <p>Joined since: {new Date(user.createdAt).toLocaleDateString()}</p>
+
                             {avatarPreview && (
                                 <div className="avatar-preview-actions">
                                     <button onClick={handleAvatarUpload} disabled={uploading}>
-                                        {uploading ? 'Uploading...' : 'Save Avatar'}
+                                        {uploading ? "Uploading..." : "Save Avatar"}
                                     </button>
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    {/* Profile info cards */}
                     <div className="profile-card">
                         <h3>Account Info</h3>
                         <div className="account-info">
@@ -266,40 +206,40 @@ function MyProfile() {
                             <input
                                 type="text"
                                 name="firstName"
-                                value={displayValue(user.firstName)}
+                                value={user.firstName || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
 
                             <label>Last Name</label>
                             <input
                                 type="text"
                                 name="lastName"
-                                value={user.lastName || ''}
+                                value={user.lastName || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
 
                             <label>Email</label>
                             <input
                                 type="email"
                                 name="email"
-                                value={user.email || ''}
+                                value={user.email || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
 
                             <label>Phone</label>
                             <input
                                 type="tel"
                                 name="phoneNumber"
-                                value={user.phoneNumber || ''}
+                                value={user.phoneNumber || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
                         </div>
                     </div>
@@ -312,65 +252,56 @@ function MyProfile() {
                             <input
                                 type="text"
                                 name="address.streetName"
-                                value={user.address?.streetName || ''}
-                                placeholder={!user.address ? 'Not provided yet' : ''}
+                                value={user.address?.streetName || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
 
                             <label>House Number</label>
                             <input
                                 type="text"
                                 name="address.houseNumber"
-                                value={user.address?.houseNumber || ''}
-                                placeholder={!user.address ? 'Not provided yet' : ''}
+                                value={user.address?.houseNumber || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
 
                             <label>Postcode</label>
                             <input
                                 type="text"
                                 name="address.postalCode"
-                                value={user.address?.postalCode || ''}
-                                placeholder={!user.address ? 'Not provided yet' : ''}
+                                value={user.address?.postalCode || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
 
                             <label>City</label>
                             <input
                                 type="text"
                                 name="address.city"
-                                value={user.address?.city || ''}
-                                placeholder={!user.address ? 'Not provided yet' : ''}
+                                value={user.address?.city || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
 
                             <label>Province</label>
                             <input
                                 type="text"
                                 name="address.province"
-                                value={user.address?.province || ''}
-                                placeholder={!user.address ? 'Not provided yet' : ''}
+                                value={user.address?.province || ""}
                                 readOnly={!isEditing}
                                 onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
+                                className={isEditing ? "editable" : ""}
                             />
                         </div>
 
                         {isEditing && (
-                            <button
-                                className="save-btn"
-                                onClick={handleSave}
-                                disabled={saving}
-                            >
-                                {saving ? 'Saving...' : 'Save Changes'}
+                            <button onClick={handleSave} className="save-btn" disabled={saving}>
+                                {saving ? "Saving..." : "Save Changes"}
                             </button>
                         )}
                     </div>
@@ -379,7 +310,4 @@ function MyProfile() {
         </div>
     );
 }
-
 export default MyProfile;
-
-

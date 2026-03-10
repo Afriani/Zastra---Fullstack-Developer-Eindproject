@@ -1,7 +1,7 @@
 // src/pages/AdministratorDashboard/AdminOverview.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance"; // ✅ replaced axios
 import {
     BarChart,
     Bar,
@@ -43,8 +43,7 @@ function AdminOverview() {
     const [perfSummary, setPerfSummary] = useState(null);
     const [perfTrend, setPerfTrend] = useState([]);
 
-    const token = localStorage.getItem("token");
-    const authHeaders = { Authorization: `Bearer ${token}` };
+    // ✅ REMOVED: token and authHeaders (axiosInstance handles this automatically)
 
     const STATUS_MAP = {
         SUBMITTED: "SUBMITTED",
@@ -64,17 +63,17 @@ function AdminOverview() {
             setLoading(true);
             setError("");
             try {
+                // ✅ No more localhost, no more authHeaders!
                 const [s, c, t, r, w, a, offs] = await Promise.all([
-                    axios.get("http://localhost:8080/api/admin/stats/reports/summary?days=180", { headers: authHeaders }),
-                    axios.get("http://localhost:8080/api/admin/stats/reports/by-category", { headers: authHeaders }),
-                    axios.get("http://localhost:8080/api/admin/stats/reports/resolution-trend?weeks=26", { headers: authHeaders }),
-                    axios.get("http://localhost:8080/api/admin/reports/recent?limit=5", { headers: authHeaders }),
-                    axios.get("http://localhost:8080/api/admin/stats/officer-workload", { headers: authHeaders }),
-                    axios.get("http://localhost:8080/api/announcements/latest?limit=3", { headers: authHeaders }),
-                    axios.get("http://localhost:8080/api/admin/performance/officers", { headers: authHeaders })
+                    axiosInstance.get("/api/admin/stats/reports/summary?days=180"),
+                    axiosInstance.get("/api/admin/stats/reports/by-category"),
+                    axiosInstance.get("/api/admin/stats/reports/resolution-trend?weeks=26"),
+                    axiosInstance.get("/api/admin/reports/recent?limit=5"),
+                    axiosInstance.get("/api/admin/stats/officer-workload"),
+                    axiosInstance.get("/api/announcements/latest?limit=3"),
+                    axiosInstance.get("/api/admin/performance/officers")
                 ]);
 
-                // DEBUG: Log the data structure
                 console.log("Recent Reports:", r.data);
                 console.log("Workload:", w.data);
                 console.log("Announcements:", a.data);
@@ -102,10 +101,8 @@ function AdminOverview() {
     useEffect(() => {
         const fetchStatusCounts = async () => {
             try {
-                const res = await axios.get(
-                    "http://localhost:8080/api/admin/stats/reports/status-counts",
-                    { headers: authHeaders }
-                );
+                // ✅ No more localhost, no more authHeaders!
+                const res = await axiosInstance.get("/api/admin/stats/reports/status-counts");
                 const raw = res.data;
                 const normalized = {};
                 Object.entries(raw).forEach(([k, v]) => {
@@ -118,8 +115,7 @@ function AdminOverview() {
                 const fallbackResults = {};
                 for (const key of statusKeys) {
                     try {
-                        const res = await axios.get("http://localhost:8080/api/admin/reports", {
-                            headers: authHeaders,
+                        const res = await axiosInstance.get("/api/admin/reports", {
                             params: { status: key, page: 0, size: 1 }
                         });
                         fallbackResults[key] =
@@ -132,8 +128,9 @@ function AdminOverview() {
             }
         };
 
+        const token = localStorage.getItem("token");
         if (token) fetchStatusCounts();
-    }, [token]);
+    }, []);
 
     useEffect(() => {
         const fetchPerf = async () => {
@@ -144,15 +141,10 @@ function AdminOverview() {
                     params.append("days", "180");
                 }
 
+                // ✅ No more localhost, no more authHeaders!
                 const [sum, tr] = await Promise.all([
-                    axios.get(
-                        `http://localhost:8080/api/admin/performance/summary?${params.toString()}`,
-                        { headers: authHeaders }
-                    ),
-                    axios.get(
-                        `http://localhost:8080/api/admin/performance/trend?${params.toString()}`,
-                        { headers: authHeaders }
-                    )
+                    axiosInstance.get(`/api/admin/performance/summary?${params.toString()}`),
+                    axiosInstance.get(`/api/admin/performance/trend?${params.toString()}`)
                 ]);
                 setPerfSummary(sum.data || null);
                 setPerfTrend(tr.data?.resolutionTrend || []);
@@ -179,11 +171,8 @@ function AdminOverview() {
         return <div className="admin-content-section error-message">{error}</div>;
     }
 
-    // Cleaned StatCard
     const StatCard = ({ title, value, subtitle, onClick, color = "#0078d4" }) => {
-        // We pass color via data-attribute so CSS can target/override if needed
         const clickable = Boolean(onClick);
-
         return (
             <div
                 className={`stat-card${clickable ? " stat-card-clickable" : ""}`}
@@ -223,6 +212,7 @@ function AdminOverview() {
         window.dispatchEvent(event);
     };
 
+    // ... rest of your JSX stays exactly the same
     return (
         <div className="admin-overview">
             <div className="admin-profile-page">
@@ -230,59 +220,18 @@ function AdminOverview() {
             </div>
 
             <div className="stats-grid">
-                <StatCard
-                    title="SUBMITTED"
-                    value={summary?.totalOpen ?? 0}
-                    color="#ef4444"
-                    onClick={() => openReportsByStatus("SUBMITTED")}
-                />
-                <StatCard
-                    title="IN REVIEW"
-                    value={statusCounts.IN_REVIEW ?? 0}
-                    color="#f59e0b"
-                    onClick={() => openReportsByStatus("IN_REVIEW")}
-                />
-                <StatCard
-                    title="IN PROGRESS"
-                    value={statusCounts.IN_PROGRESS ?? 0}
-                    color="#f59e0b"
-                    onClick={() => openReportsByStatus("IN_PROGRESS")}
-                />
-                <StatCard
-                    title="RESOLVED"
-                    value={statusCounts.RESOLVED ?? 0}
-                    color="#10b981"
-                    onClick={() => openReportsByStatus("RESOLVED")}
-                />
-                <StatCard
-                    title="REJECTED"
-                    value={statusCounts.REJECTED ?? 0}
-                    color="#ef4444"
-                    onClick={() => openReportsByStatus("REJECTED")}
-                />
-                <StatCard
-                    title="CANCELLED"
-                    value={statusCounts.CANCELLED ?? 0}
-                    color="#6b7280"
-                    onClick={() => openReportsByStatus("CANCELLED")}
-                />
-                <StatCard
-                    title="TOTAL REPORT"
-                    value={summary?.totalReports ?? 0}
-                />
+                <StatCard title="SUBMITTED" value={summary?.totalOpen ?? 0} color="#ef4444" onClick={() => openReportsByStatus("SUBMITTED")} />
+                <StatCard title="IN REVIEW" value={statusCounts.IN_REVIEW ?? 0} color="#f59e0b" onClick={() => openReportsByStatus("IN_REVIEW")} />
+                <StatCard title="IN PROGRESS" value={statusCounts.IN_PROGRESS ?? 0} color="#f59e0b" onClick={() => openReportsByStatus("IN_PROGRESS")} />
+                <StatCard title="RESOLVED" value={statusCounts.RESOLVED ?? 0} color="#10b981" onClick={() => openReportsByStatus("RESOLVED")} />
+                <StatCard title="REJECTED" value={statusCounts.REJECTED ?? 0} color="#ef4444" onClick={() => openReportsByStatus("REJECTED")} />
+                <StatCard title="CANCELLED" value={statusCounts.CANCELLED ?? 0} color="#6b7280" onClick={() => openReportsByStatus("CANCELLED")} />
+                <StatCard title="TOTAL REPORT" value={summary?.totalReports ?? 0} />
                 <StatCard
                     title="Avg Resolution (180d)"
-                    value={
-                        (summary?.avgResolutionDays180d || 0) > 0
-                            ? Number(summary.avgResolutionDays180d).toFixed(1)
-                            : "-"
-                    }
+                    value={(summary?.avgResolutionDays180d || 0) > 0 ? Number(summary.avgResolutionDays180d).toFixed(1) : "-"}
                     color="#6366f1"
-                    subtitle={
-                        (summary?.totalResolved180d || 0) > 0
-                            ? `Based on ${summary.totalResolved180d} resolutions`
-                            : "No resolutions found"
-                    }
+                    subtitle={(summary?.totalResolved180d || 0) > 0 ? `Based on ${summary.totalResolved180d} resolutions` : "No resolutions found"}
                 />
             </div>
 
@@ -296,30 +245,25 @@ function AdminOverview() {
                                 <XAxis dataKey="category" />
                                 <YAxis allowDecimals={false} />
                                 <Tooltip />
-                                <Bar
-                                    dataKey="count"
-                                    radius={[4, 4, 0, 0]}
-                                >
+                                <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                                     {byCategory.map((entry, index) => {
                                         const categoryColorMap = {
-                                            'Road Damage': '#fca5a5',           // Pastel Red
-                                            'Pothole': '#f87171',               // Pastel Dark Red
-                                            'Broken Streetlight': '#fde047',    // Pastel Yellow
-                                            'Litter': '#fdba74',                // Pastel Orange
-                                            'Illegal Dumping': '#fb923c',       // Pastel Deep Orange
-                                            'Fallen Tree': '#86efac',           // Pastel Green
-                                            'Damaged Playground': '#fcd34d',    // Pastel Golden Yellow
-                                            'Broken Bench': '#93c5fd',          // Pastel Blue
-                                            'Graffiti': '#c4b5fd',              // Pastel Purple
-                                            'Damaged Sign': '#a5b4fc',          // Pastel Indigo
-                                            'Other': '#d1d5db'                  // Pastel Gray
+                                            'Road Damage': '#fca5a5',
+                                            'Pothole': '#f87171',
+                                            'Broken Streetlight': '#fde047',
+                                            'Litter': '#fdba74',
+                                            'Illegal Dumping': '#fb923c',
+                                            'Fallen Tree': '#86efac',
+                                            'Damaged Playground': '#fcd34d',
+                                            'Broken Bench': '#93c5fd',
+                                            'Graffiti': '#c4b5fd',
+                                            'Damaged Sign': '#a5b4fc',
+                                            'Other': '#d1d5db'
                                         };
-
                                         const color = categoryColorMap[entry.category] || '#bfdbfe';
                                         return <Cell key={`cell-${index}`} fill={color} />;
                                     })}
                                 </Bar>
-
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -334,13 +278,7 @@ function AdminOverview() {
                                 <XAxis dataKey="weekStart" />
                                 <YAxis />
                                 <Tooltip />
-                                <Line
-                                    type="monotone"
-                                    dataKey="avgDays"
-                                    stroke="#10b981"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
+                                <Line type="monotone" dataKey="avgDays" stroke="#10b981" strokeWidth={2} dot={false} />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
@@ -352,69 +290,37 @@ function AdminOverview() {
                     <h3>
                         Quality Performance (30d)
                         <span className="performance-officer-name">
-                            {" "}
-                            —{" "}
-                            {officers.find(o => o.id === selectedOfficerId)?.name ||
-                                "All Officers"}
+                            {" "}— {officers.find(o => o.id === selectedOfficerId)?.name || "All Officers"}
                         </span>
                     </h3>
                     <div className="performance-controls">
                         <select
                             className="performance-officer-select"
                             value={selectedOfficerId ?? ""}
-                            onChange={(e) =>
-                                setSelectedOfficerId(
-                                    e.target.value ? Number(e.target.value) : null
-                                )
-                            }
+                            onChange={(e) => setSelectedOfficerId(e.target.value ? Number(e.target.value) : null)}
                         >
                             {officers.map(o => (
-                                <option key={String(o.id)} value={o.id ?? ""}>
-                                    {o.name}
-                                </option>
+                                <option key={String(o.id)} value={o.id ?? ""}>{o.name}</option>
                             ))}
                         </select>
-                        <button
-                            className="btn-link performance-link"
-                            onClick={handleViewFullPerformance}
-                            disabled={officers.length === 0}
-                        >
+                        <button className="btn-link performance-link" onClick={handleViewFullPerformance} disabled={officers.length === 0}>
                             View full performance →
                         </button>
                     </div>
                 </div>
 
                 <div className="stats-grid">
-                    <div
-                        className="stat-card perf-stat-card perf-stat-card-avg"
-                        data-border-color="#6366f1"
-                    >
+                    <div className="stat-card perf-stat-card perf-stat-card-avg" data-border-color="#6366f1">
                         <div className="stat-title">Avg Resolution Days</div>
-                        <div className="stat-value">
-                            {perfSummary?.avgResolutionDays?.toFixed?.(1) ?? "-"}
-                        </div>
+                        <div className="stat-value">{perfSummary?.avgResolutionDays?.toFixed?.(1) ?? "-"}</div>
                     </div>
-                    <div
-                        className="stat-card perf-stat-card perf-stat-card-resolution-rate"
-                        data-border-color="#10b981"
-                    >
+                    <div className="stat-card perf-stat-card perf-stat-card-resolution-rate" data-border-color="#10b981">
                         <div className="stat-title">Resolution Rate</div>
-                        <div className="stat-value">
-                            {perfSummary?.resolutionRatePct != null
-                                ? `${perfSummary.resolutionRatePct.toFixed(0)}%`
-                                : "-"}
-                        </div>
+                        <div className="stat-value">{perfSummary?.resolutionRatePct != null ? `${perfSummary.resolutionRatePct.toFixed(0)}%` : "-"}</div>
                     </div>
-                    <div
-                        className="stat-card perf-stat-card perf-stat-card-sla"
-                        data-border-color="#3b82f6"
-                    >
+                    <div className="stat-card perf-stat-card perf-stat-card-sla" data-border-color="#3b82f6">
                         <div className="stat-title">SLA Compliance</div>
-                        <div className="stat-value">
-                            {perfSummary?.slaCompliancePct != null
-                                ? `${perfSummary.slaCompliancePct.toFixed(0)}%`
-                                : "-"}
-                        </div>
+                        <div className="stat-value">{perfSummary?.slaCompliancePct != null ? `${perfSummary.slaCompliancePct.toFixed(0)}%` : "-"}</div>
                     </div>
                 </div>
 
@@ -425,13 +331,7 @@ function AdminOverview() {
                             <XAxis dataKey="period" />
                             <YAxis />
                             <Tooltip />
-                            <Line
-                                type="monotone"
-                                dataKey="avgDays"
-                                stroke="#6366f1"
-                                strokeWidth={2}
-                                dot={false}
-                            />
+                            <Line type="monotone" dataKey="avgDays" stroke="#6366f1" strokeWidth={2} dot={false} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
@@ -449,22 +349,15 @@ function AdminOverview() {
                                     <div className="list-title">{r.title}</div>
                                     <div className="list-meta">
                                         <span className="badge">{r.category}</span>
-                                        <span
-                                            className={`status ${r.status?.toLowerCase().replace(/_/g, "-")}`}
-                                        >
-                                {r.status?.replace(/_/g, " ")}
-                            </span>
+                                        <span className={`status ${r.status?.toLowerCase().replace(/_/g, "-")}`}>
+                                            {r.status?.replace(/_/g, " ")}
+                                        </span>
                                         <span className="date">
-                                {r.createdAtIso ? new Date(r.createdAtIso).toLocaleString('en-GB', {
-                                    day: 'numeric',
-                                    month: 'long',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit',
-                                    hour12: false
-                                }) : "No Date"}
-                            </span>
+                                            {r.createdAtIso ? new Date(r.createdAtIso).toLocaleString('en-GB', {
+                                                day: 'numeric', month: 'long', year: 'numeric',
+                                                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                                            }) : "No Date"}
+                                        </span>
                                     </div>
                                 </div>
                             ))
@@ -482,9 +375,7 @@ function AdminOverview() {
                                 <div key={w.officerId} className="list-row">
                                     <div className="list-title">{w.officerName}</div>
                                     <div className="list-meta">
-                            <span className="badge">
-                                Open assigned: {w.openAssignedCount}
-                            </span>
+                                        <span className="badge">Open assigned: {w.openAssignedCount}</span>
                                     </div>
                                 </div>
                             ))
@@ -502,28 +393,15 @@ function AdminOverview() {
                                 <div key={a.id} className="list-row">
                                     <div className="list-title">{a.title}</div>
                                     <div className="list-meta">
-                            <span
-                                className={`badge ${
-                                    a.audience === "OFFICERS"
-                                        ? "purple"
-                                        : "blue"
-                                }`}
-                            >
-                                {a.audience === "OFFICERS"
-                                    ? "Officers"
-                                    : "All"}
-                            </span>
+                                        <span className={`badge ${a.audience === "OFFICERS" ? "purple" : "blue"}`}>
+                                            {a.audience === "OFFICERS" ? "Officers" : "All"}
+                                        </span>
                                         <span className="date">
-                                {(a.createdAtIso || a.createdAt) ? new Date(a.createdAtIso || a.createdAt).toLocaleString('en-GB', {
-                                    day: 'numeric',
-                                    month: 'long',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit',
-                                    hour12: false
-                                }) : "No Date"}
-                            </span>
+                                            {(a.createdAtIso || a.createdAt) ? new Date(a.createdAtIso || a.createdAt).toLocaleString('en-GB', {
+                                                day: 'numeric', month: 'long', year: 'numeric',
+                                                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                                            }) : "No Date"}
+                                        </span>
                                     </div>
                                 </div>
                             ))
@@ -534,7 +412,4 @@ function AdminOverview() {
         </div>
     );
 }
-
 export default AdminOverview;
-
-

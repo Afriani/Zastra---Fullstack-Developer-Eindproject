@@ -1,58 +1,33 @@
-import axios from 'axios';
-
-const BASE_URL = 'http://localhost:8080';
-
-const getHeaders = () => {
-    const token = localStorage.getItem('token');
-    return {
-        'Content-Type': 'application/json',
-        Authorization: token ? `Bearer ${token}` : '',
-    };
-};
+import axiosInstance from '../api/axiosInstance';
 
 const notificationService = {
     // Get all notifications for the current user
     getNotifications: async () => {
-        const response = await axios.get(`${BASE_URL}/api/notifications`, {
-            headers: getHeaders(),
-        });
+        const response = await axiosInstance.get('/api/notifications');
         return response.data;
     },
 
     // Get unread notification count
     getUnreadCount: async () => {
-        const response = await axios.get(`${BASE_URL}/api/notifications/unread/count`, {
-            headers: getHeaders(),
-        });
-        return response.data.count; // FIXED: Extract the count property
+        const response = await axiosInstance.get('/api/notifications/unread/count');
+        return response.data.count;
     },
 
     // Mark a notification as read
     markAsRead: async (notificationId) => {
-        const response = await axios.put(
-            `${BASE_URL}/api/notifications/${notificationId}/read`,
-            {},
-            { headers: getHeaders() }
-        );
+        const response = await axiosInstance.put(`/api/notifications/${notificationId}/read`);
         return response.data;
     },
 
     // Mark all notifications as read
     markAllAsRead: async () => {
-        const response = await axios.put(
-            `${BASE_URL}/api/notifications/read-all`,
-            {},
-            { headers: getHeaders() }
-        );
+        const response = await axiosInstance.put('/api/notifications/read-all');
         return response.data;
     },
 
     // Delete a notification
     deleteNotification: async (notificationId) => {
-        const response = await axios.delete(
-            `${BASE_URL}/api/notifications/${notificationId}`,
-            { headers: getHeaders() }
-        );
+        const response = await axiosInstance.delete(`/api/notifications/${notificationId}`);
         return response.data;
     },
 };

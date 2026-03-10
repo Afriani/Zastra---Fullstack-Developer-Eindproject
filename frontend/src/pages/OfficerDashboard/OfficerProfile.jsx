@@ -1,6 +1,6 @@
 // src/pages/OfficerDashboard/OfficerProfile.jsx
 import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../api/axiosInstance'; // ✅ replaced axios
 
 import '../../css/OFFICER DASHBOARD/officerprofile.css';
 
@@ -19,32 +19,23 @@ function OfficerProfile() {
 
     const fileInputRef = useRef(null);
 
+    // Reusable fetch profile function
+    const fetchProfile = async () => {
+        try {
+            // ✅ No localhost, no manual auth header
+            const res = await axiosInstance.get('/api/users/profile');
+            setUser(res.data);
+            setCacheBustedAvatarUrl(null);
+            console.log("Profile loaded:", res.data);
+        } catch (err) {
+            console.error('Profile fetch error:', err);
+            setError('Failed to load profile. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    setError('No token found. Please log in.');
-                    setLoading(false);
-                    return;
-                }
-
-                const res = await axios.get('http://localhost:8080/api/users/profile', {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                setUser(res.data);
-                setCacheBustedAvatarUrl(null);
-                console.log("Profile loaded:", res.data);
-
-            } catch (err) {
-                console.error('Profile fetch error:', err);
-                setError('Failed to load profile. Please try again.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchProfile();
     }, []);
 
@@ -57,7 +48,6 @@ function OfficerProfile() {
 
     const displayValue = (value) => value || '';
 
-    // Use cache-busted avatar URL state for stable image URL
     const getAvatarSrc = () => {
         if (avatarPreview) return avatarPreview;
         if (cacheBustedAvatarUrl) return cacheBustedAvatarUrl;
@@ -65,16 +55,13 @@ function OfficerProfile() {
         return "https://placehold.co/120x120?text=No+Img";
     };
 
-    // Cleanup object URL when avatarPreview changes or component unmounts
+    // Cleanup object URL on unmount
     useEffect(() => {
         return () => {
-            if (avatarPreview) {
-                URL.revokeObjectURL(avatarPreview);
-            }
+            if (avatarPreview) URL.revokeObjectURL(avatarPreview);
         };
     }, [avatarPreview]);
 
-    // When user picks a file via input
     const handleAvatarChange = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
@@ -91,44 +78,27 @@ function OfficerProfile() {
             return;
         }
 
-        if (avatarPreview) {
-            URL.revokeObjectURL(avatarPreview);
-        }
-
-        const objectUrl = URL.createObjectURL(file);
-        setAvatarPreview(objectUrl);
+        if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+        setAvatarPreview(URL.createObjectURL(file));
     };
 
-    // Upload file currently selected in the hidden input
     const handleAvatarUpload = async () => {
         const file = fileInputRef.current?.files?.[0];
-        if (!file) {
-            alert('No file selected.');
-            return;
-        }
-
-        const token = localStorage.getItem('token');
-        if (!token) {
-            alert('You must be logged in to upload.');
-            return;
-        }
+        if (!file) { alert('No file selected.'); return; }
 
         const formData = new FormData();
         formData.append('file', file);
 
         setUploading(true);
         try {
-            const res = await axios.post('http://localhost:8080/api/media/avatar', formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                },
+            // ✅ No localhost, no manual auth header (Content-Type set automatically for FormData)
+            const res = await axiosInstance.post('/api/media/avatar', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             setUser((prev) => ({ ...prev, avatarUrl: res.data.url }));
             setCacheBustedAvatarUrl(res.data.url + '?t=' + new Date().getTime());
             setAvatarPreview(null);
-
             if (fileInputRef.current) fileInputRef.current.value = '';
             alert('Avatar uploaded successfully.');
         } catch (err) {
@@ -139,29 +109,22 @@ function OfficerProfile() {
         }
     };
 
-    // Handle input changes during editing
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-
         if (name.startsWith('address.')) {
             const addressField = name.split('.')[1];
             setUser(prev => ({
                 ...prev,
-                address: {
-                    ...(prev?.address || {}),
-                    [addressField]: value
-                }
+                address: { ...(prev?.address || {}), [addressField]: value }
             }));
         } else {
             setUser(prev => ({ ...prev, [name]: value }));
         }
     };
 
-    // Save changes to backend
     const handleSave = async () => {
         setSaving(true);
         try {
-            const token = localStorage.getItem('token');
             const payload = {
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -174,11 +137,9 @@ function OfficerProfile() {
                 province: user.address?.province
             };
 
-            await axios.put('http://localhost:8080/api/users/profile', payload, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            alert(' Profile updated successfully!');
+            // ✅ No localhost, no manual auth header
+            await axiosInstance.put('/api/users/profile', payload);
+            alert('Profile updated successfully!');
             setIsEditing(false);
         } catch (err) {
             console.error('Save error:', err);
@@ -188,38 +149,21 @@ function OfficerProfile() {
         }
     };
 
-    // Toggle edit mode
     const handleEditToggle = () => {
         if (isEditing) {
-            // Cancel editing - reload original data and clear cache buster
-            const fetchProfile = async () => {
-                try {
-                    const token = localStorage.getItem('token');
-                    const res = await axios.get('http://localhost:8080/api/users/profile', {
-                        headers: { Authorization: `Bearer ${token}` },
-                    });
-                    setUser(res.data);
-                    setCacheBustedAvatarUrl(null);
-                    setAvatarPreview(null);
-                    if (fileInputRef.current) fileInputRef.current.value = '';
-                } catch (err) {
-                    console.error('Reload error:', err);
-                }
-            };
-            fetchProfile();
+            // Cancel — reload original data
+            setLoading(true);
+            fetchProfile().then(() => {
+                setAvatarPreview(null);
+                if (fileInputRef.current) fileInputRef.current.value = '';
+            });
         }
         setIsEditing(!isEditing);
     };
 
-    if (loading) {
-        return <div className="dashboard"><h2>Loading profile...</h2></div>;
-    }
-    if (error) {
-        return <div className="dashboard"><h2>Profile</h2><p>{error}</p></div>;
-    }
-    if (!user) {
-        return <div className="dashboard"><h2>Profile</h2><p>No profile found.</p></div>;
-    }
+    if (loading) return <div className="dashboard"><h2>Loading profile...</h2></div>;
+    if (error) return <div className="dashboard"><h2>Profile</h2><p>{error}</p></div>;
+    if (!user) return <div className="dashboard"><h2>Profile</h2><p>No profile found.</p></div>;
 
     return (
         <div className="dashboard">
@@ -240,14 +184,13 @@ function OfficerProfile() {
                                 src={getAvatarSrc()}
                                 alt="Profile"
                                 className="avatar"
-                                onLoad={() => console.log(" Avatar loaded:", getAvatarSrc())}
+                                onLoad={() => console.log("Avatar loaded:", getAvatarSrc())}
                                 onError={(e) => {
                                     console.warn("Avatar failed, fallback to placeholder:", e.target.src);
                                     e.target.src = "https://placehold.co/120x120?text=No+Img";
                                 }}
                             />
 
-                            {/* Visible upload button (triggers hidden input) */}
                             <button
                                 type="button"
                                 className="upload-officer-avatar-btn"
@@ -258,7 +201,6 @@ function OfficerProfile() {
                                 <img src={cameraIcon} alt="camera-icon" className="officer-profile-icons" />️
                             </button>
 
-                            {/* Hidden file input */}
                             <input
                                 ref={fileInputRef}
                                 type="file"
@@ -272,7 +214,6 @@ function OfficerProfile() {
                             <h3>{greeting}, {user.firstName || user.name}</h3>
                             <p>Joined since: {new Date(user.createdAt).toLocaleDateString()}</p>
 
-                            {/* Show Save Avatar button when a file is selected (avatarPreview exists) */}
                             {avatarPreview && (
                                 <div className="save-avatar-container">
                                     <button
@@ -287,113 +228,64 @@ function OfficerProfile() {
                         </div>
                     </div>
 
-                    {/* Profile info cards */}
+                    {/* Account Info */}
                     <div className="profile-card">
                         <h3>Account Info</h3>
                         <div className="account-info">
                             <label>First Name</label>
-                            <input
-                                type="text"
-                                name="firstName"
-                                value={displayValue(user.firstName)}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="text" name="firstName" value={displayValue(user.firstName)}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
 
                             <label>Last Name</label>
-                            <input
-                                type="text"
-                                name="lastName"
-                                value={user.lastName || ''}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="text" name="lastName" value={user.lastName || ''}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
 
                             <label>Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={user.email || ''}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="email" name="email" value={user.email || ''}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
 
                             <label>Phone</label>
-                            <input
-                                type="tel"
-                                name="phoneNumber"
-                                value={user.phoneNumber || ''}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="tel" name="phoneNumber" value={user.phoneNumber || ''}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
                         </div>
                     </div>
 
+                    {/* Residential Address */}
                     <div className="profile-card">
                         <h3>Residential Address</h3>
-
                         <div className="residential-address">
                             <label>Street</label>
-                            <input
-                                type="text"
-                                name="address.streetName"
-                                value={user.address?.streetName || ''}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="text" name="address.streetName" value={user.address?.streetName || ''}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
 
                             <label>House Number</label>
-                            <input
-                                type="text"
-                                name="address.houseNumber"
-                                value={user.address?.houseNumber || ''}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="text" name="address.houseNumber" value={user.address?.houseNumber || ''}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
 
                             <label>Postcode</label>
-                            <input
-                                type="text"
-                                name="address.postalCode"
-                                value={user.address?.postalCode || ''}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="text" name="address.postalCode" value={user.address?.postalCode || ''}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
 
                             <label>City</label>
-                            <input
-                                type="text"
-                                name="address.city"
-                                value={user.address?.city || ''}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="text" name="address.city" value={user.address?.city || ''}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
 
                             <label>Province</label>
-                            <input
-                                type="text"
-                                name="address.province"
-                                value={user.address?.province || ''}
-                                readOnly={!isEditing}
-                                onChange={handleInputChange}
-                                className={isEditing ? 'editable' : ''}
-                            />
+                            <input type="text" name="address.province" value={user.address?.province || ''}
+                                   readOnly={!isEditing} onChange={handleInputChange}
+                                   className={isEditing ? 'editable' : ''} />
                         </div>
 
                         {isEditing && (
-                            <button
-                                className="save-btn"
-                                onClick={handleSave}
-                                disabled={saving}
-                            >
+                            <button className="save-btn" onClick={handleSave} disabled={saving}>
                                 {saving ? 'Saving...' : 'Save Changes'}
                             </button>
                         )}
@@ -405,5 +297,3 @@ function OfficerProfile() {
 }
 
 export default OfficerProfile;
-
-

@@ -5,11 +5,13 @@ import { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 // Backend packages
-import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
+import axiosInstance from '../../api/axiosInstance'; // ✅ use shared axios instance
 
 // Context import
 import { AuthContext } from '../../context/AuthContext.jsx';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''; // ✅ for OAuth redirects
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -23,14 +25,13 @@ function Login() {
     const params = new URLSearchParams(location.search);
     const error = params.get("error");
 
-    // Context gebruiken
     const { login } = useContext(AuthContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         let tempErrors = {};
 
-        // Simple Validation - more lenient email check
+        // Simple validation
         if (!email) tempErrors.email = 'Email is required';
 
         if (!password) {
@@ -40,7 +41,6 @@ function Login() {
         }
 
         setErrors(tempErrors);
-
         if (Object.keys(tempErrors).length > 0) return;
 
         setLoading(true);
@@ -50,8 +50,9 @@ function Login() {
         try {
             console.log('Attempting login with:', { email, password: '***' });
 
-            // Call backend login API with full URL
-            const response = await axios.post("http://localhost:8080/api/auth/login",
+            // ✅ Uses axiosInstance; no localhost, no manual base URL
+            const response = await axiosInstance.post(
+                '/api/auth/login',
                 { email, password },
                 {
                     headers: {
@@ -62,11 +63,10 @@ function Login() {
 
             console.log('Login response:', response.data);
 
-            // Backend returns: { success: true, message: "...", data: { token: "..." } }
             if (response.data.success && response.data.data && response.data.data.token) {
                 const token = response.data.data.token;
 
-                // Optionally decode token for debugging
+                // Optional: decode token for debugging
                 try {
                     const decoded = jwtDecode(token);
                     console.log("Decoded JWT:", decoded);
@@ -74,19 +74,14 @@ function Login() {
                     console.warn("Could not decode JWT:", decodeErr);
                 }
 
-                // Fetch user profile to check verification + role
-                const profileResp = await axios.get("http://localhost:8080/api/users/profile", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                });
+                // ✅ Get user profile using axiosInstance, token header added by interceptor
+                const profileResp = await axiosInstance.get('/api/users/profile');
 
                 console.log("Profile response:", profileResp.data);
 
                 const user = profileResp.data;
 
-                // Check email verification - handle different field names
+                // Check email verification
                 if (!user.emailVerified) {
                     setErrors({ general: "Please verify your email before logging in." });
                     localStorage.removeItem("token");
@@ -97,7 +92,7 @@ function Login() {
                 const role = (user.userRole || user.role || "").toString().toUpperCase();
                 console.log("User role detected:", role);
 
-                // NIEUWE CODE: Gebruik de login functie uit Context
+                // Use AuthContext login
                 login(token, user);
 
                 // Navigate based on role
@@ -112,22 +107,21 @@ function Login() {
                     ) {
                         navigate("/user-dashboard");
                     } else {
-                        // fallback: always send to user dashboard
                         console.log("Unknown role, defaulting to user dashboard");
                         navigate("/user-dashboard");
                     }
                 }, 1000);
 
             } else {
-                // Backend returned success: false or missing token
-                setErrors({ general: response.data.message || "Login failed. Please try again." });
+                setErrors({
+                    general: response.data.message || "Login failed. Please try again."
+                });
             }
 
         } catch (err) {
             console.error("Login error:", err);
 
             if (err.response) {
-                // Backend returned an error response
                 const errorData = err.response.data;
 
                 if (err.response.status === 401) {
@@ -140,10 +134,8 @@ function Login() {
                     setErrors({ general: "Login failed. Please try again." });
                 }
             } else if (err.request) {
-                // Network error
                 setErrors({ general: "Network error. Please check if the server is running." });
             } else {
-                // Other errors
                 setErrors({ general: "An unexpected error occurred" });
             }
         } finally {
@@ -152,18 +144,22 @@ function Login() {
     };
 
     const handleGoogleLogin = () => {
-        window.location.href = "http://localhost:8080/api/auth/google";
+        // ✅ use API_BASE_URL instead of localhost
+        window.location.href = `${API_BASE_URL}/api/auth/google`;
     };
 
     const handleFacebookLogin = () => {
-        window.location.href = "http://localhost:8080/api/auth/facebook";
+        // ✅ use API_BASE_URL instead of localhost
+        window.location.href = `${API_BASE_URL}/api/auth/facebook`;
     };
 
     return (
         <>
             <div className="login">
                 <h2>Log In</h2>
-                <p className={"Login-subtext"}>Don't have an account? <Link to="/register">Sign Up</Link></p>
+                <p className={"Login-subtext"}>
+                    Don't have an account? <Link to="/register">Sign Up</Link>
+                </p>
             </div>
 
             <div className="login-container">
@@ -173,7 +169,6 @@ function Login() {
                     </div>
                 )}
 
-                {/* Show error if Facebook login failed due to no user */}
                 {error === "facebook_no_user" && (
                     <div className="message error">
                         No account found with your Facebook email. Please register first or use another login method.
@@ -187,7 +182,6 @@ function Login() {
                 )}
 
                 <form onSubmit={handleLogin} className="login-form">
-
                     <label>Email</label>
                     <input
                         type="email"
@@ -232,11 +226,19 @@ function Login() {
                 </div>
 
                 <div className="social-login">
-                    <button className="google-btn" onClick={handleGoogleLogin} disabled={loading}>
+                    <button
+                        className="google-btn"
+                        onClick={handleGoogleLogin}
+                        disabled={loading}
+                    >
                         Login with Google
                     </button>
 
-                    <button className="facebook-btn" onClick={handleFacebookLogin} disabled={loading}>
+                    <button
+                        className="facebook-btn"
+                        onClick={handleFacebookLogin}
+                        disabled={loading}
+                    >
                         Login with Facebook
                     </button>
                 </div>
@@ -246,6 +248,3 @@ function Login() {
 }
 
 export default Login;
-
-
-

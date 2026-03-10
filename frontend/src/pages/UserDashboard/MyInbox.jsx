@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance"; // ✅ replaced axios
 
 import "../../css/USER DASHBOARD/myinbox.css";
 
@@ -9,10 +9,9 @@ import readIcon from "../../assets/pictures/my-inbox/left-speech-ballon.png";
 
 function MyInbox() {
     const [activeTab, setActiveTab] = useState("received");
-    const [items, setItems] = useState([]); // conversations list
+    const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    // const [userRole, setUserRole] = useState("");
 
     // Thread state
     const [selectedItem, setSelectedItem] = useState(null);
@@ -31,8 +30,6 @@ function MyInbox() {
     });
 
     const location = useMemo(() => window.location, []);
-    const token = useMemo(() => localStorage.getItem("token"), []);
-    const authHeaders = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
     useEffect(() => {
         fetchTabItems();
@@ -45,29 +42,26 @@ function MyInbox() {
         const conversationId = params.get('conversationId');
 
         if (conversationId && items.length > 0) {
-            // Find and open the conversation
             const conversationToOpen = items.find(item => item.id === parseInt(conversationId, 10));
             if (conversationToOpen) {
                 openItem(conversationToOpen);
-                // Remove query parameter from URL
                 params.delete('conversationId');
                 const newSearch = params.toString();
                 window.history.replaceState(null, '', `${location.pathname}${newSearch ? `?${newSearch}` : ''}`);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items, location.search]);
 
     const fetchTabItems = async () => {
         setLoading(true);
         setError("");
-        // setItems([]);
-        // setSelectedItem(null);
         try {
-            const url =
-                activeTab === "received"
-                    ? "http://localhost:8080/api/conversations/inbox"
-                    : "http://localhost:8080/api/conversations/sent";
-            const res = await axios.get(url, { headers: authHeaders });
+            // ✅ No localhost, no manual auth headers
+            const url = activeTab === "received"
+                ? "/api/conversations/inbox"
+                : "/api/conversations/sent";
+            const res = await axiosInstance.get(url);
 
             const conversations = (res.data || []).map((c) => ({
                 id: c.id,
@@ -96,10 +90,8 @@ function MyInbox() {
         setThreadError("");
         setThreadMessages([]);
         try {
-            const res = await axios.get(
-                `http://localhost:8080/api/conversations/${item.id}/messages`,
-                { headers: authHeaders }
-            );
+            // ✅ No localhost, no manual auth headers
+            const res = await axiosInstance.get(`/api/conversations/${item.id}/messages`);
             setThreadMessages(res.data || []);
             if (activeTab === "received") {
                 setItems((prev) => prev.map((x) => (x.id === item.id ? { ...x, unread: false } : x)));
@@ -115,14 +107,11 @@ function MyInbox() {
     const sendConversationReply = async () => {
         if (!selectedItem || !quickReply.trim()) return;
         try {
-            await axios.post(
-                "http://localhost:8080/api/conversations",
-                {
-                    conversationId: selectedItem.id,
-                    content: quickReply.trim(),
-                },
-                { headers: { ...authHeaders, "Content-Type": "application/json" } }
-            );
+            // ✅ No localhost, no manual auth headers
+            await axiosInstance.post("/api/conversations", {
+                conversationId: selectedItem.id,
+                content: quickReply.trim(),
+            });
             setQuickReply("");
             await openItem(selectedItem);
             await fetchTabItems();
@@ -139,16 +128,13 @@ function MyInbox() {
             return;
         }
         try {
-            await axios.post(
-                "http://localhost:8080/api/conversations",
-                {
-                    recipientEmail: newConversation.recipientEmail.trim(),
-                    reportId: newConversation.reportId ? Number(newConversation.reportId) : null,
-                    subject: newConversation.subject || "",
-                    content: newConversation.content.trim(),
-                },
-                { headers: { ...authHeaders, "Content-Type": "application/json" } }
-            );
+            // ✅ No localhost, no manual auth headers
+            await axiosInstance.post("/api/conversations", {
+                recipientEmail: newConversation.recipientEmail.trim(),
+                reportId: newConversation.reportId ? Number(newConversation.reportId) : null,
+                subject: newConversation.subject || "",
+                content: newConversation.content.trim(),
+            });
             setNewConversation({ recipientEmail: "", reportId: "", subject: "", content: "" });
             setShowNewMessageModal(false);
             await fetchTabItems();
@@ -167,7 +153,6 @@ function MyInbox() {
             minute: "2-digit",
         });
 
-    // Tabs for user: Received / Sent (deleted not applicable for conversations here)
     const availableTabs = [
         { key: "received", label: "Received" },
         { key: "sent", label: "Sent" },
@@ -175,7 +160,6 @@ function MyInbox() {
 
     return (
         <div className="dashboard">
-
             <div className="inbox-container">
                 <div className="user-inbox-header">
                     <h2>My Inbox</h2>
@@ -200,9 +184,7 @@ function MyInbox() {
                 </div>
 
                 <div className="folder-table">
-                    <button className="btn-sort" onClick={handleSort}>
-                        Sort by Date
-                    </button>
+                    <button className="btn-sort" onClick={handleSort}>Sort by Date</button>
 
                     {loading && <div className="loading">Loading conversations...</div>}
                     {error && <div className="error-message">{error}</div>}
@@ -210,50 +192,40 @@ function MyInbox() {
                         <div className="no-messages">No conversations found.</div>
                     )}
 
-                    {!loading &&
-                        !error &&
-                        items.map((item) => (
-                            <div
-                                key={`${item.id}`}
-                                className={`folder-row ${item.unread && activeTab === "received" ? "unread" : ""}`}
-                                onClick={() => openItem(item)}
-                            >
-                                <div className="folder-icon">
-                                    {item.unread && activeTab === "received" ? (
-                                        <img
-                                            src={unreadIcon}
-                                            alt="Unread"
-                                            className="my-inbox-icons" />
-                                    ) : (
-                                        <img
-                                            src={readIcon}
-                                            alt="Read"
-                                            className="my-inbox-icons" />
-                                    )}
+                    {!loading && !error && items.map((item) => (
+                        <div
+                            key={`${item.id}`}
+                            className={`folder-row ${item.unread && activeTab === "received" ? "unread" : ""}`}
+                            onClick={() => openItem(item)}
+                        >
+                            <div className="folder-icon">
+                                {item.unread && activeTab === "received" ? (
+                                    <img src={unreadIcon} alt="Unread" className="my-inbox-icons" />
+                                ) : (
+                                    <img src={readIcon} alt="Read" className="my-inbox-icons" />
+                                )}
+                            </div>
+                            <div className="folder-details">
+                                <div className="folder-subject">{item.title}</div>
+                                <div className="folder-snippet">
+                                    {item.message?.length > 60 ? `${item.message.substring(0, 60)}...` : item.message}
                                 </div>
-                                <div className="folder-details">
-                                    <div className="folder-subject">{item.title}</div>
-                                    <div className="folder-snippet">
-                                        {item.message?.length > 60 ? `${item.message.substring(0, 60)}...` : item.message}
-                                    </div>
-                                    <div className="folder-meta">
-                                        <span className="folder-date">{formatDate(item.timestamp)}</span>
-                                        <span className="folder-status">
-                      {activeTab === "received" ? (item.unread ? "Unread" : "Read") : "Sent"}
-                    </span>
-                                    </div>
+                                <div className="folder-meta">
+                                    <span className="folder-date">{formatDate(item.timestamp)}</span>
+                                    <span className="folder-status">
+                                        {activeTab === "received" ? (item.unread ? "Unread" : "Read") : "Sent"}
+                                    </span>
                                 </div>
                             </div>
-                        ))}
+                        </div>
+                    ))}
                 </div>
 
                 {selectedItem && (
                     <div className="thread-container">
                         <div className="thread-header">
                             <h3>{selectedItem.title}</h3>
-                            <button className="btn-close" onClick={() => setSelectedItem(null)}>
-                                ✕
-                            </button>
+                            <button className="btn-close" onClick={() => setSelectedItem(null)}>✕</button>
                         </div>
 
                         {threadLoading && <div className="loading">Loading conversation...</div>}
@@ -274,15 +246,13 @@ function MyInbox() {
                         )}
 
                         <div className="composer">
-              <textarea
-                  placeholder="Type your message..."
-                  rows={3}
-                  value={quickReply}
-                  onChange={(e) => setQuickReply(e.target.value)}
-              />
-                            <button className="send-btn" onClick={sendConversationReply}>
-                                Send
-                            </button>
+                            <textarea
+                                placeholder="Type your message..."
+                                rows={3}
+                                value={quickReply}
+                                onChange={(e) => setQuickReply(e.target.value)}
+                            />
+                            <button className="send-btn" onClick={sendConversationReply}>Send</button>
                         </div>
                     </div>
                 )}
@@ -298,9 +268,7 @@ function MyInbox() {
                                 <input
                                     type="email"
                                     value={newConversation.recipientEmail}
-                                    onChange={(e) =>
-                                        setNewConversation((s) => ({ ...s, recipientEmail: e.target.value }))
-                                    }
+                                    onChange={(e) => setNewConversation((s) => ({ ...s, recipientEmail: e.target.value }))}
                                     placeholder="user@example.com"
                                     required
                                 />
@@ -351,5 +319,3 @@ function MyInbox() {
 }
 
 export default MyInbox;
-
-

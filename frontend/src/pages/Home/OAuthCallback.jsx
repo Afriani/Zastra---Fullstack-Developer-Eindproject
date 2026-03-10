@@ -2,8 +2,10 @@ import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+
 import { AuthContext } from "../../context/AuthContext.jsx"; // Pas pad aan indien nodig
 import "../../css/HOME/oauthcallback.css";
+import axiosInstance from "../../api/axiosInstance";
 
 function OAuthCallback() {
     const navigate = useNavigate();
@@ -72,7 +74,7 @@ function OAuthCallback() {
         }
 
         // Fetch user profile to get full user object
-        axios.get("http://localhost:8080/api/users/profile", {
+        axiosInstance.get("/api/users/profile", {
             headers: {
                 Authorization: `Bearer ${token}`
             }

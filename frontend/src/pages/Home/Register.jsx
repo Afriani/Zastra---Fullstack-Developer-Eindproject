@@ -1,8 +1,8 @@
-import '../../css/HOME/register.css'
+import '../../css/HOME/register.css';
 
-import {useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
-import axios from 'axios';
+import { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from '../../api/axiosInstance'; // ✅ replaced axios
 
 function Register() {
     const navigate = useNavigate();
@@ -31,11 +31,9 @@ function Register() {
     });
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData((prev) => ({...prev, [name]: value}));
-        if (errors[name]) {
-            setErrors(prev => ({...prev, [name]: ''}));
-        }
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
     const handleAvatarChange = (e) => {
@@ -44,23 +42,23 @@ function Register() {
 
         const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!validTypes.includes(file.type)) {
-            setErrors(prev => ({...prev, profilePicture: 'Only JPG, PNG, or WebP images are allowed.'}));
+            setErrors(prev => ({ ...prev, profilePicture: 'Only JPG, PNG, or WebP images are allowed.' }));
             return;
         }
         if (file.size > 5_000_000) {
-            setErrors(prev => ({...prev, profilePicture: 'File size exceeds 5MB limit.'}));
+            setErrors(prev => ({ ...prev, profilePicture: 'File size exceeds 5MB limit.' }));
             return;
         }
 
-        setErrors(prev => ({...prev, profilePicture: ''}));
-        setFormData(prev => ({...prev, profilePicture: file}));
+        setErrors(prev => ({ ...prev, profilePicture: '' }));
+        setFormData(prev => ({ ...prev, profilePicture: file }));
         setAvatarPreview(URL.createObjectURL(file));
     };
 
     const removeAvatar = () => {
-        setFormData(prev => ({...prev, profilePicture: null}));
+        setFormData(prev => ({ ...prev, profilePicture: null }));
         setAvatarPreview(null);
-        setErrors(prev => ({...prev, profilePicture: ''}));
+        setErrors(prev => ({ ...prev, profilePicture: '' }));
         const fileInput = document.querySelector('input[name="profilePicture"]');
         if (fileInput) fileInput.value = '';
     };
@@ -99,7 +97,6 @@ function Register() {
 
         try {
             const dateOfBirth = `${formData.dobYear}-${formData.dobMonth.padStart(2, '0')}-${formData.dobDay.padStart(2, '0')}`;
-            const genderNormalized = formData.gender.trim();
 
             const payload = {
                 firstName: formData.firstName,
@@ -107,7 +104,7 @@ function Register() {
                 email: formData.email,
                 password: formData.password,
                 phoneNumber: formData.phoneNumber,
-                gender: genderNormalized,
+                gender: formData.gender.trim(),
                 dateOfBirth,
                 nationalId: formData.nationalId,
                 postalCode: formData.postalCode,
@@ -117,27 +114,34 @@ function Register() {
                 province: formData.province
             };
 
-            await axios.post('http://localhost:8080/api/auth/register', payload, {
+            // ✅ No localhost, no manual headers
+            await axiosInstance.post('/api/auth/register', payload, {
                 headers: { 'Content-Type': 'application/json' },
             });
 
+            // Upload avatar if provided
             if (formData.profilePicture) {
                 try {
-                    const loginResponse = await axios.post('http://localhost:8080/api/auth/login', {
+                    // ✅ Login to get token for avatar upload
+                    const loginResponse = await axiosInstance.post('/api/auth/login', {
                         email: formData.email,
                         password: formData.password
                     });
-                    const token = loginResponse.data.accessToken;
+
+                    const token = loginResponse.data.accessToken
+                        || loginResponse.data.data?.token;
 
                     const avatarFormData = new FormData();
                     avatarFormData.append('file', formData.profilePicture);
 
-                    await axios.post('http://localhost:8080/api/media/avatar', avatarFormData, {
+                    // ✅ Upload avatar with token
+                    await axiosInstance.post('/api/media/avatar', avatarFormData, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'multipart/form-data',
                         },
                     });
+
                     setMessage('Registration successful! Profile picture uploaded. Redirecting...');
                 } catch {
                     setMessage('Registration ok, but avatar upload failed. Upload later from profile.');
@@ -171,7 +175,9 @@ function Register() {
         <>
             <div className="register">
                 <h2>Create your account</h2>
-                <p className="register-subtext">Already have an account? <Link to="/login">Log In</Link></p>
+                <p className="register-subtext">
+                    Already have an account? <Link to="/login">Log In</Link>
+                </p>
             </div>
 
             <div className="register-container">
@@ -225,14 +231,8 @@ function Register() {
                     <div className="avatar-upload-section">
                         {avatarPreview ? (
                             <div className="avatar-preview">
-                                <img
-                                    src={avatarPreview}
-                                    alt="Profile Preview"
-                                    className="preview-image" />
-                                <button
-                                    type="button"
-                                    onClick={removeAvatar}
-                                    className="remove-avatar-btn">
+                                <img src={avatarPreview} alt="Profile Preview" className="preview-image" />
+                                <button type="button" onClick={removeAvatar} className="remove-avatar-btn">
                                     Remove
                                 </button>
                             </div>
@@ -384,9 +384,7 @@ function Register() {
                         />
                     </div>
                     {(errors.city || errors.province) && (
-                        <span className="error-text">
-                            {errors.city || errors.province}
-                        </span>
+                        <span className="error-text">{errors.city || errors.province}</span>
                     )}
 
                     <label>Telephone Number</label>
@@ -415,6 +413,3 @@ function Register() {
 }
 
 export default Register;
-
-
-

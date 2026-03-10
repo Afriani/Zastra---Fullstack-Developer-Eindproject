@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";   // ✅ replaced axios
 
 import "../../css/USER DASHBOARD/userdashboard.css";
 
-// Import gifs
+// GIFs
 import submittedGif from "../../assets/pictures/submitted.gif";
 import inReviewGif from "../../assets/pictures/inreview.gif";
 import inProgressGif from "../../assets/pictures/inprogress.gif";
@@ -13,11 +13,12 @@ import rejectedGif from "../../assets/pictures/reject.gif";
 import cancelledGif from "../../assets/pictures/cancel.gif";
 import totalGif from "../../assets/pictures/totalreport.gif";
 import loudspeaker from "../../assets/pictures/officer-dashboard/loudspeaker.png";
-import recentActivity from "../../assets/pictures/email-service/report-status-update.png"
-import communityReport from "../../assets/pictures/overview.png"
+import recentActivity from "../../assets/pictures/email-service/report-status-update.png";
+import communityReport from "../../assets/pictures/overview.png";
 
 function UsersDashboard() {
     const { setHeaderTitle, setHeaderSubtitle } = useOutletContext();
+
     const [stats, setStats] = useState({
         totalReports: 0,
         pendingReports: 0,
@@ -28,13 +29,14 @@ function UsersDashboard() {
         cancelledReports: 0,
         recentReports: []
     });
+
     const [publicReports, setPublicReports] = useState([]);
     const [announcements, setAnnouncements] = useState([]);
+
     const [loadingAnnouncements, setLoadingAnnouncements] = useState(true);
     const [loading, setLoading] = useState(true);
     const [loadingPublic, setLoadingPublic] = useState(true);
 
-    // Pagination state
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
@@ -48,13 +50,10 @@ function UsersDashboard() {
             setLoadingPublic(false);
             return;
         }
-        const headers = { Authorization: `Bearer ${token}` };
 
         const fetchProfile = async () => {
             try {
-                const res = await axios.get("http://localhost:8080/api/users/me", { headers });
-
-                // Set header title and subtitle based on profile
+                const res = await axiosInstance.get("/api/users/me");
                 setHeaderTitle(`Welcome back, ${res.data.firstName || "User"}!`);
                 setHeaderSubtitle(`Your last login was ${formatRelativeTime(res.data.lastLogin)}`);
             } catch (err) {
@@ -64,19 +63,8 @@ function UsersDashboard() {
 
         const fetchDashboardStats = async () => {
             try {
-                const res = await axios.get("http://localhost:8080/api/reports/my/stats", { headers });
-                setStats(
-                    res.data || {
-                        totalReports: 0,
-                        pendingReports: 0,
-                        inReviewReports: 0,
-                        inProgressReports: 0,
-                        resolvedReports: 0,
-                        rejectedReports: 0,
-                        cancelledReports: 0,
-                        recentReports: []
-                    }
-                );
+                const res = await axiosInstance.get("/api/reports/my/stats");
+                setStats(res.data);
             } catch (err) {
                 console.error("Failed to load dashboard stats:", err);
             } finally {
@@ -87,15 +75,11 @@ function UsersDashboard() {
         const fetchPublicReports = async (page = 0) => {
             setLoadingPublic(true);
             try {
-                const res = await axios.get(
-                    `http://localhost:8080/api/reports/public?page=${page}&size=5`,
-                    { headers }
-                );
+                const res = await axiosInstance.get(`/api/reports/public?page=${page}&size=5`);
                 setPublicReports(res.data.content || []);
                 setTotalPages(res.data.totalPages || 0);
                 setTotalElements(res.data.totalElements || 0);
                 setCurrentPage(page);
-                console.log("publicReports page", page, ":", res.data);
             } catch (err) {
                 console.error("Failed to load public reports:", err);
             } finally {
@@ -105,10 +89,7 @@ function UsersDashboard() {
 
         const fetchAnnouncements = async () => {
             try {
-                const res = await axios.get(
-                    "http://localhost:8080/api/announcements/public",
-                    { headers }
-                );
+                const res = await axiosInstance.get("/api/announcements/public");
                 setAnnouncements(res.data || []);
             } catch (err) {
                 console.error("Failed to load announcements:", err);
@@ -118,19 +99,16 @@ function UsersDashboard() {
             }
         };
 
-        // Initial fetch
         fetchProfile();
         fetchDashboardStats();
         fetchPublicReports(currentPage);
         fetchAnnouncements();
 
-        // Auto-refresh public reports every 30 seconds
         const intervalId = setInterval(() => {
             fetchPublicReports(currentPage);
-            fetchDashboardStats(); // Also refresh stats to show new reports count
-        }, 30000); // 30000ms = 30 seconds
+            fetchDashboardStats();
+        }, 30000);
 
-        // Cleanup interval on unmount
         return () => clearInterval(intervalId);
     }, [setHeaderTitle, setHeaderSubtitle, currentPage]);
 
@@ -147,6 +125,7 @@ function UsersDashboard() {
             const minute = timestamp.minute ?? 0;
             const second = timestamp.second ?? 0;
             const ms = Math.floor((timestamp.nano ?? 0) / 1e6);
+
             if (year) {
                 const d = new Date(year, month, day, hour, minute, second, ms);
                 if (!isNaN(d.getTime())) date = d;
@@ -160,24 +139,18 @@ function UsersDashboard() {
 
         if (!date && typeof timestamp === "string") {
             let s = timestamp.trim();
-            if (/^\d{4}-\d{2}-\d{2} \d{2}:/.test(s)) {
-                s = s.replace(" ", "T");
-            }
+            if (/^\d{4}-\d{2}-\d{2} \d{2}:/.test(s)) s = s.replace(" ", "T");
             const d = new Date(s);
             if (!isNaN(d.getTime())) date = d;
-
             if (!date && !s.endsWith("Z") && !s.includes("+") && !s.includes("-")) {
-                const maybeUtc = s + "Z";
-                const d2 = new Date(maybeUtc);
+                const d2 = new Date(s + "Z");
                 if (!isNaN(d2.getTime())) date = d2;
             }
         }
 
         if (!date) return "Never";
 
-        const then = date.getTime();
-        const now = Date.now();
-        const diffSec = Math.floor((now - then) / 1000);
+        const diffSec = Math.floor((Date.now() - date.getTime()) / 1000);
         const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
 
         if (diffSec < 60) return rtf.format(-diffSec, "second");
@@ -189,244 +162,107 @@ function UsersDashboard() {
         if (diffDays < 30) return rtf.format(-diffDays, "day");
         const diffMonths = Math.floor(diffDays / 30);
         if (diffMonths < 12) return rtf.format(-diffMonths, "month");
-        const diffYears = Math.floor(diffDays / 365);
-        return rtf.format(-diffYears, "year");
+        return rtf.format(-Math.floor(diffDays / 365), "year");
     };
 
-    const formatStatus = (status) => {
-        return status
-            .replace(/_/g, " ")
-            .toLowerCase()
-            .replace(/\b\w/g, (l) => l.toUpperCase());
-    };
+    const formatStatus = (status) =>
+        status.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
 
     const goToReportDetail = (id) => navigate(`/user-report/${id}`);
 
-    // Pagination handlers
-    const handlePreviousPage = () => {
-        if (currentPage > 0) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
+    const handlePreviousPage = () => currentPage > 0 && setCurrentPage(currentPage - 1);
+    const handleNextPage = () => currentPage < totalPages - 1 && setCurrentPage(currentPage + 1);
+    const handlePageClick = (num) => setCurrentPage(num);
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages - 1) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handlePageClick = (pageNum) => {
-        setCurrentPage(pageNum);
-    };
-
-    // Helper to choose an image URL for a report (tries several common fields)
     const getReportImage = (report) => {
         if (!report) return null;
 
-        const candidates = [
-            "imageUrl",
-            "firstImageUrl",
-            "thumbnail",
-            "coverImage",
-            "photoUrl",
-            "image",
-            "thumbnailUrl",
-            "picture",
-            "images",
-            "photos",
-            "attachments",
-            "media",
-            "imageUrls",
-            "photosUrls",
-            "pictureUrls"
+        const keys = [
+            "imageUrl", "firstImageUrl", "thumbnail", "coverImage", "photoUrl",
+            "image", "thumbnailUrl", "picture", "images", "photos",
+            "attachments", "media", "imageUrls", "photosUrls"
         ];
 
-        const tryValue = (val) => {
-            if (!val) return null;
+        for (const key of keys) {
+            const val = report[key];
             if (typeof val === "string" && val.trim() !== "") return val;
-            if (Array.isArray(val) && val.length > 0) {
-                const first = val[0];
-                if (typeof first === "string" && first.trim() !== "") return first;
-                if (first && typeof first === "object") {
-                    return first.url || first.path || first.src || first.name || null;
-                }
-                return null;
-            }
-            if (typeof val === "object") {
-                return val.url || val.path || val.src || val[0] || null;
-            }
-            return null;
-        };
-
-        for (const k of candidates) {
-            const v = report[k];
-            const found = tryValue(v);
-            if (found) return found;
+            if (Array.isArray(val) && val.length > 0) return val[0];
         }
 
-        if (report.data && typeof report.data === "object") {
-            for (const k of ["image", "imageUrl", "cover", "photos"]) {
-                const f = tryValue(report.data[k]);
-                if (f) return f;
-            }
-        }
-
-        if (Array.isArray(report.attachments) && report.attachments.length) {
-            const a = report.attachments[0];
-            if (a) {
-                const fallback =
-                    a.url ||
-                    a.fileUrl ||
-                    a.path ||
-                    (a.meta && (a.meta.url || a.meta.path));
-                if (fallback) return fallback;
-            }
-        }
-
-        if (report.id) {
-            return `/api/reports/${report.id}/image`;
-        }
-
-        // Let CSS handle the visual "no image" placeholder
         return "";
     };
 
-    const handleImageError = (e) => {
-        e.target.classList.add("no-image");
-    };
+    const handleImageError = (e) => e.target.classList.add("no-image");
 
     return (
         <div className="content-inner">
+
+            {/* Report Status Cards */}
             <section className="panel">
                 <Link to="/user-report?filter=pending" className="card-link">
-                    <div
-                        className="card pending clickable"
-                        role="button"
-                        tabIndex={0}
-                        aria-label="Pending Issues"
-                    >
-                        <img
-                            src={submittedGif}
-                            alt="Submitted"
-                            className="card-gif"
-                        />
+                    <div className="card pending clickable">
+                        <img src={submittedGif} className="card-gif" alt="Submitted" />
                         <h4>SUBMITTED</h4>
                         <p>{loading ? "..." : stats.pendingReports}</p>
                     </div>
                 </Link>
 
                 <Link to="/user-report?filter=in-review" className="card-link">
-                    <div
-                        className="card in-review clickable"
-                        role="button"
-                        tabIndex={0}
-                        aria-label="In Review"
-                    >
-                        <img
-                            src={inReviewGif}
-                            alt="In Review"
-                            className="card-gif"
-                        />
+                    <div className="card in-review clickable">
+                        <img src={inReviewGif} className="card-gif" alt="Review" />
                         <h4>IN REVIEW</h4>
                         <p>{loading ? "..." : stats.inReviewReports}</p>
                     </div>
                 </Link>
 
                 <Link to="/user-report?filter=in-progress" className="card-link">
-                    <div
-                        className="card in-progress clickable"
-                        role="button"
-                        tabIndex={0}
-                        aria-label="In Progress"
-                    >
-                        <img
-                            src={inProgressGif}
-                            alt="In Progress"
-                            className="card-gif"
-                        />
+                    <div className="card in-progress clickable">
+                        <img src={inProgressGif} className="card-gif" alt="Progress" />
                         <h4>IN PROGRESS</h4>
                         <p>{loading ? "..." : stats.inProgressReports}</p>
                     </div>
                 </Link>
 
                 <Link to="/user-report?filter=resolved" className="card-link">
-                    <div
-                        className="card resolved clickable"
-                        role="button"
-                        tabIndex={0}
-                        aria-label="Resolved"
-                    >
-                        <img
-                            src={resolvedGif}
-                            alt="Resolved"
-                            className="card-gif"
-                        />
+                    <div className="card resolved clickable">
+                        <img src={resolvedGif} className="card-gif" alt="Resolved" />
                         <h4>RESOLVED</h4>
                         <p>{loading ? "..." : stats.resolvedReports}</p>
                     </div>
                 </Link>
 
                 <Link to="/user-report?filter=rejected" className="card-link">
-                    <div
-                        className="card rejected clickable"
-                        role="button"
-                        tabIndex={0}
-                        aria-label="Rejected"
-                    >
-                        <img
-                            src={rejectedGif}
-                            alt="Rejected"
-                            className="card-gif"
-                        />
+                    <div className="card rejected clickable">
+                        <img src={rejectedGif} className="card-gif" alt="Rejected" />
                         <h4>REJECTED</h4>
                         <p>{loading ? "..." : stats.rejectedReports}</p>
                     </div>
                 </Link>
 
                 <Link to="/user-report?filter=rejected" className="card-link">
-                    <div
-                        className="card cancelled clickable"
-                        role="button"
-                        tabIndex={0}
-                        aria-label="Cancelled"
-                    >
-                        <img
-                            src={cancelledGif}
-                            alt="Cancelled"
-                            className="card-gif"
-                        />
+                    <div className="card cancelled clickable">
+                        <img src={cancelledGif} className="card-gif" alt="Cancelled" />
                         <h4>CANCELLED</h4>
                         <p>{loading ? "..." : stats.cancelledReports}</p>
                     </div>
                 </Link>
 
                 <Link to="/user-report" className="card-link">
-                    <div
-                        className="card total clickable"
-                        role="button"
-                        tabIndex={0}
-                        aria-label="Total Reports"
-                    >
-                        <img
-                            src={totalGif}
-                            alt="Total Reports"
-                            className="card-gif"
-                        />
+                    <div className="card total clickable">
+                        <img src={totalGif} className="card-gif" alt="Total" />
                         <h4>Total Reports</h4>
                         <p>{loading ? "..." : stats.totalReports}</p>
                     </div>
                 </Link>
             </section>
 
+            {/* Announcements */}
             <section className="announcements">
                 <h4>
-                    <img
-                        src={loudspeaker}
-                        alt="announcement"
-                        className="announcement"
-                    />
+                    <img src={loudspeaker} alt="announcement" className="announcement" />
                     Announcements
                 </h4>
+
                 {loadingAnnouncements ? (
                     <p>Loading announcements...</p>
                 ) : announcements.length > 0 ? (
@@ -436,14 +272,8 @@ function UsersDashboard() {
                                 <h5>{a.title}</h5>
                                 <p>{a.content || a.message}</p>
                                 <span className="announcement-meta">
-                                    By{" "}
-                                    {a.createdByName ||
-                                        a.authorName ||
-                                        "Administrator"}{" "}
-                                    •{" "}
-                                    {a.createdAt
-                                        ? formatRelativeTime(a.createdAt)
-                                        : ""}
+                                    By {a.createdByName || "Admin"} •{" "}
+                                    {formatRelativeTime(a.createdAt)}
                                 </span>
                             </li>
                         ))}
@@ -453,80 +283,25 @@ function UsersDashboard() {
                 )}
             </section>
 
+            {/* Recent Activity */}
             <section className="updates">
                 <h4>
-                    <img
-                        src={recentActivity}
-                        alt="recent-activity"
-                        className="announcement"
-                    />
+                    <img src={recentActivity} alt="recent" className="announcement" />
                     Recent Activity
                 </h4>
                 <ul>
                     {loading ? (
                         <li>Loading recent activity...</li>
-                    ) : (stats.recentReports?.length || 0) > 0 ? (
-                        stats.recentReports.map((report) => (
-                            <li key={report.id}>
+                    ) : stats.recentReports.length > 0 ? (
+                        stats.recentReports.map((r) => (
+                            <li key={r.id}>
                                 <span className="recent-desc">
-                                    {report.status === "SUBMITTED" && (
-                                        <>
-                                            You submitted a new report:{" "}
-                                            <strong>{report.title}</strong>
-                                        </>
-                                    )}
-                                    {report.status === "IN_REVIEW" && (
-                                        <>
-                                            Report <strong>#{report.id}</strong> - "
-                                            {report.title}" is now{" "}
-                                            <em>
-                                                {formatStatus(report.status)}
-                                            </em>
-                                        </>
-                                    )}
-                                    {report.status === "IN_PROGRESS" && (
-                                        <>
-                                            Report <strong>#{report.id}</strong> - "
-                                            {report.title}" is currently{" "}
-                                            <em>
-                                                {formatStatus(report.status)}
-                                            </em>
-                                        </>
-                                    )}
-                                    {report.status === "RESOLVED" && (
-                                        <>
-                                            Issue <strong>#{report.id}</strong> - "
-                                            {report.title}" was marked{" "}
-                                            <em>
-                                                {formatStatus(report.status)}
-                                            </em>
-                                        </>
-                                    )}
-                                    {report.status === "REJECTED" && (
-                                        <>
-                                            Report <strong>#{report.id}</strong> - "
-                                            {report.title}" was{" "}
-                                            <em>
-                                                {formatStatus(report.status)}
-                                            </em>
-                                        </>
-                                    )}
-                                    {report.status === "CANCELLED" && (
-                                        <>
-                                            Report <strong>#{report.id}</strong> - "
-                                            {report.title}" was{" "}
-                                            <em>
-                                                {formatStatus(report.status)}
-                                            </em>
-                                        </>
-                                    )}
+                                    Report #{r.id} - "{r.title}" is now{" "}
+                                    <em>{formatStatus(r.status)}</em>
                                 </span>
                                 <button
                                     className="link-button"
-                                    onClick={() =>
-                                        goToReportDetail(report.id)
-                                    }
-                                    aria-label={`Open report ${report.id}`}
+                                    onClick={() => goToReportDetail(r.id)}
                                 >
                                     Open
                                 </button>
@@ -538,101 +313,68 @@ function UsersDashboard() {
                 </ul>
             </section>
 
+            {/* Community Reports */}
             <section className="community">
                 <h4>
-                    <img
-                        src={communityReport}
-                        alt="community-report"
-                        className="announcement"
-                    />
+                    <img src={communityReport} alt="community" className="announcement" />
                     Community Reports
                 </h4>
+
                 {loadingPublic ? (
                     <p>Loading community reports...</p>
-                ) : (publicReports?.length || 0) > 0 ? (
+                ) : publicReports.length > 0 ? (
                     <>
                         <ul className="community-list">
-                            {publicReports.map((report) => {
-                                const imgUrl = getReportImage(report);
-                                return (
-                                    <li
-                                        key={report.id}
-                                        className="community-item"
-                                        onClick={() =>
-                                            goToReportDetail(report.id)
-                                        }
-                                    >
-                                        <div className="community-thumb">
-                                            <img
-                                                src={imgUrl}
-                                                alt={
-                                                    report.title ||
-                                                    "Report image"
-                                                }
-                                                className="community-image"
-                                                onError={handleImageError}
-                                            />
+                            {publicReports.map((r) => (
+                                <li
+                                    key={r.id}
+                                    className="community-item"
+                                    onClick={() => goToReportDetail(r.id)}
+                                >
+                                    <div className="community-thumb">
+                                        <img
+                                            src={getReportImage(r)}
+                                            alt={r.title}
+                                            className="community-image"
+                                            onError={handleImageError}
+                                        />
+                                    </div>
+
+                                    <div className="community-details">
+                                        <Link
+                                            to={`/user-report/${r.id}`}
+                                            className="community-title"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <strong>{r.title}</strong>
+                                        </Link>
+
+                                        <p>{(r.description || "").slice(0, 120)}...</p>
+
+                                        <div className="community-meta">
+                                            <span>Status: {formatStatus(r.status)}</span>
+                                            <span> • </span>
+                                            <span>By {r.authorName || "Anonymous"}</span>
+                                            <span> • </span>
+                                            <span>{formatRelativeTime(r.createdAt)}</span>
                                         </div>
-                                        <div className="community-details">
-                                            <Link
-                                                to={`/user-report/${report.id}`}
-                                                className="community-title"
-                                                onClick={(e) =>
-                                                    e.stopPropagation()
-                                                }
-                                            >
-                                                <strong>{report.title}</strong>
-                                            </Link>
-                                            <p>
-                                                {report.description?.slice(
-                                                    0,
-                                                    120
-                                                ) || ""}
-                                                ...
-                                            </p>
-                                            <div className="community-meta">
-                                                <span>
-                                                    Status:{" "}
-                                                    {formatStatus(
-                                                        report.status
-                                                    )}
-                                                </span>
-                                                <span> • </span>
-                                                <span>
-                                                    By{" "}
-                                                    {report.authorName ||
-                                                        "Anonymous"}
-                                                </span>
-                                                <span> • </span>
-                                                <span>
-                                                    {report.createdAt
-                                                        ? formatRelativeTime(
-                                                            report.createdAt
-                                                        )
-                                                        : ""}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                );
-                            })}
+                                    </div>
+                                </li>
+                            ))}
                         </ul>
 
-                        {/* Pagination Controls */}
+                        {/* Pagination */}
                         <div className="pagination">
                             <button
                                 className="pagination-btn"
                                 onClick={handlePreviousPage}
                                 disabled={currentPage === 0}
-                                aria-label="Previous page"
                             >
                                 ← Previous
                             </button>
 
                             <div className="pagination-info">
-                                <span>
-                                    Page {currentPage + 1} of {totalPages}
-                                </span>
+                                <span>Page {currentPage + 1} of {totalPages}</span>
                                 <span className="pagination-total">
                                     ({totalElements} total reports)
                                 </span>
@@ -642,25 +384,23 @@ function UsersDashboard() {
                                 className="pagination-btn"
                                 onClick={handleNextPage}
                                 disabled={currentPage >= totalPages - 1}
-                                aria-label="Next page"
                             >
                                 Next →
                             </button>
                         </div>
 
-                        {/* Page Numbers */}
                         <div className="pagination-numbers">
                             {Array.from({ length: totalPages }, (_, i) => (
                                 <button
                                     key={i}
-                                    className={`page-number ${currentPage === i ? 'active' : ''}`}
+                                    className={`page-number ${currentPage === i ? "active" : ""}`}
                                     onClick={() => handlePageClick(i)}
-                                    aria-label={`Go to page ${i + 1}`}
                                 >
                                     {i + 1}
                                 </button>
                             ))}
                         </div>
+
                     </>
                 ) : (
                     <p>No community reports found</p>

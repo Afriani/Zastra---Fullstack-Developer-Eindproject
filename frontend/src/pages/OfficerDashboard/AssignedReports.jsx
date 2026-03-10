@@ -1,11 +1,9 @@
 // src/pages/OfficerDashboard/AssignedReports.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance"; // ✅ replaced axios
 
 import "../../css/OFFICER DASHBOARD/assignedreports.css";
-
-const API_BASE = "http://localhost:8080/api/reports/officer";
 
 // All Assigned Report Images
 import errors from "../../assets/pictures/user-report-detail/warning.png"
@@ -15,12 +13,10 @@ import created from "../../assets/pictures/officer-dashboard/created-at.png"
 import address from "../../assets/pictures/user-report-detail/location.png"
 import mailbox from "../../assets/pictures/officer-dashboard/mailbox.png"
 
-// normalize/validate incoming status query param to backend enum names
 const normalizeStatusParam = (raw) => {
     if (!raw) return null;
     const s = raw.trim().replace(/-/g, "_").replace(/\s+/g, "_").toUpperCase();
-    // map common alternatives
-    if (s === "CANCELLED") return "CANCELLED"; // adjust if backend uses CANCELLED instead
+    if (s === "CANCELLED") return "CANCELLED";
     if (s === "INREVIEW") return "IN_REVIEW";
     if (s === "INPROGRESS") return "IN_PROGRESS";
     return s;
@@ -32,7 +28,6 @@ function useQuery() {
 
 function AssignedReports() {
     const navigate = useNavigate();
-    const _location = useLocation();
     const query = useQuery();
 
     const rawStatus = query.get("status");
@@ -41,7 +36,7 @@ function AssignedReports() {
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [refreshKey, setRefreshKey] = useState(0); // used to trigger manual refresh
+    const [refreshKey, setRefreshKey] = useState(0);
 
     const fetchAssignedReports = useCallback(async () => {
         setLoading(true);
@@ -53,15 +48,12 @@ function AssignedReports() {
                 return;
             }
 
-            const url =
-                status && status !== "ALL"
-                    ? `${API_BASE}/assigned-reports?status=${encodeURIComponent(status)}`
-                    : `${API_BASE}/assigned-reports`;
+            // ✅ No API_BASE const, no localhost, no manual token header
+            const url = status && status !== "ALL"
+                ? `/api/reports/officer/assigned-reports?status=${encodeURIComponent(status)}`
+                : `/api/reports/officer/assigned-reports`;
 
-            const response = await axios.get(url, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
+            const response = await axiosInstance.get(url);
             setReports(response.data || []);
         } catch (err) {
             console.error("Failed to load assigned reports:", err);
@@ -93,11 +85,8 @@ function AssignedReports() {
 
     const handleFilterChange = (e) => {
         const v = e.target.value;
-        if (!v || v === "ALL") {
-            navigate("/officer/reports");
-        } else {
-            navigate(`/officer/reports?status=${encodeURIComponent(v)}`);
-        }
+        if (!v || v === "ALL") navigate("/officer/reports");
+        else navigate(`/officer/reports?status=${encodeURIComponent(v)}`);
     };
 
     const friendlyLabel = (s) => {
@@ -135,7 +124,6 @@ function AssignedReports() {
 
     return (
         <div className="dashboard">
-
             <div className="main-content">
                 {/* Header */}
                 <header className="page-header">
@@ -191,12 +179,8 @@ function AssignedReports() {
                                     {/* RIGHT SIDE: Report details */}
                                     <div className="report-main">
                                         <div className="report-header-assigned">
-                                            <h4>
-                                                #{report.id} - {report.title}
-                                            </h4>
-                                            <span
-                                                className={`status-badge status-${report.status?.toLowerCase().replace(/_/g, "-")}`}
-                                            >
+                                            <h4>#{report.id} - {report.title}</h4>
+                                            <span className={`status-badge status-${report.status?.toLowerCase().replace(/_/g, "-")}`}>
                                                 {report.status?.replace(/_/g, " ")}
                                             </span>
                                         </div>
@@ -245,5 +229,3 @@ function AssignedReports() {
 }
 
 export default AssignedReports;
-
-
