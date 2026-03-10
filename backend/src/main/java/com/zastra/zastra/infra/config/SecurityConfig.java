@@ -2,6 +2,7 @@ package com.zastra.zastra.infra.config;
 
 import com.zastra.zastra.infra.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,9 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
 
+    @Value("${app.frontend-url:http://localhost:3000}")
+    private String frontendUrl;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -51,7 +55,7 @@ public class SecurityConfig {
                                 "/uploads/**",
                                 "/images/**",
                                 "/media/**",
-                                "/ws-notifications/**",  // allow all SockJS/websocket related requests here
+                                "/ws-notifications/**",
                                 "/h2-console/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
@@ -68,7 +72,7 @@ public class SecurityConfig {
                         // officer + admin endpoints
                         .requestMatchers("/api/reports/*/status").hasAnyRole("OFFICER", "ADMIN")
                         .requestMatchers("/api/reports/*/status-history").hasAnyRole("OFFICER", "ADMIN")
-                        .requestMatchers("/api/reports/public").permitAll()   // fixed leading slash
+                        .requestMatchers("/api/reports/public").permitAll()
                         .requestMatchers("/api/reports/**").hasAnyRole("CITIZEN", "OFFICER", "ADMIN")
                         .requestMatchers("/api/messages/**").hasAnyRole("CITIZEN", "OFFICER", "ADMIN")
 
@@ -91,10 +95,30 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
+
+        // ✅ Explicitly list all allowed origins
+        configuration.setAllowedOrigins(List.of(
+                frontendUrl,
+                "http://localhost:3000",
+                "http://localhost:5173",
+                "https://zastra-fullstack-developer-eindproj.vercel.app"
+        ));
+
+        configuration.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        ));
+
+        configuration.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin"
+        ));
+
+        configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -110,7 +134,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(
+            org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration config
+    ) throws Exception {
         return config.getAuthenticationManager();
     }
 
@@ -118,7 +144,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
-
 }
-
-
