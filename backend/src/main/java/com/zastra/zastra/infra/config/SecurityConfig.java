@@ -56,7 +56,8 @@ public class SecurityConfig {
 
                         // public endpoints
                         .requestMatchers(
-                                "/", "/error",
+                                "/",
+                                "/error",
                                 "/api/auth/**",
                                 "/api/public/**",
                                 "/uploads/**",
