@@ -20,4 +20,4 @@ EXPOSE 8080
 
 # ✅ Start Nginx on 8080 and Java on 8081
 # Nginx will listen on 8080 and "talk" to Java on 8081
-CMD service nginx start && java -jar app.jar --server.port=8081
+CMD nginx -g "daemon off;" & java -jar app.jar --server.port=8081
