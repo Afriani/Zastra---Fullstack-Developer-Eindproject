@@ -7,17 +7,20 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${file.upload-dir:uploads}")
-    private String uploadDir;
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String location = "file:" + uploadDir + (uploadDir.endsWith("/") ? "" : "/");
-
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations(location);
-
-        registry.addResourceHandler("/media/**")
-                .addResourceLocations(location);
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins(
+                        frontendUrl,
+                        "https://zastra-fullstack-developer-eindproj.vercel.app",
+                        "https://zastra-fullstack-developer-eindproject.vercel.app"
+                )
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }
