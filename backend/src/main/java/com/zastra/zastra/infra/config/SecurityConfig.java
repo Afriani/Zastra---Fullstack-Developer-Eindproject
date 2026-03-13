@@ -101,14 +101,33 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+
+        // ✅ Hardcode these to ensure they are NEVER null
         configuration.setAllowedOrigins(Arrays.asList(
-                frontendUrl,
                 "https://zastra-fullstack-developer-eindproj.vercel.app",
-                "https://zastra-fullstack-developer-eindproject.vercel.app"
+                "https://zastra-fullstack-developer-eindproject.vercel.app",
+                "http://localhost:5173",
+                "http://localhost:3000"
         ));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+
+        // ✅ Be very explicit with headers
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
+        ));
+
+        // ✅ Allow the frontend to see the JWT in the response
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
