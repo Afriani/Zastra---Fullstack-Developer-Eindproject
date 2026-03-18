@@ -66,6 +66,9 @@ function Login() {
             if (response.data.success && response.data.data && response.data.data.token) {
                 const token = response.data.data.token;
 
+                // ✅ SAVE TOKEN FIRST so interceptor can attach it to the next request
+                localStorage.setItem("token", token);
+
                 // Optional: decode token for debugging
                 try {
                     const decoded = jwtDecode(token);
@@ -74,7 +77,7 @@ function Login() {
                     console.warn("Could not decode JWT:", decodeErr);
                 }
 
-                // ✅ Get user profile using axiosInstance, token header added by interceptor
+                // ✅ Get user profile — token is now in localStorage, interceptor will attach it
                 const profileResp = await axiosInstance.get('/api/users/profile');
 
                 console.log("Profile response:", profileResp.data);
