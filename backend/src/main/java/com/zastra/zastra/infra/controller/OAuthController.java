@@ -60,7 +60,7 @@ public class OAuthController {
 
     @GetMapping("/google")
     public void redirectToGoogle(HttpServletResponse response) throws IOException {
-        String redirectUri = URLEncoder.encode("http://localhost:8080/api/auth/google/callback", StandardCharsets.UTF_8);
+        String redirectUri = URLEncoder.encode(appBaseUrl + "/api/auth/google/callback", StandardCharsets.UTF_8);
         String url = "https://accounts.google.com/o/oauth2/v2/auth" +
                 "?client_id=" + googleClientId +
                 "&redirect_uri=" + redirectUri +
@@ -71,22 +71,27 @@ public class OAuthController {
 
     @GetMapping("/google/callback")
     public void handleGoogleCallback(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
-        String redirectUri = "http://localhost:8080/api/auth/google/callback";
+        try {
+            String redirectUri = appBaseUrl + "/api/auth/google/callback";
 
-        GoogleTokenResponse tokenResponse =
-                GoogleOAuthUtil.exchangeCodeForTokens(code, googleClientId, googleClientSecret, redirectUri);
+            GoogleTokenResponse tokenResponse =
+                    GoogleOAuthUtil.exchangeCodeForTokens(code, googleClientId, googleClientSecret, redirectUri);
 
-        GoogleUserInfo userInfo = GoogleOAuthUtil.getUserInfo(tokenResponse.getAccessToken());
-        log.info("Google callback userInfo: id={}, email={}", userInfo.getId(), userInfo.getEmail());
+            GoogleUserInfo userInfo = GoogleOAuthUtil.getUserInfo(tokenResponse.getAccessToken());
+            log.info("Google callback userInfo: id={}, email={}", userInfo.getId(), userInfo.getEmail());
 
-        User user = userService.findOrCreateUserFromGoogle(userInfo);
-        log.info("Google linked user: id={}, email={}, googleId={}", user.getId(), user.getEmail(), user.getGoogleId());
+            User user = userService.findOrCreateUserFromGoogle(userInfo);
+            log.info("Google linked user: id={}, email={}, googleId={}", user.getId(), user.getEmail(), user.getGoogleId());
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-        String jwtToken = jwtService.generateToken(userDetails);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+            String jwtToken = jwtService.generateToken(userDetails);
 
-        String redirectUrl = frontendUrl + "/oauth-callback?token=" + jwtToken;
-        response.sendRedirect(redirectUrl);
+            String redirectUrl = frontendUrl + "/oauth-callback?token=" + jwtToken;
+            response.sendRedirect(redirectUrl);
+        } catch (Exception e) {
+            log.error("Google OAuth error: {}", e.getMessage());
+            response.sendRedirect(frontendUrl + "/login?error=google_oauth_failed");
+        }
     }
 
     // ===== Facebook Login (public) =====
@@ -103,28 +108,26 @@ public class OAuthController {
 
     @GetMapping("/facebook/callback")
     public void handleFacebookCallback(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
-        String redirectUri = appBaseUrl + "/api/auth/facebook/callback";
-
-        FacebookTokenResponse tokenResponse =
-                FacebookOAuthUtil.exchangeCodeForTokens(code, facebookClientId, facebookClientSecret, redirectUri);
-
-        FacebookUserInfo userInfo = FacebookOAuthUtil.getUserInfo(tokenResponse.getAccessToken());
-        log.info("FB callback userInfo: id={}, email={}", userInfo.getId(), userInfo.getEmail());
-
-        User user;
         try {
-            user = userService.findOrCreateUserFromFacebook(userInfo);
-        } catch (RuntimeException e) {
-            log.warn("Facebook login failed: " + e.getMessage());
-            response.sendRedirect(frontendUrl + "/login?error=facebook_no_user");
-            return;
+            String redirectUri = appBaseUrl + "/api/auth/facebook/callback";
+
+            FacebookTokenResponse tokenResponse =
+                    FacebookOAuthUtil.exchangeCodeForTokens(code, facebookClientId, facebookClientSecret, redirectUri);
+
+            FacebookUserInfo userInfo = FacebookOAuthUtil.getUserInfo(tokenResponse.getAccessToken());
+            log.info("FB callback userInfo: id={}, email={}", userInfo.getId(), userInfo.getEmail());
+
+            User user = userService.findOrCreateUserFromFacebook(userInfo);
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+            String jwtToken = jwtService.generateToken(userDetails);
+
+            String redirectUrl = frontendUrl + "/oauth-callback?token=" + jwtToken;
+            response.sendRedirect(redirectUrl);
+        } catch (Exception e) {
+            log.error("Facebook OAuth error: {}", e.getMessage());
+            response.sendRedirect(frontendUrl + "/login?error=facebook_oauth_failed");
         }
-
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-        String jwtToken = jwtService.generateToken(userDetails);
-
-        String redirectUrl = frontendUrl + "/oauth-callback?token=" + jwtToken;
-        response.sendRedirect(redirectUrl);
     }
 
 }
