@@ -91,13 +91,6 @@ jwt:
 file:
   upload-dir: ${FILE_UPLOAD_DIR:./uploads}
 
-# Google Authenticator
-google:
-  client:
-    id: ${GOOGLE_CLIENT_ID:dummy}
-    secret: ${GOOGLE_CLIENT_SECRET:dummy}
-
-
 # Application URLs
 app:
   base-url: ${APP_BASE_URL:http://localhost:8080}
@@ -116,9 +109,15 @@ logging:
   file:
     name: logs/zastra-application.log
 
+# Google Authenticator
+google:
+  client:
+    id: ${GOOGLE_CLIENT_ID}
+    secret: ${GOOGLE_CLIENT_SECRET}
+
 facebook:
   client:
-    id: ${FACEBOOK_CLIENT_ID:dummy}
-    secret: ${FACEBOOK_CLIENT_SECRET:dummy}
+    id: ${FACEBOOK_CLIENT_ID}
+    secret: ${FACEBOOK_CLIENT_SECRET}
 
 
