@@ -116,8 +116,10 @@ public class OAuthController {
     public void handleFacebookCallback(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
         if (!usedCodes.add(code)) {
             log.warn("Facebook OAuth: duplicate code ignored");
+            response.sendRedirect(frontendUrl + "/login?error=facebook_duplicate_callback");
             return;
         }
+
         try {
             String redirectUri = appBaseUrl + "/api/auth/facebook/callback";
 
@@ -132,10 +134,9 @@ public class OAuthController {
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
             String jwtToken = jwtService.generateToken(userDetails);
 
-            String redirectUrl = frontendUrl + "/oauth-callback?token=" + jwtToken;
-            response.sendRedirect(redirectUrl);
+            response.sendRedirect(frontendUrl + "/oauth-callback?token=" + jwtToken);
         } catch (Exception e) {
-            log.error("Facebook OAuth error: {}", e.getMessage());
+            log.error("Facebook OAuth error: {}", e.getMessage(), e);
             response.sendRedirect(frontendUrl + "/login?error=facebook_oauth_failed");
         }
     }
