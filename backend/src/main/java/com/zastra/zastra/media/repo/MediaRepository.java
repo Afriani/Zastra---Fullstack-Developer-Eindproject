@@ -11,6 +11,8 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
 
     Optional<Media> findByFileName(String fileName);
 
+    Optional<Media> findFirstByStoragePath(String storagePath);
+
 }
 
 

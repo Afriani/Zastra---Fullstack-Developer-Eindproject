@@ -31,13 +31,16 @@ public class PublicMediaController {
     // ✅ Serves avatars from media DB (binary data)
     @GetMapping("/avatars/{fileName:.+}")
     public ResponseEntity<Resource> getAvatar(@PathVariable String fileName) {
-        return mediaRepository.findByFileName(fileName)
+        String storagePath = "/db-storage/avatars/" + fileName;
+
+        return mediaRepository.findFirstByStoragePath(storagePath)
                 .map(media -> {
-                    if (media.getData() == null) return ResponseEntity.notFound().<Resource>build();
+                    if (media.getData() == null || media.getData().length == 0)
+                        return ResponseEntity.notFound().<Resource>build();
                     String ct = media.getContentType() != null ? media.getContentType() : "application/octet-stream";
                     return ResponseEntity.ok()
                             .contentType(MediaType.parseMediaType(ct))
-                            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + media.getFileName() + "\"")
+                            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
                             .<Resource>body(new ByteArrayResource(media.getData()));
                 })
                 .orElse(ResponseEntity.notFound().build());
