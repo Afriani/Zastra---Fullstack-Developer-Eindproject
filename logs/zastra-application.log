@@ -979,3 +979,1246 @@ Caused by: org.springframework.util.PlaceholderResolutionException: Could not re
 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:509) ~[spring-beans-6.2.10.jar:6.2.10]
 	... 61 common frames omitted
 
+2026-06-02T09:33:06.936+02:00  INFO 19100 --- [Zastra] [restartedMain] com.zastra.zastra.ZastraApplication      : Starting ZastraApplication using Java 25.0.1 with PID 19100 (C:\Users\sinag\IdeaProjects\Zastra---Fullstack-Developer-Eindproject\backend\target\classes started by sinag in C:\Users\sinag\IdeaProjects\Zastra---Fullstack-Developer-Eindproject)
+2026-06-02T09:33:06.938+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zastra.zastra.ZastraApplication      : Running with Spring Boot v3.5.5, Spring v6.2.10
+2026-06-02T09:33:06.938+02:00  INFO 19100 --- [Zastra] [restartedMain] com.zastra.zastra.ZastraApplication      : The following 1 profile is active: "dev"
+2026-06-02T09:33:06.993+02:00  INFO 19100 --- [Zastra] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-02T09:33:06.993+02:00  INFO 19100 --- [Zastra] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-02T09:33:07.725+02:00  INFO 19100 --- [Zastra] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-02T09:33:07.790+02:00  INFO 19100 --- [Zastra] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 49 ms. Found 1 JPA repository interface.
+2026-06-02T09:33:07.796+02:00  INFO 19100 --- [Zastra] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-02T09:33:07.845+02:00  INFO 19100 --- [Zastra] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 47 ms. Found 12 JPA repository interfaces.
+2026-06-02T09:33:08.919+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-02T09:33:08.935+02:00  INFO 19100 --- [Zastra] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-02T09:33:08.936+02:00  INFO 19100 --- [Zastra] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
+2026-06-02T09:33:08.991+02:00  INFO 19100 --- [Zastra] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-02T09:33:08.991+02:00  INFO 19100 --- [Zastra] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1996 ms
+2026-06-02T09:33:09.051+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : Class org.postgresql.Driver found in Thread context class loader TomcatEmbeddedWebappClassLoader
+  context: ROOT
+  delegate: true
+----------> Parent Classloader:
+org.springframework.boot.devtools.restart.classloader.RestartClassLoader@2fb3c8f9
+
+2026-06-02T09:33:09.164+02:00  INFO 19100 --- [Zastra] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: zastraPU]
+2026-06-02T09:33:09.247+02:00  INFO 19100 --- [Zastra] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
+2026-06-02T09:33:09.298+02:00  INFO 19100 --- [Zastra] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-02T09:33:09.775+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-02T09:33:09.833+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - configuration:
+2026-06-02T09:33:09.838+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : allowPoolSuspension.............false
+2026-06-02T09:33:09.838+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : autoCommit......................true
+2026-06-02T09:33:09.838+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : catalog.........................none
+2026-06-02T09:33:09.839+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionInitSql...............none
+2026-06-02T09:33:09.839+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionTestQuery.............none
+2026-06-02T09:33:09.840+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionTimeout...............30000
+2026-06-02T09:33:09.841+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : credentials.....................com.zaxxer.hikari.util.Credentials@5951c09d
+2026-06-02T09:33:09.841+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSource......................none
+2026-06-02T09:33:09.841+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceClassName.............none
+2026-06-02T09:33:09.841+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceJNDI..................none
+2026-06-02T09:33:09.842+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceProperties............{password=<masked>}
+2026-06-02T09:33:09.842+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : driverClassName................."org.postgresql.Driver"
+2026-06-02T09:33:09.843+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : exceptionOverride...............none
+2026-06-02T09:33:09.843+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : exceptionOverrideClassName......none
+2026-06-02T09:33:09.843+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : healthCheckProperties...........{}
+2026-06-02T09:33:09.843+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : healthCheckRegistry.............none
+2026-06-02T09:33:09.843+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : idleTimeout.....................600000
+2026-06-02T09:33:09.843+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : initializationFailTimeout.......1
+2026-06-02T09:33:09.844+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : isolateInternalQueries..........false
+2026-06-02T09:33:09.844+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : jdbcUrl.........................jdbc:postgresql://localhost:5432/zastra_db
+2026-06-02T09:33:09.844+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : keepaliveTime...................120000
+2026-06-02T09:33:09.844+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : leakDetectionThreshold..........0
+2026-06-02T09:33:09.844+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : maxLifetime.....................1800000
+2026-06-02T09:33:09.844+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : maximumPoolSize.................10
+2026-06-02T09:33:09.844+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : metricRegistry..................none
+2026-06-02T09:33:09.844+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : metricsTrackerFactory...........none
+2026-06-02T09:33:09.845+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : minimumIdle.....................10
+2026-06-02T09:33:09.845+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : password........................<masked>
+2026-06-02T09:33:09.845+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : poolName........................"HikariPool-1"
+2026-06-02T09:33:09.845+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : readOnly........................false
+2026-06-02T09:33:09.846+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : registerMbeans..................false
+2026-06-02T09:33:09.846+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : scheduledExecutor...............none
+2026-06-02T09:33:09.846+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : schema..........................none
+2026-06-02T09:33:09.846+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : threadFactory...................internal
+2026-06-02T09:33:09.847+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : transactionIsolation............default
+2026-06-02T09:33:09.847+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : username........................"${ZASTRA_DB_USERNAME}"
+2026-06-02T09:33:09.847+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : validationTimeout...............5000
+2026-06-02T09:33:09.847+02:00  INFO 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-02T09:33:09.868+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Attempting to create/setup new connection (e5093e22-3e49-43aa-9927-d7d76c6d3429)
+2026-06-02T09:33:10.157+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to create/setup connection (e5093e22-3e49-43aa-9927-d7d76c6d3429): FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+2026-06-02T09:33:10.157+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Cannot acquire connection from data source
+
+org.postgresql.util.PSQLException: FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:777) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:277) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.2.jar:na]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:485) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:334) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:691) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:513) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1725) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1474) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1690) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1752) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:230) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:184) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:179) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:164) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:96) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4464) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:149) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:149) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:412) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:438) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.5.jar:3.5.5]
+	at com.zastra.zastra.ZastraApplication.main(ZastraApplication.java:18) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.5.jar:3.5.5]
+
+2026-06-02T09:33:11.166+02:00  WARN 19100 --- [Zastra] [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 28P01
+2026-06-02T09:33:11.167+02:00 ERROR 19100 --- [Zastra] [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+2026-06-02T09:33:11.168+02:00  WARN 19100 --- [Zastra] [restartedMain] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+
+org.hibernate.exception.GenericJDBCException: unable to obtain isolated JDBC connection [FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"] [n/a]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:63) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:334) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:691) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:513) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1725) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1474) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1690) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1752) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:230) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:184) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:179) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:164) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:96) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4464) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:149) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:149) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:412) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:438) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.5.jar:3.5.5]
+	at com.zastra.zastra.ZastraApplication.main(ZastraApplication.java:18) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.5.jar:3.5.5]
+Caused by: org.postgresql.util.PSQLException: FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:777) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:277) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.2.jar:na]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:485) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	... 123 common frames omitted
+
+2026-06-02T09:33:11.199+02:00  WARN 19100 --- [Zastra] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-02T09:33:11.210+02:00  INFO 19100 --- [Zastra] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (null)']
+	Database driver: undefined/unknown
+	Database version: 12.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-02T09:33:12.522+02:00  INFO 19100 --- [Zastra] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-02T09:33:12.526+02:00  INFO 19100 --- [Zastra] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'zastraPU'
+2026-06-02T09:33:12.581+02:00 DEBUG 19100 --- [Zastra] [restartedMain] .c.JpaMetamodelMappingContextFactoryBean : Initializing JpaMetamodelMappingContext…
+2026-06-02T09:33:12.593+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : Class org.postgresql.Driver found in Thread context class loader TomcatEmbeddedWebappClassLoader
+  context: ROOT
+  delegate: true
+----------> Parent Classloader:
+org.springframework.boot.devtools.restart.classloader.RestartClassLoader@2fb3c8f9
+
+2026-06-02T09:33:12.598+02:00  INFO 19100 --- [Zastra] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: mediaPU]
+2026-06-02T09:33:12.601+02:00  INFO 19100 --- [Zastra] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-02T09:33:12.610+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-02T09:33:12.612+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-2 - configuration:
+2026-06-02T09:33:12.612+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : allowPoolSuspension.............false
+2026-06-02T09:33:12.613+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : autoCommit......................true
+2026-06-02T09:33:12.613+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : catalog.........................none
+2026-06-02T09:33:12.613+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionInitSql...............none
+2026-06-02T09:33:12.613+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionTestQuery.............none
+2026-06-02T09:33:12.613+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionTimeout...............30000
+2026-06-02T09:33:12.613+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : credentials.....................com.zaxxer.hikari.util.Credentials@67c27265
+2026-06-02T09:33:12.614+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSource......................none
+2026-06-02T09:33:12.614+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceClassName.............none
+2026-06-02T09:33:12.614+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceJNDI..................none
+2026-06-02T09:33:12.614+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceProperties............{password=<masked>}
+2026-06-02T09:33:12.614+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : driverClassName................."org.postgresql.Driver"
+2026-06-02T09:33:12.614+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : exceptionOverride...............none
+2026-06-02T09:33:12.615+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : exceptionOverrideClassName......none
+2026-06-02T09:33:12.615+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : healthCheckProperties...........{}
+2026-06-02T09:33:12.615+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : healthCheckRegistry.............none
+2026-06-02T09:33:12.615+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : idleTimeout.....................600000
+2026-06-02T09:33:12.615+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : initializationFailTimeout.......1
+2026-06-02T09:33:12.615+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : isolateInternalQueries..........false
+2026-06-02T09:33:12.615+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : jdbcUrl.........................jdbc:postgresql://localhost:5432/media_db
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : keepaliveTime...................120000
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : leakDetectionThreshold..........0
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : maxLifetime.....................1800000
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : maximumPoolSize.................10
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : metricRegistry..................none
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : metricsTrackerFactory...........none
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : minimumIdle.....................10
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : password........................<masked>
+2026-06-02T09:33:12.616+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : poolName........................"HikariPool-2"
+2026-06-02T09:33:12.617+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : readOnly........................false
+2026-06-02T09:33:12.617+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : registerMbeans..................false
+2026-06-02T09:33:12.617+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : scheduledExecutor...............none
+2026-06-02T09:33:12.617+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : schema..........................none
+2026-06-02T09:33:12.617+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : threadFactory...................internal
+2026-06-02T09:33:12.617+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : transactionIsolation............default
+2026-06-02T09:33:12.617+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : username........................"${MEDIA_DB_USERNAME}"
+2026-06-02T09:33:12.618+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : validationTimeout...............5000
+2026-06-02T09:33:12.618+02:00  INFO 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-06-02T09:33:12.618+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.PoolBase          : HikariPool-2 - Attempting to create/setup new connection (03a5a662-961f-40be-bc17-d1edb9e867c2)
+2026-06-02T09:33:12.660+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.PoolBase          : HikariPool-2 - Failed to create/setup connection (03a5a662-961f-40be-bc17-d1edb9e867c2): FATAL: password authentication failed for user "${MEDIA_DB_USERNAME}"
+2026-06-02T09:33:12.660+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Cannot acquire connection from data source
+
+org.postgresql.util.PSQLException: FATAL: password authentication failed for user "${MEDIA_DB_USERNAME}"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:777) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:277) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.2.jar:na]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:485) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:334) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:747) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:735) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:1418) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.BeanFactoryUtils.beansOfTypeIncludingAncestors(BeanFactoryUtils.java:325) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.data.jpa.repository.config.JpaMetamodelMappingContextFactoryBean.getMetamodels(JpaMetamodelMappingContextFactoryBean.java:90) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.data.jpa.repository.config.JpaMetamodelMappingContextFactoryBean.createInstance(JpaMetamodelMappingContextFactoryBean.java:68) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.data.jpa.repository.config.JpaMetamodelMappingContextFactoryBean.createInstance(JpaMetamodelMappingContextFactoryBean.java:1) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.beans.factory.config.AbstractFactoryBean.afterPropertiesSet(AbstractFactoryBean.java:142) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1725) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1474) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1690) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1752) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:230) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:184) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:179) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:164) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:96) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4464) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:149) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:149) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:412) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:438) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.5.jar:3.5.5]
+	at com.zastra.zastra.ZastraApplication.main(ZastraApplication.java:18) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.5.jar:3.5.5]
+
+2026-06-02T09:33:13.664+02:00  WARN 19100 --- [Zastra] [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 28P01
+2026-06-02T09:33:13.664+02:00 ERROR 19100 --- [Zastra] [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : FATAL: password authentication failed for user "${MEDIA_DB_USERNAME}"
+2026-06-02T09:33:13.665+02:00  WARN 19100 --- [Zastra] [restartedMain] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+
+org.hibernate.exception.GenericJDBCException: unable to obtain isolated JDBC connection [FATAL: password authentication failed for user "${MEDIA_DB_USERNAME}"] [n/a]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:63) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:116) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:334) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:129) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:81) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:130) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:238) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:215) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:45) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:226) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:194) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:171) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1442) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1513) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:747) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:735) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:1418) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.BeanFactoryUtils.beansOfTypeIncludingAncestors(BeanFactoryUtils.java:325) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.data.jpa.repository.config.JpaMetamodelMappingContextFactoryBean.getMetamodels(JpaMetamodelMappingContextFactoryBean.java:90) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.data.jpa.repository.config.JpaMetamodelMappingContextFactoryBean.createInstance(JpaMetamodelMappingContextFactoryBean.java:68) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.data.jpa.repository.config.JpaMetamodelMappingContextFactoryBean.createInstance(JpaMetamodelMappingContextFactoryBean.java:1) ~[spring-data-jpa-3.5.3.jar:3.5.3]
+	at org.springframework.beans.factory.config.AbstractFactoryBean.afterPropertiesSet(AbstractFactoryBean.java:142) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1725) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1474) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:606) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1690) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1752) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207) ~[spring-beans-6.2.10.jar:6.2.10]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:230) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:184) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:179) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:164) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:96) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:271) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:245) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:52) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4464) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:149) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:772) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1193) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:149) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:749) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:203) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:412) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:870) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:438) ~[tomcat-embed-core-10.1.44.jar:10.1.44]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:128) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:107) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:517) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:219) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:193) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:167) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.5.jar:3.5.5]
+	at com.zastra.zastra.ZastraApplication.main(ZastraApplication.java:18) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.5.jar:3.5.5]
+Caused by: org.postgresql.util.PSQLException: FATAL: password authentication failed for user "${MEDIA_DB_USERNAME}"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:777) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:277) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.2.jar:na]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:485) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:61) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	... 127 common frames omitted
+
+2026-06-02T09:33:13.667+02:00  WARN 19100 --- [Zastra] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-02T09:33:13.667+02:00  INFO 19100 --- [Zastra] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (null)']
+	Database driver: undefined/unknown
+	Database version: 12.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-02T09:33:13.702+02:00  INFO 19100 --- [Zastra] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-02T09:33:13.702+02:00  INFO 19100 --- [Zastra] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'mediaPU'
+2026-06-02T09:33:13.718+02:00 DEBUG 19100 --- [Zastra] [restartedMain] .c.JpaMetamodelMappingContextFactoryBean : Finished initializing JpaMetamodelMappingContext
+2026-06-02T09:33:13.824+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.findByUserRole'
+2026-06-02T09:33:13.853+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findByUserRole
+2026-06-02T09:33:13.907+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.findByUserRole'
+2026-06-02T09:33:13.907+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findByUserRole
+2026-06-02T09:33:13.909+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.findByEmail'
+2026-06-02T09:33:13.910+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findByEmail
+2026-06-02T09:33:13.917+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.searchUsers.count
+2026-06-02T09:33:13.935+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-02T09:33:14.471+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.findByUserRoleIn'
+2026-06-02T09:33:14.471+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findByUserRoleIn
+2026-06-02T09:33:14.473+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.existsByEmail'
+2026-06-02T09:33:14.473+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.existsByEmail
+2026-06-02T09:33:14.474+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.existsByNationalId'
+2026-06-02T09:33:14.474+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.existsByNationalId
+2026-06-02T09:33:14.475+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.findFirstByUserRole'
+2026-06-02T09:33:14.475+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findFirstByUserRole
+2026-06-02T09:33:14.475+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.findByNationalId'
+2026-06-02T09:33:14.476+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findByNationalId
+2026-06-02T09:33:14.476+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.findByGoogleId'
+2026-06-02T09:33:14.476+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findByGoogleId
+2026-06-02T09:33:14.477+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'User.findByFacebookId'
+2026-06-02T09:33:14.477+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findByFacebookId
+2026-06-02T09:33:14.544+02:00 DEBUG 19100 --- [Zastra] [restartedMain] c.z.z.i.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2026-06-02T09:33:14.675+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Announcement.existsByIdAndIsActiveTrue'
+2026-06-02T09:33:14.676+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Announcement.existsByIdAndIsActiveTrue
+2026-06-02T09:33:14.678+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Announcement.findLatestActive.count
+2026-06-02T09:33:14.690+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Announcement.findByIsActiveTrueAndIsUrgentTrueOrderByCreatedAtDesc'
+2026-06-02T09:33:14.691+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Announcement.findByIsActiveTrueAndIsUrgentTrueOrderByCreatedAtDesc
+2026-06-02T09:33:14.693+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Announcement.findLatest.count
+2026-06-02T09:33:14.694+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Announcement.findActiveAnnouncementsWithAdmin.count
+2026-06-02T09:33:14.718+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Announcement.findByIsActiveTrueOrderByCreatedAtDesc'
+2026-06-02T09:33:14.718+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Announcement.findByIsActiveTrueOrderByCreatedAtDesc
+2026-06-02T09:33:14.740+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'AnnouncementReadStatus.findByOfficerAndAnnouncementIn'
+2026-06-02T09:33:14.741+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query AnnouncementReadStatus.findByOfficerAndAnnouncementIn
+2026-06-02T09:33:14.742+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'AnnouncementReadStatus.findByOfficerAndAnnouncement'
+2026-06-02T09:33:14.742+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query AnnouncementReadStatus.findByOfficerAndAnnouncement
+2026-06-02T09:33:14.764+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'AppNotification.deleteByTypeAndRelatedId'
+2026-06-02T09:33:14.764+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query AppNotification.deleteByTypeAndRelatedId
+2026-06-02T09:33:14.765+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'AppNotification.findByUserAndIsReadFalseOrderByCreatedAtDesc'
+2026-06-02T09:33:14.766+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query AppNotification.findByUserAndIsReadFalseOrderByCreatedAtDesc
+2026-06-02T09:33:14.767+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'AppNotification.findByUserOrderByCreatedAtDesc'
+2026-06-02T09:33:14.767+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query AppNotification.findByUserOrderByCreatedAtDesc
+2026-06-02T09:33:14.768+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'AppNotification.countByUserAndIsReadFalse'
+2026-06-02T09:33:14.768+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query AppNotification.countByUserAndIsReadFalse
+2026-06-02T09:33:14.821+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Conversation.findByParticipantIdWithParticipants.count
+2026-06-02T09:33:14.876+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Conversation.findByIdWithMessagesAndParticipants.count
+2026-06-02T09:33:14.897+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'ConversationMessage.findFirstByConversationOrderByCreatedAtDesc'
+2026-06-02T09:33:14.897+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query ConversationMessage.findFirstByConversationOrderByCreatedAtDesc
+2026-06-02T09:33:14.898+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'ConversationMessage.findFirstByConversationOrderByCreatedAtAsc'
+2026-06-02T09:33:14.898+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query ConversationMessage.findFirstByConversationOrderByCreatedAtAsc
+2026-06-02T09:33:14.899+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'ConversationMessage.findByConversationIdOrderByCreatedAtAsc'
+2026-06-02T09:33:14.899+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query ConversationMessage.findByConversationIdOrderByCreatedAtAsc
+2026-06-02T09:33:14.954+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByUser_Email'
+2026-06-02T09:33:14.954+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByUser_Email
+2026-06-02T09:33:14.957+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByUser_Email'
+2026-06-02T09:33:14.957+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByUser_Email
+2026-06-02T09:33:14.957+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.countByUser_Email'
+2026-06-02T09:33:14.957+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByUser_Email
+2026-06-02T09:33:14.958+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.countByUser_EmailAndStatus'
+2026-06-02T09:33:14.958+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByUser_EmailAndStatus
+2026-06-02T09:33:14.959+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countResolvedSince.count
+2026-06-02T09:33:14.997+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.avgResolutionDaysSince.count
+2026-06-02T09:33:15.001+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findAdminFiltered.count
+2026-06-02T09:33:15.443+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.countByStatus'
+2026-06-02T09:33:15.443+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByStatus
+2026-06-02T09:33:15.444+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByCategory.count
+2026-06-02T09:33:15.453+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.adminCountByStatusJpql.count
+2026-06-02T09:33:15.553+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.adminCountByCategoryJpql.count
+2026-06-02T09:33:15.558+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.adminCountResolved.count
+2026-06-02T09:33:15.559+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.openAssignedCountByOfficer.count
+2026-06-02T09:33:15.600+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.adminAvgResolutionDays.count
+2026-06-02T09:33:15.601+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByStatusGrouped.count
+2026-06-02T09:33:15.602+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.oldestOpenNative.count
+2026-06-02T09:33:15.602+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.perfByCategoryNative.count
+2026-06-02T09:33:15.604+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.slowestResolutionsNative.count
+2026-06-02T09:33:15.604+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countResolvedCreatedSince.count
+2026-06-02T09:33:15.605+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countCreatedSince.count
+2026-06-02T09:33:15.606+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.exportPerformanceData.count
+2026-06-02T09:33:15.607+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByUserIdWithHistory.count
+2026-06-02T09:33:15.608+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByIdWithHistory.count
+2026-06-02T09:33:15.608+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findAllReportsWithFilters.count
+2026-06-02T09:33:15.855+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findRecent.count
+2026-06-02T09:33:15.856+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByStatusOrderByCreatedAtDesc'
+2026-06-02T09:33:15.856+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByStatusOrderByCreatedAtDesc
+2026-06-02T09:33:15.857+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countResolvedWithinSlaSince.count
+2026-06-02T09:33:15.858+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countResolvedByResolvedAtSince.count
+2026-06-02T09:33:15.858+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findAllByOrderByCreatedAtDesc'
+2026-06-02T09:33:15.859+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findAllByOrderByCreatedAtDesc
+2026-06-02T09:33:15.859+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.countByOfficer_EmailAndStatus'
+2026-06-02T09:33:15.859+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByOfficer_EmailAndStatus
+2026-06-02T09:33:15.860+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByUserAndStatusOrderByCreatedAtDesc'
+2026-06-02T09:33:15.860+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByUserAndStatusOrderByCreatedAtDesc
+2026-06-02T09:33:15.860+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByOfficerEmailWithHistory.count
+2026-06-02T09:33:15.861+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByOfficer_EmailAndStatus'
+2026-06-02T09:33:15.861+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByOfficer_EmailAndStatus
+2026-06-02T09:33:15.863+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.countByOfficer_Email'
+2026-06-02T09:33:15.863+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByOfficer_Email
+2026-06-02T09:33:15.863+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.dailyAvgResolutionSince.count
+2026-06-02T09:33:15.864+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByCategory'
+2026-06-02T09:33:15.864+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByCategory
+2026-06-02T09:33:15.864+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByStatusAndCategory'
+2026-06-02T09:33:15.865+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByStatusAndCategory
+2026-06-02T09:33:15.865+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByOfficer_Email'
+2026-06-02T09:33:15.865+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByOfficer_Email
+2026-06-02T09:33:15.866+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByOfficer_Email'
+2026-06-02T09:33:15.866+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByOfficer_Email
+2026-06-02T09:33:15.866+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findReportsInArea.count
+2026-06-02T09:33:15.875+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByUserId.count
+2026-06-02T09:33:15.876+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByUserIdAndStatusIn.count
+2026-06-02T09:33:15.887+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByOfficerIdWithHistory.count
+2026-06-02T09:33:15.888+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByOfficerId'
+2026-06-02T09:33:15.888+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByOfficerId
+2026-06-02T09:33:15.889+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByStatus'
+2026-06-02T09:33:15.889+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByStatus
+2026-06-02T09:33:15.890+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.countByOfficer_IdAndStatusIn'
+2026-06-02T09:33:15.890+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.countByOfficer_IdAndStatusIn
+2026-06-02T09:33:15.890+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByUserIdOrderByCreatedAtDesc'
+2026-06-02T09:33:15.890+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByUserIdOrderByCreatedAtDesc
+2026-06-02T09:33:15.891+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Report.findByUserIdOrderByCreatedAtDesc'
+2026-06-02T09:33:15.891+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Report.findByUserIdOrderByCreatedAtDesc
+2026-06-02T09:33:15.911+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'InboxItem.findByOfficer_EmailAndReadFalseOrderByCreatedAtDesc'
+2026-06-02T09:33:15.911+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query InboxItem.findByOfficer_EmailAndReadFalseOrderByCreatedAtDesc
+2026-06-02T09:33:15.912+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'InboxItem.findByOfficer_EmailOrderByCreatedAtDesc'
+2026-06-02T09:33:15.912+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query InboxItem.findByOfficer_EmailOrderByCreatedAtDesc
+2026-06-02T09:33:15.926+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'StatusUpdate.findByReportIdOrderByCreatedAtDesc'
+2026-06-02T09:33:15.926+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query StatusUpdate.findByReportIdOrderByCreatedAtDesc
+2026-06-02T09:33:15.938+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'ReportImage.countByReportIdAndVideoUrlIsNull'
+2026-06-02T09:33:15.938+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query ReportImage.countByReportIdAndVideoUrlIsNull
+2026-06-02T09:33:15.940+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'ReportImage.countByReportIdAndVideoUrlIsNotNull'
+2026-06-02T09:33:15.940+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query ReportImage.countByReportIdAndVideoUrlIsNotNull
+2026-06-02T09:33:15.940+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'ReportImage.findByReportId'
+2026-06-02T09:33:15.941+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query ReportImage.findByReportId
+2026-06-02T09:33:15.975+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Media.findByOwnerUserId'
+2026-06-02T09:33:15.976+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Media.findByOwnerUserId
+2026-06-02T09:33:16.031+02:00  INFO 19100 --- [Zastra] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-06-02T09:33:16.031+02:00  WARN 19100 --- [Zastra] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-06-02T09:33:16.041+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'VerificationToken.findByToken'
+2026-06-02T09:33:16.041+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query VerificationToken.findByToken
+2026-06-02T09:33:16.042+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query VerificationToken.deleteExpiredTokens.count
+2026-06-02T09:33:16.048+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'VerificationToken.findByUser'
+2026-06-02T09:33:16.048+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query VerificationToken.findByUser
+2026-06-02T09:33:16.049+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'VerificationToken.deleteByUser'
+2026-06-02T09:33:16.049+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query VerificationToken.deleteByUser
+2026-06-02T09:33:16.116+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Message.countByReadFalse'
+2026-06-02T09:33:16.117+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Message.countByReadFalse
+2026-06-02T09:33:16.117+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Message.countByReport_UserAndReadFalse'
+2026-06-02T09:33:16.117+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Message.countByReport_UserAndReadFalse
+2026-06-02T09:33:16.118+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Message.findBySenderOrderByCreatedAtDesc'
+2026-06-02T09:33:16.119+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Message.findBySenderOrderByCreatedAtDesc
+2026-06-02T09:33:16.119+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Message.findByReportOrderByCreatedAtDesc'
+2026-06-02T09:33:16.119+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Message.findByReportOrderByCreatedAtDesc
+2026-06-02T09:33:16.119+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Message.findByRecipientAndDeletedByRecipientFalseOrderByCreatedAtDesc'
+2026-06-02T09:33:16.120+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Message.findByRecipientAndDeletedByRecipientFalseOrderByCreatedAtDesc
+2026-06-02T09:33:16.120+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Message.findByDeletedByAdminTrueOrderByCreatedAtDesc'
+2026-06-02T09:33:16.120+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Message.findByDeletedByAdminTrueOrderByCreatedAtDesc
+2026-06-02T09:33:16.121+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Message.findByReportIdOrderByCreatedAtAsc'
+2026-06-02T09:33:16.121+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Message.findByReportIdOrderByCreatedAtAsc
+2026-06-02T09:33:16.123+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query 'Message.findByReportUserIdOrderByCreatedAtDesc'
+2026-06-02T09:33:16.123+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query Message.findByReportUserIdOrderByCreatedAtDesc
+2026-06-02T09:33:16.315+02:00  WARN 19100 --- [Zastra] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-02T09:33:16.682+02:00 DEBUG 19100 --- [Zastra] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2026-06-02T09:33:17.040+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-02T09:33:17.065+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2026-06-02T09:33:17.066+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@11044aff]]
+2026-06-02T09:33:17.066+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2026-06-02T09:33:17.080+02:00  INFO 19100 --- [Zastra] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-02T09:33:17.089+02:00  INFO 19100 --- [Zastra] [restartedMain] com.zastra.zastra.ZastraApplication      : Started ZastraApplication in 10.828 seconds (process running for 11.821)
+2026-06-02T09:33:17.094+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - configuration:
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : allowPoolSuspension.............false
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : autoCommit......................true
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : catalog.........................none
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionInitSql...............none
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionTestQuery.............none
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionTimeout...............30000
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : credentials.....................com.zaxxer.hikari.util.Credentials@5951c09d
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSource......................none
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceClassName.............none
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceJNDI..................none
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceProperties............{password=<masked>}
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : driverClassName................."org.postgresql.Driver"
+2026-06-02T09:33:17.095+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : exceptionOverride...............none
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : exceptionOverrideClassName......none
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : healthCheckProperties...........{}
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : healthCheckRegistry.............none
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : idleTimeout.....................600000
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : initializationFailTimeout.......1
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : isolateInternalQueries..........false
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : jdbcUrl.........................jdbc:postgresql://localhost:5432/zastra_db
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : keepaliveTime...................120000
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : leakDetectionThreshold..........0
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : maxLifetime.....................1800000
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : maximumPoolSize.................10
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : metricRegistry..................none
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : metricsTrackerFactory...........none
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : minimumIdle.....................10
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : password........................<masked>
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : poolName........................"HikariPool-1"
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : readOnly........................false
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : registerMbeans..................false
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : scheduledExecutor...............none
+2026-06-02T09:33:17.096+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : schema..........................none
+2026-06-02T09:33:17.097+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : threadFactory...................internal
+2026-06-02T09:33:17.097+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : transactionIsolation............default
+2026-06-02T09:33:17.097+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : username........................"${ZASTRA_DB_USERNAME}"
+2026-06-02T09:33:17.097+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : validationTimeout...............5000
+2026-06-02T09:33:17.097+02:00  INFO 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-02T09:33:17.097+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Attempting to create/setup new connection (56615a46-165a-4a82-a8ad-29b722c36b0b)
+2026-06-02T09:33:17.132+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to create/setup connection (56615a46-165a-4a82-a8ad-29b722c36b0b): FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+2026-06-02T09:33:17.133+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Cannot acquire connection from data source
+
+org.postgresql.util.PSQLException: FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:777) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:277) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.2.jar:na]
+	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:160) ~[spring-jdbc-6.2.10.jar:6.2.10]
+	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:118) ~[spring-jdbc-6.2.10.jar:6.2.10]
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:81) ~[spring-jdbc-6.2.10.jar:6.2.10]
+	at org.springframework.jdbc.datasource.init.DatabasePopulatorUtils.execute(DatabasePopulatorUtils.java:52) ~[spring-jdbc-6.2.10.jar:6.2.10]
+	at com.zastra.zastra.infra.config.MultiDataSourceInitializer.executeScripts(MultiDataSourceInitializer.java:53) ~[classes/:na]
+	at com.zastra.zastra.infra.config.MultiDataSourceInitializer.run(MultiDataSourceInitializer.java:43) ~[classes/:na]
+	at org.springframework.boot.SpringApplication.lambda$callRunner$4(SpringApplication.java:784) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82) ~[spring-core-6.2.10.jar:6.2.10]
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60) ~[spring-core-6.2.10.jar:6.2.10]
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86) ~[spring-core-6.2.10.jar:6.2.10]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:784) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772) ~[spring-boot-3.5.5.jar:3.5.5]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186) ~[na:na]
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:571) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632) ~[na:na]
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.5.jar:3.5.5]
+	at com.zastra.zastra.ZastraApplication.main(ZastraApplication.java:18) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.5.jar:3.5.5]
+
+2026-06-02T09:33:18.135+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : HikariPool-1 - configuration:
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : allowPoolSuspension.............false
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : autoCommit......................true
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : catalog.........................none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : connectionInitSql...............none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : connectionTestQuery.............none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : connectionTimeout...............30000
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : credentials.....................com.zaxxer.hikari.util.Credentials@5951c09d
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : dataSource......................none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : dataSourceClassName.............none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : dataSourceJNDI..................none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : dataSourceProperties............{password=<masked>}
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : driverClassName................."org.postgresql.Driver"
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : exceptionOverride...............none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : exceptionOverrideClassName......none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : healthCheckProperties...........{}
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : healthCheckRegistry.............none
+2026-06-02T09:33:18.136+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : idleTimeout.....................600000
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : initializationFailTimeout.......1
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : isolateInternalQueries..........false
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : jdbcUrl.........................jdbc:postgresql://localhost:5432/zastra_db
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : keepaliveTime...................120000
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : leakDetectionThreshold..........0
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : maxLifetime.....................1800000
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : maximumPoolSize.................10
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : metricRegistry..................none
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : metricsTrackerFactory...........none
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : minimumIdle.....................10
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : password........................<masked>
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : poolName........................"HikariPool-1"
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : readOnly........................false
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : HikariPool-2 - configuration:
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : registerMbeans..................false
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : scheduledExecutor...............none
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : schema..........................none
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : threadFactory...................internal
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : transactionIsolation............default
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : username........................"${ZASTRA_DB_USERNAME}"
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariConfig           : validationTimeout...............5000
+2026-06-02T09:33:18.137+02:00  INFO 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-02T09:33:18.137+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : allowPoolSuspension.............false
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : autoCommit......................true
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : catalog.........................none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionInitSql...............none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionTestQuery.............none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : connectionTimeout...............30000
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : credentials.....................com.zaxxer.hikari.util.Credentials@67c27265
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Attempting to create/setup new connection (0718a041-3248-4588-8465-50ff198a405f)
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSource......................none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceClassName.............none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceJNDI..................none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : dataSourceProperties............{password=<masked>}
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : driverClassName................."org.postgresql.Driver"
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : exceptionOverride...............none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : exceptionOverrideClassName......none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : healthCheckProperties...........{}
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : healthCheckRegistry.............none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : idleTimeout.....................600000
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : initializationFailTimeout.......1
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : isolateInternalQueries..........false
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : jdbcUrl.........................jdbc:postgresql://localhost:5432/media_db
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : keepaliveTime...................120000
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : leakDetectionThreshold..........0
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : maxLifetime.....................1800000
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : maximumPoolSize.................10
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : metricRegistry..................none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : metricsTrackerFactory...........none
+2026-06-02T09:33:18.138+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : minimumIdle.....................10
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : password........................<masked>
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : poolName........................"HikariPool-2"
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : readOnly........................false
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : registerMbeans..................false
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : scheduledExecutor...............none
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : schema..........................none
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : threadFactory...................internal
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : transactionIsolation............default
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : username........................"${MEDIA_DB_USERNAME}"
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariConfig           : validationTimeout...............5000
+2026-06-02T09:33:18.139+02:00  INFO 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-06-02T09:33:18.139+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.PoolBase          : HikariPool-2 - Attempting to create/setup new connection (5cc9e83e-e405-4676-b412-d4a493bb24d5)
+2026-06-02T09:33:18.173+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to create/setup connection (0718a041-3248-4588-8465-50ff198a405f): FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+2026-06-02T09:33:18.173+02:00 DEBUG 19100 --- [Zastra] [scheduled-task-1] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Cannot acquire connection from data source
+
+org.postgresql.util.PSQLException: FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:777) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:277) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.2.jar:na]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.internal.NonContextualJdbcConnectionAccess.obtainConnection(NonContextualJdbcConnectionAccess.java:46) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.acquireConnectionIfNeeded(LogicalConnectionManagedImpl.java:126) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.getPhysicalConnection(LogicalConnectionManagedImpl.java:156) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.getConnectionForTransactionManagement(LogicalConnectionManagedImpl.java:286) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.begin(LogicalConnectionManagedImpl.java:294) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.begin(JdbcResourceLocalTransactionCoordinatorImpl.java:232) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.transaction.internal.TransactionImpl.begin(TransactionImpl.java:83) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.beginTransaction(HibernateJpaDialect.java:176) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.JpaTransactionManager.doBegin(JpaTransactionManager.java:420) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.startTransaction(AbstractPlatformTransactionManager.java:532) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:405) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.createTransactionIfNecessary(TransactionAspectSupport.java:639) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:374) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.10.jar:6.2.10]
+	at com.zastra.zastra.infra.service.EmailVerificationService$$SpringCGLIB$$0.cleanupExpiredTokens(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:130) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$2(ScheduledMethodRunnable.java:124) ~[spring-context-6.2.10.jar:6.2.10]
+	at io.micrometer.observation.Observation.observe(Observation.java:498) ~[micrometer-observation-1.15.3.jar:1.15.3]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:124) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.scheduling.config.Task$OutcomeTrackingRunnable.run(Task.java:85) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54) ~[spring-context-6.2.10.jar:6.2.10]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:369) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:310) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+
+2026-06-02T09:33:18.177+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.PoolBase          : HikariPool-2 - Failed to create/setup connection (5cc9e83e-e405-4676-b412-d4a493bb24d5): FATAL: password authentication failed for user "${MEDIA_DB_USERNAME}"
+2026-06-02T09:33:18.177+02:00 DEBUG 19100 --- [Zastra] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Cannot acquire connection from data source
+
+org.postgresql.util.PSQLException: FATAL: password authentication failed for user "${MEDIA_DB_USERNAME}"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:777) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:277) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.2.jar:na]
+	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:160) ~[spring-jdbc-6.2.10.jar:6.2.10]
+	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:118) ~[spring-jdbc-6.2.10.jar:6.2.10]
+	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:81) ~[spring-jdbc-6.2.10.jar:6.2.10]
+	at org.springframework.jdbc.datasource.init.DatabasePopulatorUtils.execute(DatabasePopulatorUtils.java:52) ~[spring-jdbc-6.2.10.jar:6.2.10]
+	at com.zastra.zastra.infra.config.MultiDataSourceInitializer.executeScripts(MultiDataSourceInitializer.java:53) ~[classes/:na]
+	at com.zastra.zastra.infra.config.MultiDataSourceInitializer.run(MultiDataSourceInitializer.java:44) ~[classes/:na]
+	at org.springframework.boot.SpringApplication.lambda$callRunner$4(SpringApplication.java:784) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82) ~[spring-core-6.2.10.jar:6.2.10]
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60) ~[spring-core-6.2.10.jar:6.2.10]
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86) ~[spring-core-6.2.10.jar:6.2.10]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:784) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772) ~[spring-boot-3.5.5.jar:3.5.5]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:186) ~[na:na]
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:571) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:153) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:176) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:632) ~[na:na]
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.5.jar:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.5.jar:3.5.5]
+	at com.zastra.zastra.ZastraApplication.main(ZastraApplication.java:18) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.5.jar:3.5.5]
+
+2026-06-02T09:33:19.177+02:00  WARN 19100 --- [Zastra] [scheduled-task-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 28P01
+2026-06-02T09:33:19.177+02:00 ERROR 19100 --- [Zastra] [scheduled-task-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+2026-06-02T09:33:19.180+02:00  WARN 19100 --- [Zastra] [restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-02T09:33:19.180+02:00  WARN 19100 --- [Zastra] [restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-06-02T09:33:19.179+02:00 ERROR 19100 --- [Zastra] [scheduled-task-1] o.s.s.s.TaskUtils$LoggingErrorHandler    : Unexpected error occurred in scheduled task
+
+org.springframework.transaction.CannotCreateTransactionException: Could not open JPA EntityManager for transaction
+	at org.springframework.orm.jpa.JpaTransactionManager.doBegin(JpaTransactionManager.java:466) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.startTransaction(AbstractPlatformTransactionManager.java:532) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:405) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.createTransactionIfNecessary(TransactionAspectSupport.java:639) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:374) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.10.jar:6.2.10]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:728) ~[spring-aop-6.2.10.jar:6.2.10]
+	at com.zastra.zastra.infra.service.EmailVerificationService$$SpringCGLIB$$0.cleanupExpiredTokens(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.runInternal(ScheduledMethodRunnable.java:130) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.lambda$run$2(ScheduledMethodRunnable.java:124) ~[spring-context-6.2.10.jar:6.2.10]
+	at io.micrometer.observation.Observation.observe(Observation.java:498) ~[micrometer-observation-1.15.3.jar:1.15.3]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:124) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.scheduling.config.Task$OutcomeTrackingRunnable.run(Task.java:85) ~[spring-context-6.2.10.jar:6.2.10]
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54) ~[spring-context-6.2.10.jar:6.2.10]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:545) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:369) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:310) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+Caused by: org.hibernate.exception.GenericJDBCException: Unable to acquire JDBC Connection [FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"] [n/a]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:63) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.acquireConnectionIfNeeded(LogicalConnectionManagedImpl.java:129) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.getPhysicalConnection(LogicalConnectionManagedImpl.java:156) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.getConnectionForTransactionManagement(LogicalConnectionManagedImpl.java:286) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.begin(LogicalConnectionManagedImpl.java:294) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorImpl$TransactionDriverControlImpl.begin(JdbcResourceLocalTransactionCoordinatorImpl.java:232) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.engine.transaction.internal.TransactionImpl.begin(TransactionImpl.java:83) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.beginTransaction(HibernateJpaDialect.java:176) ~[spring-orm-6.2.10.jar:6.2.10]
+	at org.springframework.orm.jpa.JpaTransactionManager.doBegin(JpaTransactionManager.java:420) ~[spring-orm-6.2.10.jar:6.2.10]
+	... 22 common frames omitted
+Caused by: org.postgresql.util.PSQLException: FATAL: password authentication failed for user "${ZASTRA_DB_USERNAME}"
+	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:777) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:234) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:289) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:57) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:277) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.makeConnection(Driver.java:448) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.Driver.connect(Driver.java:298) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:370) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:207) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97) ~[HikariCP-6.3.2.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111) ~[HikariCP-6.3.2.jar:na]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:126) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.internal.NonContextualJdbcConnectionAccess.obtainConnection(NonContextualJdbcConnectionAccess.java:46) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	at org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl.acquireConnectionIfNeeded(LogicalConnectionManagedImpl.java:126) ~[hibernate-core-6.6.26.Final.jar:6.6.26.Final]
+	... 29 common frames omitted
+
+2026-06-02T09:33:38.450+02:00  INFO 19100 --- [Zastra] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-02T09:33:38.461+02:00  INFO 19100 --- [Zastra] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-06-02T09:33:38.463+02:00  INFO 19100 --- [Zastra] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2026-06-02T09:33:38.463+02:00  INFO 19100 --- [Zastra] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@11044aff]]
+2026-06-02T09:33:38.463+02:00  INFO 19100 --- [Zastra] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2026-06-02T09:33:38.467+02:00  INFO 19100 --- [Zastra] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'mediaPU'
+2026-06-02T09:33:38.468+02:00  INFO 19100 --- [Zastra] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'zastraPU'

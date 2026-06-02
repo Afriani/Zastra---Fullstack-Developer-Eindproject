@@ -14,22 +14,28 @@ spring:
 
   datasource:
     zastra:
-      # ✅ Uses Render's built-in variables with localhost fallbacks
-      url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/zastra_db}
-      username: ${SPRING_DATASOURCE_USERNAME:postgres}
-      password: ${SPRING_DATASOURCE_PASSWORD:password}
+      url: ${ZASTRA_DB_URL:jdbc:postgresql://localhost:5432/zastra_db}
+      username: ${ZASTRA_DB_USERNAME:postgres}
+      password: ${ZASTRA_DB_PASSWORD:password}
       driver-class-name: org.postgresql.Driver
       hikari:
-        maximum-pool-size: 10
-        minimum-idle: 2
+        maximum-pool-size: 5        # keep low for Neon free tier
+        minimum-idle: 1
         connection-timeout: 30000
+        data-source-properties:
+          prepareThreshold: 0       # ✅ disables server-side prepared statements (required for pgbouncer)
 
     media:
-      # ✅ Points to the same database on Render
-      url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/media_db}
-      username: ${SPRING_DATASOURCE_USERNAME:postgres}
-      password: ${SPRING_DATASOURCE_PASSWORD:password}
+      url: ${MEDIA_DB_URL:jdbc:postgresql://localhost:5432/media_db}
+      username: ${MEDIA_DB_USERNAME:postgres}
+      password: ${MEDIA_DB_PASSWORD:password}
       driver-class-name: org.postgresql.Driver
+      hikari:
+        maximum-pool-size: 5
+        minimum-idle: 1
+        connection-timeout: 30000
+        data-source-properties:
+          prepareThreshold: 0       # ✅ required for pgbouncer/Neon
 
   servlet:
     multipart:
