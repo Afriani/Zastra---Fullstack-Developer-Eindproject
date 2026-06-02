@@ -3,7 +3,9 @@ package com.zastra.zastra.media.controller;
 import com.zastra.zastra.infra.exception.ResourceNotFoundException;
 import com.zastra.zastra.infra.service.FileStorageService;
 import com.zastra.zastra.infra.service.FileStorageService.MediaRecord;
+import com.zastra.zastra.media.repo.MediaRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -19,41 +21,32 @@ import org.springframework.web.bind.annotation.*;
 public class PublicMediaController {
 
     private final FileStorageService fileStorageService;
+    private final MediaRepository mediaRepository;
 
-    public PublicMediaController(FileStorageService fileStorageService) {
+    public PublicMediaController(FileStorageService fileStorageService, MediaRepository mediaRepository) {
         this.fileStorageService = fileStorageService;
+        this.mediaRepository = mediaRepository;
     }
 
-    // ✅ Serves avatar files from uploads/avatars/
+    // ✅ Serves avatars from media DB (binary data)
     @GetMapping("/avatars/{fileName:.+}")
-    public ResponseEntity<Resource> getAvatar(@PathVariable String fileName, HttpServletRequest request) {
-        String cleaned = StringUtils.cleanPath(fileName);
-
-        if (cleaned.contains("..") || cleaned.contains("/") || cleaned.contains("\\")) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Resource resource = fileStorageService.loadFileAsResource("avatars/" + cleaned);
-
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (Exception ignored) {}
-
-        if (contentType == null) contentType = "application/octet-stream";
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+    public ResponseEntity<Resource> getAvatar(@PathVariable String fileName) {
+        return mediaRepository.findByFileName(fileName)
+                .map(media -> {
+                    if (media.getData() == null) return ResponseEntity.notFound().<Resource>build();
+                    String ct = media.getContentType() != null ? media.getContentType() : "application/octet-stream";
+                    return ResponseEntity.ok()
+                            .contentType(MediaType.parseMediaType(ct))
+                            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + media.getFileName() + "\"")
+                            .<Resource>body(new ByteArrayResource(media.getData()));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Resource> getMedia(@PathVariable("id") String idStr) {
         try {
-            // try parse numeric id (Long)
             long id = Long.parseLong(idStr);
-
             MediaRecord record = fileStorageService.loadMediaById(id);
 
             if (record.inputStream == null) {
@@ -61,7 +54,6 @@ public class PublicMediaController {
             }
 
             InputStreamResource resource = new InputStreamResource(record.inputStream);
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentLength(record.size);
             if (record.contentType != null && !record.contentType.isBlank()) {
@@ -79,14 +71,12 @@ public class PublicMediaController {
             return new ResponseEntity<>(resource, headers, HttpStatus.OK);
 
         } catch (NumberFormatException nfe) {
-            // id was not a numeric id
             throw new ResourceNotFoundException("Invalid media id: " + idStr);
         } catch (ResourceNotFoundException rnfe) {
             throw rnfe;
         } catch (Exception e) {
             throw new RuntimeException("Failed to load media " + idStr, e);
         }
-
     }
 
 }

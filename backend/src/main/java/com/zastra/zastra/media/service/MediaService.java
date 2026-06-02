@@ -51,22 +51,20 @@ public class MediaService {
         validateImage(file);
 
         String filename = UUID.randomUUID() + getFileExtension(file);
-        Path dest = getUploadRoot().resolve("avatars").resolve(filename);
-        Files.createDirectories(dest.getParent());
-        Files.copy(file.getInputStream(), dest, StandardCopyOption.REPLACE_EXISTING);
+        byte[] fileBytes = file.getBytes();
 
-        // Use appBaseUrl here to build full URL
         String url = appBaseUrl + "/media/avatars/" + filename;
 
         Media media = new Media();
         media.setOwnerUserId(userId);
         media.setType("avatar");
-        media.setFileName(file.getOriginalFilename());
-        media.setStoragePath("avatars/" + filename);
+        media.setFileName(filename);
+        media.setStoragePath("/db-storage/avatars/" + filename);
         media.setUrl(url);
         media.setContentType(file.getContentType());
         media.setSizeBytes(file.getSize());
         media.setStatus("AVAILABLE");
+        media.setData(fileBytes); // ← stored in DB, not filesystem
         media = mediaRepository.save(media);
 
         User user = userRepository.findById(userId).orElseThrow();
@@ -74,7 +72,6 @@ public class MediaService {
         userRepository.save(user);
 
         return media;
-
     }
 
     @Transactional("mediaTransactionManager")
