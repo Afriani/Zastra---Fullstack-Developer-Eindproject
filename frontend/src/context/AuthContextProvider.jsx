@@ -55,10 +55,11 @@ function AuthContextProvider({ children }) {
     function login(token, user) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
+        const decoded = jwtDecode(token);
         setAuth({
             isAuthenticated: true,
             user,
-            role: user.userRole || user.role,
+            role: user.userRole || user.role || decoded.role || decoded.authorities?.[0],
             token,
             loading: false,
         });
@@ -76,9 +77,19 @@ function AuthContextProvider({ children }) {
         logout,
     };
 
+    if (auth.loading) {
+        return (
+            <AuthContext.Provider value={contextValue}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+                    <p>Loading...</p>
+                </div>
+            </AuthContext.Provider>
+        );
+    }
+
     return (
         <AuthContext.Provider value={contextValue}>
-            {!auth.loading && children}
+            {children}
         </AuthContext.Provider>
     );
 }
