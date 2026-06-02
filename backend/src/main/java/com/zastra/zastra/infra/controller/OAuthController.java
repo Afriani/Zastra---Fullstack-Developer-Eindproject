@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RestController
@@ -45,6 +48,9 @@ public class OAuthController {
 
     @Value("${app.base-url}")
     private String appBaseUrl;
+
+    // Guard against double-hit on OAuth callbacks (Facebook sends code once, browser may retry)
+    private final Set<String> usedCodes = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     private final JwtService jwtService;
     private final UserService userService;
@@ -108,6 +114,10 @@ public class OAuthController {
 
     @GetMapping("/facebook/callback")
     public void handleFacebookCallback(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
+        if (!usedCodes.add(code)) {
+            log.warn("Facebook OAuth: duplicate code ignored");
+            return;
+        }
         try {
             String redirectUri = appBaseUrl + "/api/auth/facebook/callback";
 
