@@ -43,6 +43,9 @@ public class OAuthController {
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
+    @Value("${app.base-url}")
+    private String appBaseUrl;
+
     private final JwtService jwtService;
     private final UserService userService;
     private final UserDetailsService userDetailsService;
@@ -90,7 +93,7 @@ public class OAuthController {
 
     @GetMapping("/facebook")
     public void redirectToFacebook(HttpServletResponse response) throws IOException {
-        String redirectUri = URLEncoder.encode("http://localhost:8080/api/auth/facebook/callback", StandardCharsets.UTF_8);
+        String redirectUri = URLEncoder.encode(appBaseUrl + "/api/auth/facebook/callback", StandardCharsets.UTF_8);
         String url = "https://www.facebook.com/v18.0/dialog/oauth" +
                 "?client_id=" + facebookClientId +
                 "&redirect_uri=" + redirectUri +
@@ -100,7 +103,7 @@ public class OAuthController {
 
     @GetMapping("/facebook/callback")
     public void handleFacebookCallback(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
-        String redirectUri = "http://localhost:8080/api/auth/facebook/callback";
+        String redirectUri = appBaseUrl + "/api/auth/facebook/callback";
 
         FacebookTokenResponse tokenResponse =
                 FacebookOAuthUtil.exchangeCodeForTokens(code, facebookClientId, facebookClientSecret, redirectUri);
