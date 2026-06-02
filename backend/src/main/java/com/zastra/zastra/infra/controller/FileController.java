@@ -84,14 +84,6 @@ public class FileController {
         }
     }
 
-    @GetMapping("/media/avatars/{fileName:.+}")
-    public ResponseEntity<Resource> getAvatar(@PathVariable String fileName) {
-        Resource resource = fileStorageService.loadFileAsResource("avatars/" + fileName);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
-    }
-
 }
 
 

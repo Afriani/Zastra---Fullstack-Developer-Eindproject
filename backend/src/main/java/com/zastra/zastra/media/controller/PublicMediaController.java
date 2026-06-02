@@ -3,6 +3,7 @@ package com.zastra.zastra.media.controller;
 import com.zastra.zastra.infra.exception.ResourceNotFoundException;
 import com.zastra.zastra.infra.service.FileStorageService;
 import com.zastra.zastra.infra.service.FileStorageService.MediaRecord;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +22,30 @@ public class PublicMediaController {
 
     public PublicMediaController(FileStorageService fileStorageService) {
         this.fileStorageService = fileStorageService;
+    }
+
+    // ✅ Serves avatar files from uploads/avatars/
+    @GetMapping("/avatars/{fileName:.+}")
+    public ResponseEntity<Resource> getAvatar(@PathVariable String fileName, HttpServletRequest request) {
+        String cleaned = StringUtils.cleanPath(fileName);
+
+        if (cleaned.contains("..") || cleaned.contains("/") || cleaned.contains("\\")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Resource resource = fileStorageService.loadFileAsResource("avatars/" + cleaned);
+
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (Exception ignored) {}
+
+        if (contentType == null) contentType = "application/octet-stream";
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
     @GetMapping("/{id}")
